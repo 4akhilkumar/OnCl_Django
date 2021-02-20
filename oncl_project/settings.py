@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'oncl_app', #Django App added in Installed_Apps
-    'django_filters',
 ]
 
 MIDDLEWARE = [
