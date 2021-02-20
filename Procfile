@@ -1,1 +1,1 @@
-web: gunicorn core.wsgi --log-file=- 
+web: gunicorn oncl_project.wsgi --log-file=- 
