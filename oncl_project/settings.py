@@ -16,9 +16,10 @@ from unipath import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
+# TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 STATIC_DIR=os.path.join(BASE_DIR,'static')
-
+# BASE_DIR = Path(__file__).parent
+# CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -57,6 +58,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'oncl_project.urls'
+TEMPLATE_DIR = os.path.join(STATIC_DIR, "oncl_app/templates")
 
 TEMPLATES = [
     {
@@ -139,7 +141,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS=[
 STATIC_DIR,
  ]
-
 
 
 LOGIN_REDIRECT_URL='/afterlogin'
