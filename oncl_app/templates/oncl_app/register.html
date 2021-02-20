@@ -1,0 +1,355 @@
+<!-- <!DOCTYPE html>
+<html>
+    
+<head>
+	<title>Login</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+
+	<style>
+		body,
+		html {
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			background: #7abecc !important;
+		}
+		.user_card {
+			width: 350px;
+			margin-top: auto;
+			margin-bottom: auto;
+			background: #74cfbf;
+			position: relative;
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
+			padding: 10px;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			border-radius: 5px;
+
+		}
+
+		.form_container {
+			margin-top: 20px;
+		}
+
+		#form-title{
+			color: #fff;
+		}
+		.login_btn {
+			width: 100%;
+			background: #33ccff !important;
+			color: white !important;
+		}
+		.login_btn:focus {
+			box-shadow: none !important;
+			outline: 0px !important;
+		}
+		.login_container {
+			padding: 0 2rem;
+		}
+		.input-group-text {
+			background: #f7ba5b !important;
+			color: white !important;
+			border: 0 !important;
+			border-radius: 0.25rem 0 0 0.25rem !important;
+		}
+		.input_user,
+		.input_pass:focus {
+			box-shadow: none !important;
+			outline: 0px !important;
+		}
+
+	</style>
+
+</head>
+<body>
+	<div class="container h-100">
+		<div class="d-flex justify-content-center h-100">
+			<div class="user_card">
+				<div class="d-flex justify-content-center">
+					<h3 id="form-title">REGISTER ACCOUNT</h3>
+				</div>
+				<div class="d-flex justify-content-center form_container">
+
+					<form method="POST" action="">
+						{% csrf_token %}
+						<div class="input-group mb-3">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-user"></i></span>
+							</div>
+							{{form.username}}
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-envelope-square"></i></span>
+							</div>
+							{{form.email}}
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-key"></i></span>
+							</div>
+							{{form.password1}}
+						</div>
+						<div class="input-group mb-2">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-key"></i></span>
+							</div>
+							{{form.password2}}
+						</div>
+
+
+
+				   		<div class="d-flex justify-content-center mt-3 login_container">
+				 			<input class="btn login_btn" type="submit" value="Register Account">
+				   		</div>
+
+					</form>
+				</div>
+
+				{{form.errors}}
+				
+				<div class="mt-4">
+					<div class="d-flex justify-content-center links">
+						Already have an account? <a href="{% url 'login' %}" class="ml-2">Login</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+						/* Because i didnt set placeholder values in forms.py they will be set here using vanilla Javascript
+		//We start indexing at one because CSRF_token is considered and input field 
+		 */
+
+		//Query All input fields
+		var form_fields = document.getElementsByTagName('input')
+		form_fields[1].placeholder='Username..';
+		form_fields[2].placeholder='Email..';
+		form_fields[3].placeholder='Enter password...';
+		form_fields[4].placeholder='Re-enter Password...';
+
+
+		for (var field in form_fields){	
+			form_fields[field].className += ' form-control'
+		}
+	</script>
+</body>
+</html> -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title> Create your OnCl Account</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="{% static 'oncl_app/images/whin.png' %}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/vendor/animate/animate.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/vendor/daterangepicker/daterangepicker.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/css/main.css' %}">
+<!--===============================================================================================-->
+<script src="https://kit.fontawesome.com/982d9630c6.js" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<!--===============================================================================================-->
+<style>
+	@media (min-width: 992px){
+        .external-collapse.navbar-collapse {
+			display: -webkit-box!important;
+			display: -ms-flexbox!important;
+			display: flex!important;
+		}
+	}
+
+	@media screen and (min-width: 376px){
+		.header_img {
+			height: 30px;
+			width: 30px;
+			margin-bottom: 5px;
+		}
+	}
+
+	@media screen and (max-width: 376px){
+		.header_img {
+			height: 25px;
+			width: 25px;
+			margin-bottom: 5px;
+		}
+	}
+
+	@media screen and (min-width: 400px){
+		.header_title {
+			font-size: 25px;
+		}
+	}
+
+	@media screen and (max-width: 376px){
+		.header_title {
+			font-size: 21px;
+		}
+	}
+	@media screen and (min-width: 376px){
+            .header_img {
+                height: 30px;
+                width: 30px;
+                margin-bottom: 5px;
+            }
+        }
+
+        @media screen and (max-width: 376px){
+            .header_img {
+                height: 25px;
+                width: 25px;
+                margin-bottom: 5px;
+            }
+        }
+</style>
+</head>
+<body>
+	<nav class="main-header navbar navbar-expand sticky-top navbar-light bg-light">
+		<ul class="navbar-nav">
+			<button onclick="home()">
+				<li class="nav-item">
+					<img class="header_img" src="{% static 'oncl_app/images/whin.png' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">
+					<span class="header_title" style=" font-weight: 500; font-family: 'Fredoka One', cursive;">
+					<span style="color: tomato;">O</span><span style="color: #5f95eb;">n</span><span style="color: rgb(118, 233, 137);">C</span><span style="color: #fcc834">l</span> - Edu. Cloud </span>
+				</li>
+			</button>
+		</ul>
+	</nav>
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
+				<form class="login100-form validate-form flex-sb flex-w" method="POST" action="">
+					{% csrf_token %}			
+					<span class="login100-form-title p-b-32">
+						<img class="header_img" src="{% static 'oncl_app/images/whin.png' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;Create your OnCl Account
+					</span>
+
+					<!-- <span class="txt1 p-b-11">
+						<i class="far fa-user"></i>&nbsp;First Name
+					</span>
+					<div class="wrap-input100 validate-input m-b-36" data-validate = "First Name is required">
+						<input class="input100" type="text" name="first_name" maxlength="30" id="id_first_name" placeholder="First Name">
+						<span class="focus-input100"></span>
+					</div>
+
+					<span class="txt1 p-b-11">
+						<i class="far fa-user"></i>&nbsp;Last Name
+					</span>
+					<div class="wrap-input100 validate-input m-b-36" data-validate = "Last Name is required">
+						<input class="input100" type="text" name="last_name" maxlength="30" id="id_last_name" placeholder="Last Name">
+						<span class="focus-input100"></span>
+					</div> -->
+
+					<span class="txt1 p-b-11">
+						<i class="fas fa-envelope"></i>&nbsp;E - Mail
+					</span>
+					<div class="wrap-input100 validate-input m-b-36" data-validate = "E - Mail is required">
+						<input class="input100" type="email" name="email" maxlength="254" id="id_email" placeholder="E - Mail">
+						<span class="focus-input100"></span>
+					</div>
+
+					<span class="txt1 p-b-11">
+						<i class="fas fa-user-circle"></i>&nbsp;Username
+					</span>
+					<div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
+						<input class="input100" type="text" name="username" maxlength="150" id="id_username" placeholder="Username">
+						<span class="focus-input100"></span>
+					</div>
+					
+					<span class="txt1 p-b-11">
+						<i class="fas fa-key"></i>&nbsp;Password
+					</span>
+					<div class="wrap-input100 validate-input m-b-12" data-validate = "Password is required">
+						<span class="btn-show-pass">
+							<i class="fa fa-eye"></i>
+						</span>
+						<input class="input100" type="password" name="password1" maxlength="128" id="id_password1" placeholder="Password">
+						<span class="focus-input100"></span>
+					</div>
+
+					<span class="txt1 p-b-11">
+						<i class="fas fa-key"></i>&nbsp;Password
+					</span>
+					<div class="wrap-input100 validate-input m-b-12" data-validate = "Password is required">
+						<span class="btn-show-pass">
+							<i class="fa fa-eye"></i>
+						</span>
+						<input class="input100" type="password" name="password2" maxlength="128" id="id_password2" placeholder="Password">
+						<span class="focus-input100"></span>
+					</div>
+					
+					<div class="flex-sb-m w-full p-b-48">
+						<div>
+							<a href="{% url 'login' %}" class="txt3">
+								😎&nbsp;Already 've an OnCl Account?
+							</a>
+						</div>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" type="submit" value="Register">
+							<i class="fas fa-user-shield"></i>&nbsp;Register
+						</button>
+
+						&nbsp;&nbsp;
+						<a type="button" href="{% url 'home' %}" class="login101-form-btn">
+							<i class="fas fa-walking"></i>&nbsp;<i class="fas fa-home"></i>&nbsp;Home
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'oncl_app/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/vendor/daterangepicker/moment.min.js' %}"></script>
+	<script src="{% static 'oncl_app/vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/vendor/countdowntime/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/js/main.js' %}"></script>
+
+	<script>
+		function home() {
+		  location.replace("{% url 'home' %}")
+		}
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,190 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Sign in - OnCl Account</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="{% static 'oncl_app/images/whin.png' %}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/vendor/animate/animate.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/vendor/daterangepicker/daterangepicker.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/css/main.css' %}">
+<!--===============================================================================================-->
+<script src="https://kit.fontawesome.com/982d9630c6.js" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+<!--===============================================================================================-->
+<style>
+	@media (min-width: 992px){
+        .external-collapse.navbar-collapse {
+			display: -webkit-box!important;
+			display: -ms-flexbox!important;
+			display: flex!important;
+		}
+	}
+
+	@media screen and (min-width: 376px){
+		.header_img {
+			height: 30px;
+			width: 30px;
+			margin-bottom: 5px;
+		}
+	}
+
+	@media screen and (max-width: 376px){
+		.header_img {
+			height: 25px;
+			width: 25px;
+			margin-bottom: 5px;
+		}
+	}
+
+	@media screen and (min-width: 400px){
+		.header_title {
+			font-size: 25px;
+		}
+	}
+
+	@media screen and (max-width: 376px){
+		.header_title {
+			font-size: 21px;
+		}
+	}
+	@media screen and (min-width: 376px){
+            .header_img {
+                height: 30px;
+                width: 30px;
+                margin-bottom: 5px;
+            }
+        }
+
+        @media screen and (max-width: 376px){
+            .header_img {
+                height: 25px;
+                width: 25px;
+                margin-bottom: 5px;
+            }
+        }
+</style>
+</head>
+<body>
+	<nav class="main-header navbar navbar-expand sticky-top navbar-light bg-light">
+		<ul class="navbar-nav">
+			<button onclick="home()">
+				<li class="nav-item">
+					<img class="header_img" src="{% static 'oncl_app/images/whin.png' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">
+					<span class="header_title" style=" font-weight: 500; font-family: 'Fredoka One', cursive;">
+					<span style="color: tomato;">O</span><span style="color: #5f95eb;">n</span><span style="color: rgb(118, 233, 137);">C</span><span style="color: #fcc834">l</span> - Edu. Cloud </span>
+				</li>
+			</button>
+		</ul>
+	</nav>
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
+				<form class="login100-form validate-form flex-sb flex-w" method="POST" action="">
+					<span class="login100-form-title p-b-32">
+						<img class="header_img" src="{% static 'oncl_app/images/whin.png' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;Account Login
+					</span>
+					{% csrf_token %}
+
+					<span class="txt1 p-b-11">
+						<i class="fas fa-user-circle"></i>&nbsp;Username
+					</span>
+					<div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
+						<input class="input100" type="text" name="username" maxlength="150" id="id_username" placeholder="Username">
+						<span class="focus-input100"></span>
+					</div>
+					
+					<span class="txt1 p-b-11">
+						<i class="fas fa-key"></i>&nbsp;Password
+					</span>
+					<div class="wrap-input100 validate-input m-b-12" data-validate = "Password is required">
+						<span class="btn-show-pass">
+							<i class="fa fa-eye"></i>
+						</span>
+						<input class="input100" type="password" name="password" maxlength="128" id="id_password" placeholder="Password">
+						<span class="focus-input100"></span>
+					</div>
+					
+					<div class="flex-sb-m w-full p-b-48">
+						<!-- <div class="contact100-form-checkbox">
+							<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+							<label class="label-checkbox100" for="ckb1">
+								Remember me
+							</label>
+						</div> -->
+
+						<div>
+							<a href="{% url 'register' %}" class="txt3">
+								😃&nbsp;Need to create an OnCl Account!
+							</a>
+						</div>
+
+						<div>
+							<a href="#" class="txt3">
+								😕&nbsp;Forgot Password?
+							</a>
+						</div>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" type="submit" value="Login">
+							<i class="fas fa-sign-in-alt"></i>&nbsp;Login
+						</button>
+
+						&nbsp;&nbsp;
+						<a type="button" href="/" class="login101-form-btn">
+							<i class="fas fa-walking"></i>&nbsp;<i class="fas fa-home"></i>&nbsp;Home
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'oncl_app/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/vendor/daterangepicker/moment.min.js' %}"></script>
+	<script src="{% static 'oncl_app/vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/vendor/countdowntime/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/js/main.js' %}"></script>
+
+	<script>
+		function home() {
+		  location.replace("/")
+		}
+	</script>
+
+</body>
+</html>
