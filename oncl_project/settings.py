@@ -56,7 +56,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'oncl_project.urls'
-TEMPLATE_DIR = os.path.join(CORE_DIR, "oncl_project/templates")
+TEMPLATE_DIR = os.path.join(CORE_DIR, "oncl_app/templates")
 
 TEMPLATES = [
     {
