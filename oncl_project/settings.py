@@ -56,7 +56,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'oncl_project.urls'
-TEMPLATE_DIR = os.path.join(CORE_DIR, "core/templates")
+TEMPLATE_DIR = os.path.join(CORE_DIR, "oncl_project/templates")
 
 TEMPLATES = [
     {
@@ -138,7 +138,7 @@ STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
-    os.path.join(CORE_DIR, 'core/static'),
+    os.path.join(CORE_DIR, 'oncl_project/static'),
 )
 #############################################################
 #############################################################
