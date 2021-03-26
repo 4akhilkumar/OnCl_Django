@@ -31,70 +31,75 @@
 <script src="https://kit.fontawesome.com/982d9630c6.js" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
 <!--===============================================================================================-->
+
 <style>
-	@media (min-width: 992px){
-        .external-collapse.navbar-collapse {
-			display: -webkit-box!important;
-			display: -ms-flexbox!important;
-			display: flex!important;
-		}
-	}
+/* Styles for Navbar */
+.bg-light {
+	background-color: #ffffff!important;
+	box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+}
 
-	@media screen and (min-width: 376px){
-		.header_img {
-			height: 30px;
-			width: 30px;
-			margin-bottom: 5px;
-		}
+@media (min-width: 992px){
+	.external-collapse.navbar-collapse {
+		display: -webkit-box!important;
+		display: -ms-flexbox!important;
+		display: flex!important;
 	}
+}
 
-	@media screen and (max-width: 376px){
-		.header_img {
-			height: 25px;
-			width: 25px;
-			margin-bottom: 5px;
-		}
+@media screen and (min-width: 376px){
+	.header_img {
+		height: 30px;
+		width: 30px;
+		margin-bottom: 5px;
 	}
+}
 
-	@media screen and (min-width: 400px){
-		.header_title {
-			font-size: 25px;
-		}
+@media screen and (max-width: 376px){
+	.header_img {
+		height: 25px;
+		width: 25px;
+		margin-bottom: 5px;
 	}
+}
 
-	@media screen and (max-width: 376px){
-		.header_title {
-			font-size: 21px;
-		}
+@media screen and (min-width: 400px){
+	.header_title {
+		font-size: 25px;
 	}
-	@media screen and (min-width: 376px){
-            .header_img {
-                height: 30px;
-                width: 30px;
-                margin-bottom: 5px;
-            }
-        }
+}
 
-        @media screen and (max-width: 376px){
-            .header_img {
-                height: 25px;
-                width: 25px;
-                margin-bottom: 5px;
-            }
-        }
+@media screen and (max-width: 376px){
+	.header_title {
+		font-size: 21px;
+	}
+}
+@media screen and (min-width: 376px){
+	.header_img {
+		height: 30px;
+		width: 30px;
+		margin-bottom: 5px;
+	}
+}
+
+@media screen and (max-width: 376px){
+	.header_img {
+		height: 25px;
+		width: 25px;
+		margin-bottom: 5px;
+	}
+}
 </style>
 </head>
 <body>
-	<nav class="main-header navbar navbar-expand sticky-top navbar-light bg-light">
-		<ul class="navbar-nav">
-			<button onclick="home()">
-				<li class="nav-item">
-					<img class="header_img" src="{% static 'oncl_app/images/whin.png' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">
-					<span class="header_title" style=" font-weight: 500; font-family: 'Fredoka One', cursive;">
-					<span style="color: tomato;">O</span><span style="color: #5f95eb;">n</span><span style="color: rgb(118, 233, 137);">C</span><span style="color: #fcc834">l</span> - Edu. Cloud </span>
-				</li>
-			</button>
-		</ul>
+
+	<nav class="navbar sticky-top navbar-light bg-light" style="padding: 18px;">
+		<a href="/" class="navbar-brand">
+			<img class="header_img" src="{% static 'oncl_app/images/whin.png' %}" alt="OnCl Logo">
+			<span style="font-weight: 500; font-family: 'Fredoka One', cursive; color: #3c4043; font-size: 1.6rem;">
+			  <span style="color: tomato;">O</span><span style="color: #5f95eb;">n</span><span style="color: #76e989;">C</span><span style="color: #fcc834">l</span> - Edu. Cloud
+			</span>
+		</a>
 	</nav>
 	
 	<div class="limiter">
@@ -179,12 +184,6 @@
 	<script src="{% static 'oncl_app/vendor/countdowntime/countdowntime.js' %}"></script>
 <!--===============================================================================================-->
 	<script src="{% static 'oncl_app/js/main.js' %}"></script>
-
-	<script>
-		function home() {
-		  location.replace("/")
-		}
-	</script>
 
 </body>
 </html>
