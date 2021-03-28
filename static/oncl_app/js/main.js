@@ -57,7 +57,6 @@
     var showPass = 0;
     $('.btn-show-pass').on('click', function(){
         if(showPass == 0) {
-            alert("Make sure no one is around you.")
             $(this).next('input').attr('type','text');
             $(this).find('i').removeClass('fa-eye');
             $(this).find('i').addClass('fa-eye-slash');
