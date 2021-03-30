@@ -1,0 +1,83 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Theme Color above the Navbar in Mobile Phones -->
+    <meta name="theme-color" content="#5f95eb">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Stylesheet for Google Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- FontAwesome Icons -->
+    <script src="https://kit.fontawesome.com/982d9630c6.js" crossorigin="anonymous"></script>
+    <!-- Google Font Root Link -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <!-- Font Style for Navbar -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <!-- Bootstrap Link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Jquery Link -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Styles for Content -->
+    <link href="{% static 'oncl_app/assets/css/landing-page.css' %}" rel="stylesheet"/>
+
+    <link rel="icon" href="{% static 'oncl_app/images/whin.webp' %}" type="image/icon type">
+    <title>404 - Not Found | OnCl - Edu. Cloud</title>
+
+    <style>
+      .starter-template {
+      padding: 3rem 1.5rem;
+      text-align: center;
+  }
+      /* Styles for Navbar */
+      .bg-light {
+          background-color: #ffffff!important;
+          box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+      }
+
+      /* Styles for Navbar Logo */
+      .header_img {
+      height: 30px;
+      width: 30px;
+      margin-bottom: 6px;
+      }
+
+      @media (max-width: 768px) {
+      .header_img {
+          height: 25px;
+          width: 25px;
+          margin-bottom: 8px;
+      }
+      }
+  </style>
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript"> 
+  $(function(){
+  $('#alertMessage').hide().delay(500).fadeIn(1100);
+  });
+  </script>
+</head>
+<body>
+  <nav class="navbar sticky-top navbar-light bg-light" style="padding: 18px;">
+      <a href="/" class="navbar-brand">
+          <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" alt="OnCl Logo">
+          <span style="font-weight: 500; font-family: 'Fredoka One', cursive; color: #3c4043; font-size: 1.6rem;">
+            <span style="color: tomato;">O</span><span style="color: #5f95eb;">n</span><span style="color: #76e989;">C</span><span style="color: #fcc834">l</span> - Edu. Cloud
+          </span>
+      </a>
+  </nav>
+
+  <main role="main" class="container">
+      <div class="starter-template">
+          <h1>Oops! Error 404</h1>
+          <p class="lead">Page not found.</p>
+          <div id="alertMessage">
+              <p class="lead" style="font-weight: 500;"><span>Click Here, To <a href="{% url 'home' %}" style="text-decoration: none;">Return to the Home</a></span></p>
+          </div>
+      </div>
+  </main>
+</body>
+</html>
