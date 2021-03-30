@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from django.contrib.auth import views as auth_views
 from . import views
 
@@ -22,4 +22,6 @@ urlpatterns = [
     path('reset_password_complete/',
         auth_views.PasswordResetCompleteView.as_view(template_name="oncl_app/password_reset_complete.html"),
         name="password_reset_complete"),
+
+    re_path(r'^.*\.*', views.pages, name='pages'),
 ]
