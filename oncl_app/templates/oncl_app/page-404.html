@@ -51,6 +51,19 @@
           margin-bottom: 8px;
       }
       }
+
+      .display-1{
+          font-size:calc(1.625rem + 4.5vw);
+          font-weight:300;
+          line-height:1.2;
+          color: #9e9e9e;
+        }
+        
+        @media (min-width:1200px){
+            .display-1{
+                font-size:11rem
+            }
+        }
   </style>
 
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -72,8 +85,9 @@
 
   <main role="main" class="container">
       <div class="starter-template">
+          <h1 class="display-1">¯\_(ツ)_/¯</h1>
           <h1>Oops! Error 404</h1>
-          <p class="lead">Page not found.</p>
+          <p class="lead"><b>Page not found.</b></p>
           <div id="alertMessage">
               <p class="lead" style="font-weight: 500;"><span>Click Here, To <a href="{% url 'home' %}" style="text-decoration: none;">Return to the Home</a></span></p>
           </div>
