@@ -24,7 +24,7 @@ def register_page(request):
 			if form.is_valid():
 				form.save()
 				user = form.cleaned_data.get('username')
-				messages.success(request, 'Account was created for ' + user)
+				messages.success(request, 'Hey ' + user + '! Your Account is Created Succesfully!')
 
 				return redirect('login')
 
@@ -45,7 +45,7 @@ def login_page(request):
 				login(request, user)
 				return redirect('home')
 			else:
-				messages.info(request, 'Username OR password is incorrect')
+				messages.warning(request, 'Username or Password is Incorrect!')
 
 		context = {}
 		return render(request, 'oncl_app/login.html', context)
