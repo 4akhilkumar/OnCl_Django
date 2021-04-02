@@ -41,17 +41,35 @@
 
 /* Styles for Navbar Logo */
 .header_img {
-height: 30px;
-width: 30px;
-margin-bottom: 6px;
+	height: 30px;
+	width: 30px;
+	margin-bottom: 6px;
 }
 
 @media (max-width: 768px) {
-.header_img {
-	height: 25px;
-	width: 25px;
-	margin-bottom: 8px;
+	.header_img {
+		height: 25px;
+		width: 25px;
+		margin-bottom: 8px;
+	}
 }
+
+@media (max-width: 375px) {
+	.header_img {
+		height: 22.5px;
+		width: 22.5px;
+		margin-bottom: 3px;
+	}
+}
+
+#headername {
+	font-size: 1.6rem;
+}
+
+@media (max-width: 375px) {
+	#headername {
+		font-size: 1.3rem;
+	}
 }
 
 /* Remove extra left and right margins, due to padding */
@@ -181,7 +199,7 @@ margin-bottom: 6px;
 	.User-Dropdown > li a:hover {
 		margin-left: 5px;
 }
-@media screen and (max-width: 426px){
+@media screen and (max-width: 510px){
 	._username {
 		visibility:hidden;
 	}
@@ -304,7 +322,7 @@ h1 {
     <nav class="navbar sticky-top navbar-light bg-light" style="padding: 18px;">
         <a href="/" class="navbar-brand">
             <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" alt="OnCl Logo">
-            <span style="font-weight: 500; font-family: 'Fredoka One', cursive; color: #3c4043; font-size: 1.6rem;">
+            <span style="font-weight: 500; font-family: 'Fredoka One', cursive; color: #3c4043;" id="headername">
               <span style="color: tomato;">O</span><span style="color: #5f95eb;">n</span><span style="color: #76e989;">C</span><span style="color: #fcc834">l</span> - Edu. Cloud
             </span>
         </a>
