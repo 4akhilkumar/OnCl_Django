@@ -14,9 +14,14 @@ from .forms import CreateUserForm
 def home_page(request):
     return render(request,'oncl_app/home.html')
 
+@login_required(login_url='login')
+def dashboard_page(request):
+	username = request.user.get_username()
+	return render(request, 'oncl_app/dashboard.html',{'username':username})
+
 def register_page(request):
 	if request.user.is_authenticated:
-		return redirect('home')
+		return redirect('dashboard')
 	else:
 		form = CreateUserForm()
 		if request.method == 'POST':
@@ -33,7 +38,7 @@ def register_page(request):
 
 def login_page(request):
 	if request.user.is_authenticated:
-		return redirect('home')
+		return redirect('dashboard')
 	else:
 		if request.method == 'POST':
 			username = request.POST.get('username')
@@ -43,7 +48,7 @@ def login_page(request):
 
 			if user is not None:
 				login(request, user)
-				return redirect('home')
+				return redirect('dashboard')
 			else:
 				messages.warning(request, 'Username or Password is Incorrect!')
 
