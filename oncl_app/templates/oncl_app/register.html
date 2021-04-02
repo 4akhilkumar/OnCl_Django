@@ -92,7 +92,7 @@
 }
 
 /* The message box is shown when the user clicks on the password field */
-#message, #messagename, #messagelastname, #messageemail {
+#message, #messagename, #messagelastname, #messageusername,#messageemail {
   display:none;
 }
 
@@ -154,6 +154,18 @@
 .invalidemail:before {
   position: relative;
   content: "Are you sure you entered your email correctly?";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalidusername {
+  color: #ff6347;
+  font-family: Raleway-Regular;
+  font-weight: 700;
+}
+
+.invalidusername:before {
+  position: relative;
+  content: "Username Must be 6 Characters Only!";
 }
 </style>
 </head>
@@ -230,9 +242,17 @@
 					<span class="txt1 p-b-11">
 						<i class="fas fa-user-circle"></i>&nbsp;Username
 					</span>
-					<div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
-						<input class="input100" type="text" name="username" maxlength="40" id="id_username" placeholder="Username">
+					<div class="wrap-input100 validate-input m-b-20" data-validate = "Username is required">
+						<input class="input100" type="text" name="username" maxlength="6" id="id_username" placeholder="Username">
 						<span class="focus-input100"></span>
+					</div>
+
+					<div class="flex-sb-m w-full p-b-20">
+						<div id="messageusername">
+							<p class="txt3">
+								<p id="lengthuser" class="invalidusername"></p>
+							</p>
+						</div>
 					</div>
 					
 					<span class="txt1 p-b-11">
@@ -439,6 +459,28 @@
 		  } else {
 			lengthln.classList.remove("valid");
 			lengthln.classList.add("invalidlastname");
+		  }			
+		}
+
+		var myInputusername = document.getElementById("id_username");
+		var lengthuser = document.getElementById("lengthuser");
+
+		myInputusername.onfocus = function() {
+		  document.getElementById("messageusername").style.display = "block";
+		}
+		
+		myInputusername.onblur = function() {
+		  document.getElementById("messageusername").style.display = "none";
+		}
+
+		// When the user starts to type something inside the field
+		myInputusername.onkeyup = function() {
+		  // Validate length of user name
+		  if(myInputusername.value.length == 6) {
+			lengthuser.classList.remove("invalidusername");
+		  } else {
+			lengthuser.classList.remove("valid");
+			lengthuser.classList.add("invalidusername");
 		  }			
 		}
 
