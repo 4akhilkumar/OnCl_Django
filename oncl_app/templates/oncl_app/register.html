@@ -90,6 +90,71 @@
 		margin-bottom: 5px;
 	}
 }
+
+/* The message box is shown when the user clicks on the password field */
+#message, #messagename, #messagelastname, #messageemail {
+  display:none;
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+  color: green;
+  font-family: Raleway-Regular;
+}
+
+.valid:before {
+  position: relative;
+  left: -10px;
+  content: "✔";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalid {
+  color: #ff6347;
+  font-family: Raleway-Regular;
+}
+
+.invalid:before {
+  position: relative;
+  left: -10px;
+  content: "✖";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalidname {
+  color: #ff6347;
+  font-family: Raleway-Regular;
+  font-weight: 700;
+}
+
+.invalidname:before {
+  position: relative;
+  content: "Are you sure you entered your first name correctly?";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalidlastname {
+  color: #ff6347;
+  font-family: Raleway-Regular;
+  font-weight: 700;
+}
+
+.invalidlastname:before {
+  position: relative;
+  content: "Are you sure you entered your last name correctly?";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalidemail {
+  color: #ff6347;
+  font-family: Raleway-Regular;
+  font-weight: 700;
+}
+
+.invalidemail:before {
+  position: relative;
+  content: "Are you sure you entered your email correctly?";
+}
 </style>
 </head>
 <body>
@@ -115,25 +180,49 @@
 					<span class="txt1 p-b-11">
 						<i class="far fa-user"></i>&nbsp;First Name
 					</span>
-					<div class="wrap-input100 validate-input m-b-36" data-validate = "First Name is required">
-						<input class="input100" type="text" name="first_name" maxlength="40" id="id_first_name" placeholder="First Name">
+					<div class="wrap-input100 validate-input m-b-20" data-validate = "First Name is required">
+						<input onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode == 32) || (event.charCode > 96 && event.charCode < 123)" class="input100" type="text" name="first_name" maxlength="40" id="id_first_name" placeholder="First Name">
 						<span class="focus-input100"></span>
+					</div>
+
+					<div class="flex-sb-m w-full p-b-20">
+						<div id="messagename">
+							<p class="txt3">
+								<p id="lengthfn" class="invalidname"></p>
+							</p>
+						</div>
 					</div>
 
 					<span class="txt1 p-b-11">
 						<i class="far fa-user"></i>&nbsp;Last Name
 					</span>
-					<div class="wrap-input100 validate-input m-b-36" data-validate = "Last Name is required">
-						<input class="input100" type="text" name="last_name" maxlength="40" id="id_last_name" placeholder="Last Name">
+					<div class="wrap-input100 validate-input m-b-20" data-validate = "Last Name is required">
+						<input onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode == 32) || (event.charCode > 96 && event.charCode < 123)" class="input100" type="text" name="last_name" maxlength="40" id="id_last_name" placeholder="Last Name">
 						<span class="focus-input100"></span>
+					</div>
+
+					<div class="flex-sb-m w-full p-b-20">
+						<div id="messagelastname">
+							<p class="txt3">
+								<p id="lengthln" class="invalidlastname"></p>
+							</p>
+						</div>
 					</div>
 
 					<span class="txt1 p-b-11">
 						<i class="fas fa-envelope"></i>&nbsp;E - Mail
 					</span>
-					<div class="wrap-input100 validate-input m-b-36" data-validate = "E - Mail is required">
-						<input class="input100" type="email" name="email" maxlength="254" id="id_email" placeholder="E - Mail">
+					<div class="wrap-input100 validate-input m-b-20" data-validate = "E - Mail is required">
+						<input class="input100" type="email" name="email" maxlength="40" id="id_email" placeholder="E - Mail">
 						<span class="focus-input100"></span>
+					</div>
+
+					<div class="flex-sb-m w-full p-b-20">
+						<div id="messageemail">
+							<p class="txt3">
+								<p id="email" class="invalidemail"></p>
+							</p>
+						</div>
 					</div>
 
 					<span class="txt1 p-b-11">
@@ -151,8 +240,21 @@
 						<span class="btn-show-pass">
 							<i class="fa fa-eye"></i>
 						</span>
-						<input class="input100" type="password" name="password1" maxlength="128" id="id_password1" placeholder="Password">
+						<input class="input100" type="password" name="password1" maxlength="40" id="id_password1" placeholder="Password">
 						<span class="focus-input100"></span>
+					</div>
+
+					<div class="flex-sb-m w-full p-b-25">
+						<div id="message">
+							<p class="txt3">
+								Your Password must contain the following:
+								<p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+								<p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+								<p id="number" class="invalid">A <b>number</b></p>
+								<p id="length" class="invalid">Minimum <b>8 characters</b></p>
+								<p id="special" class="invalid">A <b>special characters</b></p>
+							</p>
+						</div>
 					</div>
 
 					<span class="txt1 p-b-11">
@@ -162,11 +264,18 @@
 						<span class="btn-show-pass">
 							<i class="fa fa-eye"></i>
 						</span>
-						<input class="input100" type="password" name="password2" maxlength="128" id="id_password2" placeholder="Password">
+						<input class="input100" type="password" name="password2" maxlength="40" id="id_password2" placeholder="Confirm Password">
 						<span class="focus-input100"></span>
 					</div>
+					<div class="flex-sb-m w-full p-b-20">
+						<div>
+							<p class="txt3">
+								<span id='message2'></span>
+							</p>
+						</div>
+					</div>
 					
-					<div class="flex-sb-m w-full p-b-48">
+					<div class="flex-sb-m w-full p-b-20">
 						<div>
 							<a href="{% url 'login' %}" class="txt3">
 								😎&nbsp;Already 've an OnCl Account?
@@ -205,6 +314,156 @@
 	<script src="{% static 'oncl_app/vendor/countdowntime/countdowntime.js' %}"></script>
 <!--===============================================================================================-->
 	<script src="{% static 'oncl_app/js/main.js' %}"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+	<script>
+		var myInput = document.getElementById("id_password1");
+		var letter = document.getElementById("letter");
+		var capital = document.getElementById("capital");
+		var number = document.getElementById("number");
+		var length = document.getElementById("length");
+		var special = document.getElementById("special");
+		
+		// When the user clicks on the password field, show the message box
+		myInput.onfocus = function() {
+		  document.getElementById("message").style.display = "block";
+		}
+		
+		// When the user clicks outside of the password field, hide the message box
+		myInput.onblur = function() {
+		  document.getElementById("message").style.display = "none";
+		}
+		
+		// When the user starts to type something inside the password field
+		myInput.onkeyup = function() {
+		  // Validate lowercase letters
+		  var lowerCaseLetters = /[a-z]/g;
+		  if(myInput.value.match(lowerCaseLetters)) {  
+			letter.classList.remove("invalid");
+			letter.classList.add("valid");
+		  } else {
+			letter.classList.remove("valid");
+			letter.classList.add("invalid");
+		  }
+		  
+		  // Validate capital letters
+		  var upperCaseLetters = /[A-Z]/g;
+		  if(myInput.value.match(upperCaseLetters)) {  
+			capital.classList.remove("invalid");
+			capital.classList.add("valid");
+		  } else {
+			capital.classList.remove("valid");
+			capital.classList.add("invalid");
+		  }
+		
+		  // Validate numbers
+		  var numbers = /[0-9]/g;
+		  if(myInput.value.match(numbers)) {  
+			number.classList.remove("invalid");
+			number.classList.add("valid");
+		  } else {
+			number.classList.remove("valid");
+			number.classList.add("invalid");
+		  }
+		  
+		  // Validate length
+		  if(myInput.value.length >= 8) {
+			length.classList.remove("invalid");
+			length.classList.add("valid");
+		  } else {
+			length.classList.remove("valid");
+			length.classList.add("invalid");
+		  }
+
+		  // Validate Special Character
+		  var specialCharacter = /[!@#$%^&*]/g;
+		  if(myInput.value.match(specialCharacter)) {  
+			special.classList.remove("invalid");
+			special.classList.add("valid");
+		  } else {
+			special.classList.remove("valid");
+			special.classList.add("invalid");
+		  }
+		}
+
+		$('#id_password1, #id_password2').on('keyup', function () {
+		if ($('#id_password1').val() == $('#id_password2').val()) {
+			$('#message2').html('<i class="fas fa-check-circle"></i> Password is Matched.').css('color', 'green');
+		} else 
+			$('#message2').html('<i class="fas fa-exclamation-triangle"></i> Password is Not Matching!').css('color', '#ff6347');
+		});	
+
+		var myInputname = document.getElementById("id_first_name");
+		var lengthfn = document.getElementById("lengthfn");
+
+		// When the user clicks on the password field, show the message box
+		myInputname.onfocus = function() {
+		  document.getElementById("messagename").style.display = "block";
+		}
+		
+		// When the user clicks outside of the password field, hide the message box
+		myInputname.onblur = function() {
+		  document.getElementById("messagename").style.display = "none";
+		}
+
+		// When the user starts to type something inside the field
+		myInputname.onkeyup = function() {
+		  // Validate length of first name
+		  if(myInputname.value.length >= 3) {
+			lengthfn.classList.remove("invalidname");
+		  } else {
+			length.classList.remove("valid");
+			lengthfn.classList.add("invalidname");
+		  }			
+		}
+
+		var myInputlastname = document.getElementById("id_last_name");
+		var lengthln = document.getElementById("lengthln");
+
+		myInputlastname.onfocus = function() {
+		  document.getElementById("messagelastname").style.display = "block";
+		}
+		
+		myInputlastname.onblur = function() {
+		  document.getElementById("messagelastname").style.display = "none";
+		}
+
+		// When the user starts to type something inside the field
+		myInputlastname.onkeyup = function() {
+		  // Validate length of last name
+		  if(myInputlastname.value.length >= 1) {
+			lengthln.classList.remove("invalidlastname");
+		  } else {
+			lengthln.classList.remove("valid");
+			lengthln.classList.add("invalidlastname");
+		  }			
+		}
+
+		var myInputemail = document.getElementById("id_email");
+		var email = document.getElementById("email");
+		
+		// When the user clicks on the email field, show the message box
+		myInputemail.onfocus = function() {
+		  document.getElementById("messageemail").style.display = "block";
+		}
+		
+		// When the user clicks outside of the email field, hide the message box
+		myInputemail.onblur = function() {
+		  document.getElementById("messageemail").style.display = "none";
+		}
+		
+		// When the user starts to type something inside the email field
+		myInputemail.onkeyup = function() {
+		  var emailvalidation = /^[a-z0-9._%+-]+@[a-z]+\.[a-z]{2,}$/g;
+		  if(myInputemail.value.match(emailvalidation)) {  
+			email.classList.remove("invalidemail");
+		  } else {
+			email.classList.remove("valid");
+			email.classList.add("invalidemail");
+		  }
+		}
+		</script>
 
 </body>
 </html>
