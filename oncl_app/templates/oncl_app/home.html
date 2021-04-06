@@ -27,6 +27,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Styles for Content -->
     <link href="{% static 'oncl_app/assets/css/landing-page.css' %}" rel="stylesheet"/>
+    <!-- Cache Controller -->
+    <meta http-equiv="Cache-control" content="public">
 
     <link rel="icon" href="{% static 'oncl_app/images/whin.webp' %}" type="image/icon type">
     <title>OnCl - Edu. Cloud</title>
@@ -560,7 +562,7 @@ footer .end {
                   <b>OnCl - Edu. Cloud</b> is a Educational Cloud Application which helps students, faculty and others who are in the learning world. 
                 </p>
                 <div class="social">
-                    <a href="oncldjango.herokuapp.com" aria-label="Website" style="background-color: #e91e63; color: #FFFFFF;"><i class="fas fa-globe"></i></a>
+                    <a href="/" aria-label="Website" style="background-color: #e91e63; color: #FFFFFF;"><i class="fas fa-globe"></i></a>
                     <a href="#" aria-label="Twitter" style="background-color: #1da1f2; color: #FFFFFF;"><i class="fa fa-twitter"></i></a>
                     <a href="#" aria-label="Linkedin" style="background-color: #0077b5; color: #FFFFFF;"><i class="fab fa-linkedin"></i></a>
                     <a href="#" aria-label="Github" style="background-color: #000; color: #FFFFFF;"><i class="fa fa-github"></i></a>
@@ -570,9 +572,9 @@ footer .end {
                 <h3>Institute</h3>
                 <ul>
                     <li><a href="{% url 'login' %}">OnCl Login</a></li>
-                    <li><a href="https://mail.office365.com/" target="_blank">KL Email</a></li>
+                    <li><a rel="noreferrer" href="https://mail.office365.com/" target="_blank">KL Email</a></li>
                     <li><a href="#">Coding Compiler</a></li>
-                    <li><a href="https://www.kluniversity.in/es.aspx?id=0" target="_blank">Exam Section</a></li>
+                    <li><a rel="noreferrer" href="https://www.kluniversity.in/es.aspx?id=0" target="_blank">Exam Section</a></li>
                     <li><a href="#">Grievances</a></li>
                 </ul>                          
             </div>
