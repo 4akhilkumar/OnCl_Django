@@ -54,6 +54,44 @@
     margin-bottom: 8px;
   }
 }
+
+@media (max-width: 376px) {
+  .header_img {
+    height: 24px;
+    width: 24px;
+    margin-bottom: 6px;
+  }
+}
+
+@media (max-width: 321px) {
+  .header_img {
+    height: 22px;
+    width: 22px;
+    margin-bottom: 2px;
+  }
+}
+
+@media (max-width: 376px) {
+  .hidden_text {
+    font-size: 1.5rem;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  .hidden_text {
+    font-size: 1.43rem;
+  }
+}
+
+@media (max-width: 321px) {
+  .hidden_text {
+    font-size: 1.14rem;
+  }
+}
+
+.login_button:hover {
+  color: #272727;
+}
  
 
 /* Styles for Image in the quote */
@@ -336,9 +374,12 @@ footer .end {
     <a href="/" class="navbar-brand">
         <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" alt="OnCl Logo">
         <span style="font-weight: 500; font-family: 'Fredoka One', cursive; color: #3c4043; font-size: 1.6rem;">
-          <span style="color: tomato;">O</span><span style="color: #5f95eb;">n</span><span style="color: #76e989;">C</span><span style="color: #fcc834">l</span> - Edu. Cloud
+          <span class="hidden_text" style="color: tomato;">O</span><span class="hidden_text" style="color: #5f95eb;">n</span><span class="hidden_text" style="color: #76e989;">C</span><span class="hidden_text" style="color: #fcc834">l</span> <span class="hidden_text">- Edu. Cloud</span>
         </span>
     </a>
+    <div onclick="login_page()" class="login_button" style="cursor: pointer;color: #ffffff; background-color: #424242; box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%); padding: 10px; border-radius: 5px;">
+      <a style="text-decoration: none;"><i class="fas fa-sign-in-alt"></i> Login</a>
+    </div>
   </nav>
 
   <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
@@ -541,7 +582,7 @@ footer .end {
             <div class="card_icon"><span style="font-size: 100px; color: #757575; margin-top: 10%;" class="material-icons"> library_books </span></div>
             <div class="card_content" style="background: linear-gradient(to bottom left, #bdbdbd 40%, #FFFFFF 100%);">
               <h2 class="card_title">E - Library</h2>
-              <p class="card_text">Utitlizing <b>E - Library</b> Provides you to access to books, journals, articles & any other info. and enjoy reading <i class="fas fa-swatchbook"></i> books.</p>                
+              <p class="card_text">Utilizing <b>E - Library</b> Provides you to access to books, journals, articles & any other info. and enjoy reading <i class="fas fa-swatchbook"></i> books.</p>                
             </div>
           </div>
         </li>
@@ -662,5 +703,9 @@ var TxtType = function(el, toRotate, period) {
         css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
         document.body.appendChild(css);
     };
+
+    function login_page(){
+      window.location.replace("{% url 'login' %}");
+    }
 </script>
 </html>
