@@ -1,9 +1,12 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
 <head>
     <meta charset="UTF-8">
+    <meta name="Description" content="OnCl - Edu. Cloud is a Educational Cloud Application which helps students, faculty and others who are in the learning world.">
+    <!-- Theme Color above the Navbar in Mobile Phones -->
+    <meta name="theme-color" content="#5f95eb">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Stylesheet for Google Icons -->
@@ -15,375 +18,378 @@
     <!-- Jquery Link -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Cache Controller -->
-    <meta http-equiv="Cache-control" content="public">
+    <meta http-equiv="Cache-Control: max-age=31536000" content="public">
 
+    <link rel="apple-touch-icon" href="{% static 'oncl_app/images/whin.webp' %}" type="image/icon type">
     <link rel="icon" href="{% static 'oncl_app/images/whin.webp' %}" type="image/icon type">
     <title>  FAR Space 🎵 🎯 | OnCl - Edu. Cloud</title>
 
-<style>
-/* Styles for Music Player */
-    *:focus
-{
-    outline: none;
-}
+    <style>
+    /* Styles for Music Player */
+        *:focus
+    {
+        outline: none;
+    }
 
-body
-{
-    font-family: Helvetica, Arial;
-    margin: 0;
-    background-color: #ffffff;
-}
+    body
+    {
+        font-family: Helvetica, Arial;
+        margin: 0;
+        background-color: #ffffff;
+    }
 
-#app-cover
-{
-    position: absolute;
-    top: 50%;
-    right: 0;
-    left: 0;
-    width: 430px;
-    height: 100px;
-    margin: -4px auto;
-}
+    #app-cover
+    {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        left: 0;
+        width: 430px;
+        height: 100px;
+        margin: -4px auto;
+    }
 
-#bg-artwork
-{
-    position: fixed;
-    top: -30px;
-    right: -30px;
-    bottom: -30px;
-    left: -30px;
-    background-image: url("https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_1.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 50%;
-    filter: blur(20px);
-    -webkit-filter: blur(20px);
-    z-index: 1;
-}
+    #bg-artwork
+    {
+        position: fixed;
+        top: -30px;
+        right: -30px;
+        bottom: -30px;
+        left: -30px;
+        background-image: url("{% static 'oncl_app/audio_images/thumbnail.webp' %}");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: 50%;
+        filter: blur(20px);
+        -webkit-filter: blur(20px);
+        z-index: 1;
+    }
 
-#bg-layer
-{
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: #fff;
-    opacity: 0.51;
-    z-index: 2;
-}
+    #bg-layer
+    {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: #fff;
+        opacity: 0.51;
+        z-index: 2;
+    }
 
-#player
-{
-    position: relative;
-    height: 100%;
-    z-index: 3;
-}
+    #player
+    {
+        position: relative;
+        height: 100%;
+        z-index: 3;
+    }
 
-#player-track
-{
-    position: absolute;
-    top: 0;
-    right: 15px;
-    left: 15px;
-    width: 280px;
-    padding: 13px 22px 10px 184px;
-    background-color: #fff7f7;
-    border-radius: 15px 15px 0 0;
-    transition: 0.3s ease top;
-    z-index: 1;
-}
+    #player-track
+    {
+        position: absolute;
+        top: 0;
+        right: 15px;
+        left: 15px;
+        width: 280px;
+        padding: 13px 22px 10px 184px;
+        background-color: #fff7f7;
+        border-radius: 15px 15px 0 0;
+        transition: 0.3s ease top;
+        z-index: 1;
+    }
 
-#player-track.active
-{
-    top: -92px;
-}
+    #player-track.active
+    {
+        top: -92px;
+    }
 
-#album-name
-{
-    color: #54576f;
-    font-size: 17px;
-    font-weight: bold;
-}
+    #album-name
+    {
+        color: #54576f;
+        font-size: 17px;
+        font-weight: bold;
+    }
 
-#track-name
-{
-    color: #acaebd;
-    font-size: 13px;
-    margin: 2px 0 13px 0;
-}
+    #track-name
+    {
+        color: #acaebd;
+        font-size: 13px;
+        margin: 2px 0 13px 0;
+    }
 
-#track-time
-{
-    height: 12px;
-    margin-bottom: 3px;
-    overflow: hidden;
-}
+    #track-time
+    {
+        height: 12px;
+        margin-bottom: 3px;
+        overflow: hidden;
+    }
 
-#current-time
-{
-    float: left;
-}
+    #current-time
+    {
+        float: left;
+    }
 
-#track-length
-{
-    float: right;
-}
+    #track-length
+    {
+        float: right;
+    }
 
-#current-time, #track-length
-{
-    color: transparent;
-    font-size: 11px;
-    background-color: #ffe8ee;
-    border-radius: 10px;
-    transition: 0.3s ease all;
-}
+    #current-time, #track-length
+    {
+        color: transparent;
+        font-size: 11px;
+        background-color: #ffe8ee;
+        border-radius: 10px;
+        transition: 0.3s ease all;
+    }
 
-#track-time.active #current-time, #track-time.active #track-length
-{
-    color: #f86d92;
-    background-color: transparent;
-}
+    #track-time.active #current-time, #track-time.active #track-length
+    {
+        color: #f86d92;
+        background-color: transparent;
+    }
 
-#s-area, #seek-bar
-{
-    position: relative;
-    height: 4px;
-    border-radius: 4px;
-}
+    #s-area, #seek-bar
+    {
+        position: relative;
+        height: 4px;
+        border-radius: 4px;
+    }
 
-#s-area
-{
-    background-color:#ffe8ee;
-    cursor: pointer;
-}
+    #s-area
+    {
+        background-color:#ffe8ee;
+        cursor: pointer;
+    }
 
-#ins-time
-{
-    position: absolute;
-    top: -29px;
-    color: #fff;
-    font-size: 12px;
-    white-space: pre;
-    padding: 5px 6px;
-    border-radius: 4px;
-	display:none;
-}
+    #ins-time
+    {
+        position: absolute;
+        top: -29px;
+        color: #fff;
+        font-size: 12px;
+        white-space: pre;
+        padding: 5px 6px;
+        border-radius: 4px;
+        display:none;
+    }
 
-#s-hover
-{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0.2;
-    z-index: 2;
-}
+    #s-hover
+    {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        opacity: 0.2;
+        z-index: 2;
+    }
 
-#ins-time, #s-hover
-{
-    background-color: #3b3d50;
-}
+    #ins-time, #s-hover
+    {
+        background-color: #3b3d50;
+    }
 
-#seek-bar
-{
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    background-color: #fd6d94;
-    transition: 0.2s ease width;
-    z-index: 1;
-}
+    #seek-bar
+    {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        background-color: #fd6d94;
+        transition: 0.2s ease width;
+        z-index: 1;
+    }
 
-#player-content
-{
-    position: relative;
-    height: 100%;
-    width: 120%;
-    background-color: #fff;
-    box-shadow: 0 30px 80px #656565;
-    border-radius: 15px;
-    z-index: 2;
-}
+    #player-content
+    {
+        position: relative;
+        height: 100%;
+        width: 120%;
+        background-color: #fff;
+        box-shadow: 0 30px 80px #656565;
+        border-radius: 15px;
+        z-index: 2;
+    }
 
-#album-art
-{
-    position: absolute;
-    top: -40px;
-    width: 115px;
-    height: 115px;
-    margin-left: 40px;
-    transform: rotateZ(0);
-    transition: 0.3s ease all;
-    box-shadow: 0 0 0 10px #fff;
-    border-radius: 50%;
-    overflow: hidden;
-}
+    #album-art
+    {
+        position: absolute;
+        top: -40px;
+        width: 115px;
+        height: 115px;
+        margin-left: 40px;
+        transform: rotateZ(0);
+        transition: 0.3s ease all;
+        box-shadow: 0 0 0 10px #fff;
+        border-radius: 50%;
+        overflow: hidden;
+    }
 
-#album-art.active
-{
-    top: -60px;
-    box-shadow: 0 0 0 4px #fff7f7, 0 30px 50px -15px #afb7c1;
-}
+    #album-art.active
+    {
+        top: -60px;
+        box-shadow: 0 0 0 4px #fff7f7, 0 30px 50px -15px #afb7c1;
+    }
 
-#album-art:before
-{
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: 0;
-    left: 0;
-    width: 20px;
-    height: 20px;
-    margin: -10px auto 0 auto;
-    background-color: #d6dee7;
-    border-radius: 50%;
-    box-shadow: inset 0 0 0 2px #fff;
-    z-index: 2;
-}
+    #album-art:before
+    {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: 0;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        margin: -10px auto 0 auto;
+        background-color: #d6dee7;
+        border-radius: 50%;
+        box-shadow: inset 0 0 0 2px #fff;
+        z-index: 2;
+    }
 
-#album-art img
-{
+    #album-art img
+    {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        z-index: -1;
+    }
+
+    #album-art img.active
+    {
+        opacity: 1;
+        z-index: 1;
+    }
+
+    #album-art.active img.active
+    {
+        z-index: 1;
+        animation: rotateAlbumArt 3s linear 0s infinite forwards;
+    }
+
+    @keyframes rotateAlbumArt
+    {
+        0%{ transform: rotateZ(0); }
+        100%{ transform: rotateZ(360deg); }
+    }
+
+    #buffer-box
+    {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        left: 0;
+        height: 13px;
+        color: #1f1f1f;
+        font-size: 13px;
+        font-family: Helvetica;
+        text-align: center;
+        font-weight: bold;
+        line-height: 1;
+        padding: 6px;
+        margin: -12px auto 0 auto;
+        background-color: rgba(255, 255, 255, 0.19);
+        opacity: 0;
+        z-index: 2;
+    }
+
+    #album-art img, #buffer-box
+    {
+        transition: 0.1s linear all;
+    }
+
+    #album-art.buffering img
+    {
+        opacity: 0.25;
+    }
+
+    #album-art.buffering img.active
+    {
+        opacity: 0.8;
+        filter: blur(2px);
+        -webkit-filter: blur(2px);
+    }
+
+    #album-art.buffering #buffer-box
+    {
+        opacity: 1;
+    }
+
+    #player-controls
+    {
+        height: 100%;
+        margin: 0 30px 0 141px;
+        float: right;
+        overflow: hidden;
+    }
+
+    .control
+    {
+        width: 25%;
+        float: left;
+        padding: 12px 0px;
+    }
+
+    .button
+    {
+        width: 26px;
+        height: 26px;
+        padding: 25px;
+        background-color: #fff;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .button i
+    {
+        display: block;
+        color: #9e9e9e;
+        font-size: 26px;
+        text-align: center;
+        line-height: 1;
+    }
+
+    .button, .button i
+    {
+        transition: 0.2s ease all;
+    }
+
+    .button:hover
+    {
+        background-color: #d6d6de;
+    }
+
+    .button:hover i
+    {
+        color: #fff;
+    }
+
+    #info-audio {
     display: block;
-    position: absolute;
-    top: 0;
+    position: fixed;
     left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    z-index: -1;
-}
-
-#album-art img.active
-{
-    opacity: 1;
-    z-index: 1;
-}
-
-#album-art.active img.active
-{
-    z-index: 1;
-    animation: rotateAlbumArt 3s linear 0s infinite forwards;
-}
-
-@keyframes rotateAlbumArt
-{
-    0%{ transform: rotateZ(0); }
-    100%{ transform: rotateZ(360deg); }
-}
-
-#buffer-box
-{
-    position: absolute;
-    top: 50%;
-    right: 0;
-    left: 0;
-    height: 13px;
-    color: #1f1f1f;
-    font-size: 13px;
-    font-family: Helvetica;
-    text-align: center;
-    font-weight: bold;
-    line-height: 1;
-    padding: 6px;
-    margin: -12px auto 0 auto;
-    background-color: rgba(255, 255, 255, 0.19);
-    opacity: 0;
-    z-index: 2;
-}
-
-#album-art img, #buffer-box
-{
-    transition: 0.1s linear all;
-}
-
-#album-art.buffering img
-{
-    opacity: 0.25;
-}
-
-#album-art.buffering img.active
-{
-    opacity: 0.8;
-    filter: blur(2px);
-    -webkit-filter: blur(2px);
-}
-
-#album-art.buffering #buffer-box
-{
-    opacity: 1;
-}
-
-#player-controls
-{
-    height: 100%;
-    margin: 0 30px 0 141px;
-    float: right;
-    overflow: hidden;
-}
-
-.control
-{
-    width: 25%;
-    float: left;
-    padding: 12px 0px;
-}
-
-.button
-{
-    width: 26px;
-    height: 26px;
-    padding: 25px;
+    bottom: 0;
+    padding: 10px 14px;
+    margin: 20px;
+    color: #000;
+    font-size: 14px;
+    text-decoration: none;
     background-color: #fff;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.button i
-{
-    display: block;
-    color: #9e9e9e;
-    font-size: 26px;
-    text-align: center;
-    line-height: 1;
-}
-
-.button, .button i
-{
-    transition: 0.2s ease all;
-}
-
-.button:hover
-{
-    background-color: #d6d6de;
-}
-
-.button:hover i
-{
-    color: #fff;
-}
-
-#info-audio {
-  display: block;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  padding: 10px 14px;
-  margin: 20px;
-  color: #000;
-  font-size: 14px;
-  text-decoration: none;
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 10px 20px -5px rgba(174, 95, 135, 0.86);
-  z-index: 125;
-}
-</style>
+    border-radius: 4px;
+    box-shadow: 0 10px 20px -5px rgba(174, 95, 135, 0.86);
+    z-index: 125;
+    }
+    </style>
 </head>
 <body>
+
+    <a href="#play-pause-button" style="display: none;"> play-pause-button </a>
 
     <div id="app-cover" style="padding-right: 10%;">
         <div id="bg-artwork"></div>
@@ -404,12 +410,12 @@ body
             </div>
             <div id="player-content">
                 <div id="album-art">
-                    <img src="{% static 'oncl_app/audio_images/thumbnail.jpg' %}" class="active" id="_1">
-                    <img src="{% static 'oncl_app/audio_images/thumbnail_2.jpg' %}" class="active" id="_2">
-                    <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_2.jpg" id="_3">
-                    <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_3.jpg" id="_4">
-                    <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_4.jpg" id="_5">
-                    <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_5.jpg" id="_6">
+                    <img src="{% static 'oncl_app/audio_images/thumbnail.webp' %}" alt="thumbnail" class="active" id="_1">
+                    <img src="{% static 'oncl_app/audio_images/thumbnail_2.webp' %}" alt="thumbnail_2" class="active" id="_2">
+                    <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_2.jpg" alt="thumbnail_3" id="_3">
+                    <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_3.jpg" alt="thumbnail_4" id="_4">
+                    <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_4.jpg" alt="thumbnail_5" id="_5">
+                    <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_5.jpg" alt="thumbnail_6" id="_6">
                     <div id="buffer-box"><i class="fas fa-spinner"></i></div>
                 </div>
                 <div id="player-controls">
@@ -431,7 +437,7 @@ body
                     <div class="control">
                         <div class="button" id="home" onclick="home_page()">
                             <div style="margin-top: -2px; margin-left: -2px;">
-                                <object data="{% static 'oncl_app/dashboard_black_24dp.svg' %}" width="30" height="30">  </object>
+                                <object data="{% static 'oncl_app/dashboard_black_24dp.svg' %}" width="30" height="30" aria-label="dashboard icon svg file"> dashboard icon svg file </object>
                             </div>
                         </div>
                     </div>
@@ -440,13 +446,14 @@ body
         </div>
     </div>
 
-<a href="https://www.youtube.com/c/LofiGirl/featured" target="_blank" id="info-audio">
+<a rel="noopener" href="https://www.youtube.com/c/LofiGirl/featured" target="_blank" id="info-audio">
     <span style="color: #212121"> 
         <i class="fas fa-info-circle"></i>
     </span>
     Tracks used in this music/audio player application are free to use. I downloaded them from Lofi Girl, Soundcloud and NCS websites. 
     I am not the owner of these tracks.
 </a>
+
 </body>
 
 <script>
