@@ -23,6 +23,8 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(template_name="oncl_app/password_reset_complete.html"),
         name="password_reset_complete"),
 
+    path('audio/', views.audio_page, name = 'audio'),
+
     path('dashboard/', views.dashboard_page, name = 'dashboard'),
 
     re_path(r'^.*\.*', views.pages, name='pages'),
