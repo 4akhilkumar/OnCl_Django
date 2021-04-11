@@ -15,6 +15,10 @@ def home_page(request):
     return render(request,'oncl_app/home.html')
 
 @login_required(login_url='login')
+def audio_page(request):
+    return render(request,'oncl_app/study_session_audio.html')
+
+@login_required(login_url='login')
 def dashboard_page(request):
 	username = request.user.get_username()
 	return render(request, 'oncl_app/dashboard.html',{'username':username})
