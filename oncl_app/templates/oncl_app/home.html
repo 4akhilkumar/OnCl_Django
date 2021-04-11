@@ -28,8 +28,9 @@
     <!-- Styles for Content -->
     <link href="{% static 'oncl_app/assets/css/landing-page.css' %}" rel="stylesheet"/>
     <!-- Cache Controller -->
-    <meta http-equiv="Cache-control" content="public">
+    <meta http-equiv="Cache-Control: max-age=31536000" content="public">
 
+    <link rel="apple-touch-icon" href="{% static 'oncl_app/images/whin.webp' %}" type="image/icon type">
     <link rel="icon" href="{% static 'oncl_app/images/whin.webp' %}" type="image/icon type">
     <title>OnCl - Edu. Cloud</title>
 
@@ -378,7 +379,7 @@ footer .end {
         </span>
     </a>
     <div onclick="login_page()" class="login_button" style="cursor: pointer;color: #ffffff; background-color: #424242; box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%); padding: 10px; border-radius: 5px;">
-      <a style="text-decoration: none;"><i class="fas fa-sign-in-alt"></i> Login</a>
+      <a href="{% url 'login' %}" style="text-decoration: none; color: #FFFFFF;"><i class="fas fa-sign-in-alt"></i> Login</a>
     </div>
   </nav>
 
