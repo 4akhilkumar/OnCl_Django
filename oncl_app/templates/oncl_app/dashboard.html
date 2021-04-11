@@ -28,7 +28,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Styles for Content -->
     <link href="{% static 'oncl_app/assets/css/landing-page.css' %}" rel="stylesheet"/>
+    <!-- Cache Controller -->
+    <meta http-equiv="Cache-Control: max-age=31536000" content="public">
 
+    <link rel="apple-touch-icon" href="{% static 'oncl_app/images/whin.webp' %}" type="image/icon type">
     <link rel="icon" href="{% static 'oncl_app/images/whin.webp' %}" type="image/icon type">
     <title>Dashboard | OnCl - Edu. Cloud</title>
 
@@ -331,7 +334,7 @@ h1 {
 			  <div class="User-avtar">
 				  <img alt="avatar" src="{% static 'oncl_app/images/avatar.webp' %}" style="width:40px; height:40px; border-radius: 50%;">
 				  {% if username %}
-				  <a title="{{username}}"><span class="_username"> <img src="{% static 'oncl_app/images/waving_hand.gif' %}" alt="waving hand" width="40px" height="40px"> Hello, {{username}} !</span></a>
+				  <a title="{{username}}" href="#" style="color: #000;"><span class="_username"> <img src="{% static 'oncl_app/images/waving_hand.gif' %}" alt="waving hand" width="40px" height="40px"> Hello, {{username}} !</span></a>
 				  {% endif %}
 			  </div>
 		      <ul class="User-Dropdown" style="font-weight: 700; box-shadow: 0 20px 40px 5px rgba(0, 0, 0, 0.25);">
