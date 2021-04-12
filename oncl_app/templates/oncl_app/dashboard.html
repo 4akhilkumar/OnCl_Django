@@ -349,9 +349,9 @@ h1 {
     <nav class="navbar sticky-top navbar-light bg-light" style="padding: 18px;">
         <a href="/" class="navbar-brand">
             <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" alt="OnCl Logo">
-            <span style="font-weight: 500; font-family: 'Fredoka One', cursive; color: #3c4043;" id="headername">
-              <span style="color: tomato;">O</span><span style="color: #5f95eb;">n</span><span style="color: #76e989;">C</span><span style="color: #fcc834">l</span> - Edu. Cloud
-            </span>
+			<span style="font-weight: 500; font-family: 'Fredoka One', cursive; color: #3c4043;" id="headername">
+				<span class="hidden_text" style="color: tomato;">O</span><span class="hidden_text" style="color: #5f95eb;">n</span><span class="hidden_text" style="color: #76e989;">C</span><span class="hidden_text" style="color: #fcc834">l</span> <span class="hidden_text">- Edu. Cloud</span>
+			</span>
         </a>
         <div style="justify-content: flex-end;" class="row">
 	        <div class="User-area">
@@ -362,6 +362,7 @@ h1 {
 				  {% endif %}
 			  </div>
 		      <ul class="User-Dropdown" style="font-weight: 700; box-shadow: 0 20px 40px 5px rgba(0, 0, 0, 0.25);">
+				 <li> <a href="#" style="padding: 0px;">Signed in as {{username}} </a></li>
                  <li><span><i class="fa fa-user-secret"></i> </span> <a href="{% url 'dashboard' %}">Dashboard</a></li>
 		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="#">My Profile</a></li>
 				 <li><span><i class="fas fa-music"></i> </span> <a href="{% url 'audio' %}">FAR Space</a></li>
