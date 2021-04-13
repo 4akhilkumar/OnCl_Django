@@ -1,0 +1,95 @@
+<style>
+   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+
+  .starter-template {
+      padding: 3rem 1.5rem 0.5rem 1.5rem;
+      text-align: center;
+  }
+  .display-1{
+    font-size:calc(1.625rem + 4.5vw);
+    font-weight:300;
+    line-height:1.2;
+    color: #039be5;
+    font-family: 'Montserrat', sans-serif;
+  }
+        
+  @media (min-width:1200px){
+    .display-1{
+        font-size: 3rem;
+    }
+  }
+
+  .text_bold {
+      font-weight: 500;
+      font-family: 'Fredoka One', cursive;
+  }
+</style>
+<body onload="startTime()">
+    <div style="text-align: center;">
+        <div id="alertMessage">
+            <label id="lblGreetings"></label>
+        </div>    
+        <div id="alertMessage3">
+            <div id="txt"></div>
+        </div>
+    </div>
+</body>
+
+<script>
+      $(function(){
+    //   $('#alertMessage').hide().delay(500).fadeIn(1100);
+      $('#alertMessage2').hide().delay(1000).fadeIn(1100);
+      $('#alertMessage3').hide().delay(1500).fadeIn(1100);
+      });
+
+    function startTime() {
+    var d = new Date();
+
+    var date_ = d.getDate();
+    var year_ = d.getFullYear();
+    var weekday = new Array(7);
+    weekday[0] = "Sunday";
+    weekday[1] = "Monday";
+    weekday[2] = "Tuesday";
+    weekday[3] = "Wednesday";
+    weekday[4] = "Thursday";
+    weekday[5] = "Friday";
+    weekday[6] = "Saturday";
+
+    var n = weekday[d.getDay()];
+
+    var h = d.getHours();
+    var m = d.getMinutes();
+    var s = d.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('txt').innerHTML =
+    '<h5>' + h + ":" + m + ":" + s + ", " + date_ + " " + n + " " + year_ + '</h5>';
+    var t = setTimeout(startTime, 500);
+    }
+    function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+    }
+
+    var d = new Date();
+    var hrs = d.getHours();
+    var greet;
+
+    if (hrs < 12)
+        greet = 'Good Morning';
+    else if (hrs >= 12 && hrs <= 17)
+        greet = 'Good Afternoon';
+    else if (hrs >= 17 && hrs <= 24)
+        greet = 'Good Evening';
+
+    document.getElementById('lblGreetings').innerHTML =
+        '<main role="main" class="container">'+
+        '<div class="starter-template">'+
+        '<h1 class="display-1"> ' + greet + '!</h1>'+
+        '<div id="alertMessage2">'+
+        '<h5><b>Welcome to <span class="text_bold" style="color: tomato;">O</span><span class="text_bold" style="color: #5f95eb;">n</span><span class="text_bold" style="color: #76e989;">C</span><span class="text_bold" style="color: #fcc834">l</span> <span class="text_bold">- Edu. Cloud</span></b> </h5>'+
+        '</div>'+
+        '</div>'+
+        '</main>';
+</script>
