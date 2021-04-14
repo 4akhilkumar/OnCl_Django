@@ -1,5 +1,6 @@
 from django.urls import path, re_path
 from django.contrib.auth import views as auth_views
+from .views import TaskList, TaskDetail, TaskCreate, TaskUpdate, DeleteView, TaskReorder
 from . import views
 
 urlpatterns = [
@@ -24,6 +25,12 @@ urlpatterns = [
         name="password_reset_complete"),
 
     path('audio/', views.audio_page, name = 'audio'),
+    path('task/', TaskList.as_view(), name='tasks'),
+    path('task/<int:pk>/', TaskDetail.as_view(), name='task'),
+    path('task-create/', TaskCreate.as_view(), name='task-create'),
+    path('task-update/<int:pk>/', TaskUpdate.as_view(), name='task-update'),
+    path('task-delete/<int:pk>/', DeleteView.as_view(), name='task-delete'),
+    path('task-reorder/', TaskReorder.as_view(), name='task-reorder'),
 
     path('dashboard/', views.dashboard_page, name = 'dashboard'),
 
