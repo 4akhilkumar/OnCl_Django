@@ -342,6 +342,13 @@ h1 {
 .card_icon {
     text-align: center;
 }
+
+.dropdown-divider {
+    display: block;
+    height: 0;
+    margin: 0;
+    border-top: 1px solid #000000;
+}
   </style>
 </head>
 <body>
@@ -365,15 +372,15 @@ h1 {
 				 <li> <a href="#" style="padding: 0px;">Signed in as {{username}} </a></li>
                  <li><span><i class="fa fa-user-secret"></i> </span> <a href="{% url 'dashboard' %}">Dashboard</a></li>
 		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="#">My Profile</a></li>
-				 <hr style="padding: 0px; margin: 0px; background-color: black;">
+				 <div role="none" class="dropdown-divider"></div>
 				 <li><span><i class="fas fa-photo-video"></i> </span> <a href="#">PCS Cloud</a></li>
 				 <li><span><i class="far fa-edit"></i> </span> <a href="#">Exams</a></li>
 				 <li><span><i class="far fa-calendar-alt"></i> </span> <a href="#">Shedule</a></li>
 				 <li><span><i class="fas fa-book"></i> </span> <a href="#">E - Library</a></li>
-				 <hr style="padding: 0px; margin: 0px; background-color: black;">
+				 <div role="none" class="dropdown-divider"></div>
 				 <li><span><i class="far fa-list-alt"></i> </span> <a href="{% url 'tasks' %}">To Do List</a></li>
 				 <li><span><i class="fas fa-music"></i> </span> <a href="{% url 'audio' %}">FAR Space</a></li>
-				 <hr style="padding: 0px; margin: 0px; background-color: black;">
+				 <div role="none" class="dropdown-divider"></div>
 		         <li><span><i class="fas fa-sign-out-alt"></i></span> <a href="{% url 'logout' %}">Logout</a></li>
 		      </ul>
 			</div>
