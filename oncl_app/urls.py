@@ -23,6 +23,9 @@ urlpatterns = [
     path('reset_password_complete/',
         auth_views.PasswordResetCompleteView.as_view(template_name="oncl_app/password_reset_complete.html"),
         name="password_reset_complete"),
+    
+    path('feedback/', views.contactus_page, name = 'feedback'),
+    path('success/', views.successView, name='success'),
 
     path('audio/', views.audio_page, name = 'audio'),
     path('task/', TaskList.as_view(), name='tasks'),
