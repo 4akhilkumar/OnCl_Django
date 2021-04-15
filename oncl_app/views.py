@@ -1,37 +1,55 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.template import loader
 from django.http import HttpResponse
 from django import template
 
-from django.shortcuts import render, redirect
+from django.core.mail import BadHeaderError, send_mail
+
+# Imports for Reordering Feature
+from django.views import View
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
 
-from django.contrib.auth.views import LoginView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
-
-# Imports for Reordering Feature
-from django.views import View
-from django.shortcuts import redirect
 from django.db import transaction
 
-from .models import Task
-from .forms import PositionForm
-
 # Create your views here.
+from .models import Task
 from .models import *
 from .forms import CreateUserForm
+from .forms import ContactForm
+from .forms import PositionForm
 
 def home_page(request):
     return render(request,'oncl_app/home.html')
+
+def feedback_page(request):
+    if request.method == 'GET':
+        form = ContactForm()
+    else:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            subject = form.cleaned_data['subject']
+            from_email = form.cleaned_data['from_email']
+            message = form.cleaned_data['message']
+            try:
+                send_mail(subject, "From " + name + ". EMail: " + from_email + ". " + message, from_email, ['4projtest@gmail.com'])
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return redirect('success')
+    return render(request, "oncl_app/feedback.html", {'form': form})
+    print(from_email)
+
+def successView(request):
+        return render(request,'oncl_app/feedback_sent.html')
 
 @login_required(login_url='login')
 def audio_page(request):
