@@ -12,11 +12,11 @@
     <!-- Stylesheet for Google Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <!-- FontAwesome Icons -->
-    <script src="https://kit.fontawesome.com/982d9630c6.js" crossorigin="anonymous"></script>
+    <script src="{% static 'oncl_app/font_awesome.js' %}"></script>
     <!-- Google Font Root Link -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <!-- Jquery Link -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'oncl_app/jquery_3.6.0.min.js' %}"></script>
     <!-- Cache Controller -->
     <meta http-equiv="Cache-Control: max-age=31536000" content="public">
 
@@ -56,7 +56,7 @@
         right: -30px;
         bottom: -30px;
         left: -30px;
-        background-image: url("{% static 'oncl_app/audio_images/thumbnail.webp' %}");
+        background-image: url("{% static 'oncl_app/FAR_Space/audio_images/thumbnail.webp' %}");
         background-repeat: no-repeat;
         background-size: cover;
         background-position: 50%;
@@ -410,8 +410,8 @@
             </div>
             <div id="player-content">
                 <div id="album-art">
-                    <img src="{% static 'oncl_app/audio_images/thumbnail.webp' %}" alt="thumbnail" class="active" id="_1">
-                    <img src="{% static 'oncl_app/audio_images/thumbnail_2.webp' %}" alt="thumbnail_2" class="active" id="_2">
+                    <img src="{% static 'oncl_app/FAR_Space/audio_images/thumbnail.webp' %}" alt="thumbnail" class="active" id="_1">
+                    <img src="{% static 'oncl_app/FAR_Space/audio_images/thumbnail_2.webp' %}" alt="thumbnail_2" class="active" id="_2">
                     <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_2.jpg" alt="thumbnail_3" id="_3">
                     <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_3.jpg" alt="thumbnail_4" id="_4">
                     <img src="https://raw.githubusercontent.com/himalayasingh/music-player-1/master/img/_4.jpg" alt="thumbnail_5" id="_5">
@@ -437,7 +437,7 @@
                     <div class="control">
                         <div class="button" onclick="dashboard_page()">
                             <div style="margin-top: -2px; margin-left: -2px;">
-                                <object style="pointer-events: none;" data="{% static 'oncl_app/dashboard_black_24dp.svg' %}" width="30" height="30" aria-label="dashboard icon svg file"> dashboard icon svg file </object>
+                                <object style="pointer-events: none;" data="{% static 'oncl_app/FAR_Space/dashboard_black_24dp.svg' %}" width="30" height="30" aria-label="dashboard icon svg file"> dashboard icon svg file </object>
                             </div>
                         </div>
                     </div>
@@ -459,7 +459,7 @@
 <script>
     $(function()
 {
-    var playerTrack = $("#player-track"), bgArtwork = $('#bg-artwork'), bgArtworkUrl, albumName = $('#album-name'), trackName = $('#track-name'), albumArt = $('#album-art'), sArea = $('#s-area'), seekBar = $('#seek-bar'), trackTime = $('#track-time'), insTime = $('#ins-time'), sHover = $('#s-hover'), playPauseButton = $("#play-pause-button"),  i = playPauseButton.find('i'), tProgress = $('#current-time'), tTime = $('#track-length'), seekT, seekLoc, seekBarPos, cM, ctMinutes, ctSeconds, curMinutes, curSeconds, durMinutes, durSeconds, playProgress, bTime, nTime = 0, buffInterval = null, tFlag = false, albums = ['Cotton Cloud', 'Snowman','Me & You','Electro Boy','Home','Proxy (Original Mix)'], trackNames = ['Fatb - Cotton Cloud', 'WYS - Snowman','Alex Skrindo - Me & You','Kaaze - Electro Boy','Jordan Schor - Home','Martin Garrix - Proxy'], albumArtworks = ['_1','_2','_3','_4','_5','_6'], trackUrl = ["{% static 'oncl_app/audio/WYS - Snowman.mp3' %}", "{% static 'oncl_app/audio/Fatb - Cotton Cloud.mp3' %}", 'https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/1.mp3','https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/3.mp3','https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/4.mp3','https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/5.mp3'], playPreviousTrackButton = $('#play-previous'), playNextTrackButton = $('#play-next'), currIndex = -1;
+    var playerTrack = $("#player-track"), bgArtwork = $('#bg-artwork'), bgArtworkUrl, albumName = $('#album-name'), trackName = $('#track-name'), albumArt = $('#album-art'), sArea = $('#s-area'), seekBar = $('#seek-bar'), trackTime = $('#track-time'), insTime = $('#ins-time'), sHover = $('#s-hover'), playPauseButton = $("#play-pause-button"),  i = playPauseButton.find('i'), tProgress = $('#current-time'), tTime = $('#track-length'), seekT, seekLoc, seekBarPos, cM, ctMinutes, ctSeconds, curMinutes, curSeconds, durMinutes, durSeconds, playProgress, bTime, nTime = 0, buffInterval = null, tFlag = false, albums = ['Cotton Cloud', 'Snowman','Me & You','Electro Boy','Home','Proxy (Original Mix)'], trackNames = ['Fatb - Cotton Cloud', 'WYS - Snowman','Alex Skrindo - Me & You','Kaaze - Electro Boy','Jordan Schor - Home','Martin Garrix - Proxy'], albumArtworks = ['_1','_2','_3','_4','_5','_6'], trackUrl = ["{% static 'oncl_app/FAR_Space/audio/WYS - Snowman.mp3' %}", "{% static 'oncl_app/audio/FAR_Space/Fatb - Cotton Cloud.mp3' %}", 'https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/1.mp3','https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/3.mp3','https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/4.mp3','https://raw.githubusercontent.com/himalayasingh/music-player-1/master/music/5.mp3'], playPreviousTrackButton = $('#play-previous'), playNextTrackButton = $('#play-next'), currIndex = -1;
 
     function playPause()
     {
