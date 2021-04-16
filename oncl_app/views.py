@@ -45,11 +45,11 @@ def feedback_page(request):
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
             return redirect('success')
-    return render(request, "oncl_app/feedback.html", {'form': form})
+    return render(request, "oncl_app/feedback/feedback.html", {'form': form})
     print(from_email)
 
 def successView(request):
-        return render(request,'oncl_app/feedback_sent.html')
+        return render(request,'oncl_app/feedback/feedback_sent.html')
 
 @login_required(login_url='login')
 def audio_page(request):
@@ -75,7 +75,7 @@ def register_page(request):
 				return redirect('login')
 
 		context = {'form':form}
-		return render(request, 'oncl_app/register.html', context)
+		return render(request, 'oncl_app/login_register/register.html', context)
 
 def login_page(request):
 	if request.user.is_authenticated:
@@ -94,7 +94,7 @@ def login_page(request):
 				messages.warning(request, 'Username or Password is Incorrect!')
 
 		context = {}
-		return render(request, 'oncl_app/login.html', context)
+		return render(request, 'oncl_app/login_register/login.html', context)
 
 def logoutUser(request):
 	logout(request)
@@ -117,11 +117,6 @@ class TaskList(LoginRequiredMixin, ListView):
         context['search_input'] = search_input
 
         return context
-
-class TaskDetail(LoginRequiredMixin, DetailView):
-    model = Task
-    context_object_name = 'task'
-    template_name = 'oncl_app/task.html'
 
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
@@ -164,9 +159,9 @@ def pages(request):
         return HttpResponse(html_template.render(context, request))
         
     except template.TemplateDoesNotExist:
-        html_template = loader.get_template( 'oncl_app/page-404.html' )
+        html_template = loader.get_template( 'oncl_app/page_not_found/page-404.html' )
         return HttpResponse(html_template.render(context, request))
 
     except:
-        html_template = loader.get_template( 'oncl_app/page-500.html' )
+        html_template = loader.get_template( 'oncl_app/page_not_found/page-500.html' )
         return HttpResponse(html_template.render(context, request))
