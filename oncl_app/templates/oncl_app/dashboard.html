@@ -13,7 +13,7 @@
     <!-- Stylesheet for Google Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <!-- FontAwesome Icons -->
-    <script src="https://kit.fontawesome.com/982d9630c6.js" crossorigin="anonymous"></script>
+    <script src="{% static 'oncl_app/font_awesome.js' %}"></script>
 
     <!-- Google Font Root Link -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -25,7 +25,7 @@
     <!-- Bootstrap Link -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- Jquery Link -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'oncl_app/jquery_3.6.0.min.js' %}"></script>
     <!-- Styles for Content -->
     <link href="{% static 'oncl_app/assets/css/landing-page.css' %}" rel="stylesheet"/>
     <!-- Cache Controller -->
@@ -203,7 +203,7 @@
 }
 	.User-Dropdown > li > a {
 		font-size: 13px;
-		padding: 15px 25px 16px 10px;
+		padding: 15px 5px 16px 10px;
 		text-decoration: none;
 		color: #1787e0;
 		transition: all 0.2s ease-out;
@@ -369,8 +369,7 @@ h1 {
 				  {% endif %}
 			  </div>
 		      <ul class="User-Dropdown" style="font-weight: 700; box-shadow: 0 20px 40px 5px rgba(0, 0, 0, 0.25);">
-				 <li> <a href="#" style="padding: 0px;">Signed in as {{username}} </a></li>
-                 <li><span><i class="fa fa-user-secret"></i> </span> <a href="{% url 'dashboard' %}">Dashboard</a></li>
+				 <li> <a href="{% url 'dashboard' %}" style="padding: 0px;">Signed in as {{username}} </a></li>
 		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="#">My Profile</a></li>
 				 <div role="none" class="dropdown-divider"></div>
 				 <li><span><i class="fas fa-photo-video"></i> </span> <a href="#">PCS Cloud</a></li>
