@@ -3,25 +3,22 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <div class="header-bar">
     <div>
-        <h1>Hello {{request.user|title}}</h1>
-        <h3 style="margin:0">You have <i>{{count}}</i> incomplete task{{ count|pluralize:"s" }}</h3>
+        <h1 style="font-family: 'Open Sans', sans-serif; font-weight: bolder;">Hello, {{request.user}} !</h1>
+        <h3 style="margin:0; font-family: 'Yantramanav', sans-serif;">You have {{count}} incomplete task{{ count|pluralize:"s" }}.</h3>
     </div>
-
-    {% if request.user.is_authenticated %}
-    <a href="{% url 'logout' %}">Logout</a> {% else %}
-    <a href="{% url 'login' %}">Login</a> {% endif %}
 </div>
-
 
 <div id="search-add-wrapper">
     <form method="GET" style="display: flex;">
-        <input type='text' name='search-area' value="{{search_input}}">
-        <input class="button" type="submit" value='Search'>
+        <input type='text' aria-label="Search" name='search-area' value="{{search_input}}" style="border-radius: 50px 0px 0px 50px; padding: 8px 8px 8px 15px;">
+        <div style="margin-left: -0.1rem;">
+            <button type="submit" class="button" aria-label="Search Button" style="border-radius: 0px 50px 50px 0px;"><i class="fas fa-search"></i></button>
+        </div>
     </form>
-    <a id="add-link" href="{% url 'task-create' %}">&#x2b;</a>
-
+    <div>
+        <a id="add-link" aria-label="To Create New Task" href="{% url 'task-create' %}"><i class="fas fa-plus-circle"></i></a>
+    </div>
 </div>
-
 
 <!-- Hidden form. Form submits new item positions -->
 <form style="display: none;" id="reorderForm" method="post" action="{% url 'task-reorder' %}">
@@ -29,25 +26,26 @@
     <input type="hidden" id="positionInput" name="position">
 </form>
 
-
-<div id="tasklist" class="task-items-wrapper">
+<div id="tasklist" class="task-items-wrapper" style="padding: 10px 0;">
     {% for task in tasks %}
     <div class="task-wrapper" data-position="{{task.pk}}">
         <div class="task-title">
             {% if task.complete %}
             <div class="task-complete-icon"></div>
-            <i><s><a href="{% url 'task-update' task.id %}">{{task}}</a></s></i> {% else %}
+            <s><a href="{% url 'task-update' task.id %}">{{task}}</a></s> {% else %}
             <div class="task-incomplete-icon"></div>
-            <a href="{% url 'task-update' task.id %}">{{task}}</a> {% endif %}
+            <a href="{% url 'task-update' task.id %}" style="font-family: 'Open Sans', sans-serif; font-weight: bolder;">{{task}}</a> {% endif %}
         </div>
         <div class="task-controls">
-            <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
-            <span class="handle">&nbsp;&#10247;</span>
+            <a class="delete-link" href="{% url 'task-delete' task.id %}"><i class="fas fa-trash-alt"></i></a>
+            <span class="handle">&nbsp;<i class="fas fa-grip-vertical"></i></span>
         </div>
     </div>
-
     {% empty %}
-    <h3>No items in list</h3>
+    <div style="text-align: center; font-family: 'Yantramanav', sans-serif; font-weight: bolder; font-size: 20px;">
+        <p>No New Tasks are Created!</p>
+        <p> Create a <a style="text-decoration: none;" href="{% url 'task-create' %}" style="color: #4285f4; font-family: 'Yantramanav', sans-serif;">New Task </a>? </p>
+    </div>
     {% endfor %}
 </div>
 

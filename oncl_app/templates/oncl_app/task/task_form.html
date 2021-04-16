@@ -2,15 +2,18 @@
 {% block content %}
 
 <div class="header-bar">
-    <a href="{% url 'tasks' %}">&#8592; Back</a>
+    <a style="text-decoration: none;" href="{% url 'tasks' %}"><i class="fas fa-arrow-left"></i>&nbsp; <b>Back</b></a>
 </div>
 
 
 <div class="card-body">
     <form method="POST" action="">
         {% csrf_token %}
-        {{form.as_p}}
-        <input class="button" type="submit" value="Submit">
+        <!-- {{form.as_p}} -->
+        <table>
+            {{ form }}
+        </table>
+        <button class="submit_button" type="submit"><i class="fas fa-check-circle"></i>&nbsp;Submit</button>
     </form>
 </div>
 
