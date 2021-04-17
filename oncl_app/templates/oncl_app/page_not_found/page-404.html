@@ -88,9 +88,15 @@
           <h1 class="display-1">¯\_(ツ)_/¯</h1>
           <h1>Oops! Error 404</h1>
           <p class="lead"><b>Page not found.</b></p>
+          {% if user.is_authenticated %}
           <div id="alertMessage">
-              <p class="lead" style="font-weight: 500;"><span>Click Here, To <a href="{% url 'home' %}" style="text-decoration: none;">Return to the Home</a></span></p>
+            <p class="lead" style="font-weight: 500;"><span>Click Here, To <a href="{% url 'dashboard' %}" style="text-decoration: none;">Return to the Dashboard</a></span></p>
           </div>
+          {% else %}
+          <div id="alertMessage">
+            <p class="lead" style="font-weight: 500;"><span>Click Here, To <a href="{% url 'home' %}" style="text-decoration: none;">Return to the Home</a></span></p>
+          </div>
+          {% endif %}
       </div>
   </main>
 </body>
