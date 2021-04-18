@@ -41,25 +41,21 @@ def feedback_page(request):
             subject = form.cleaned_data['subject']
             from_email = form.cleaned_data['from_email']
             message = form.cleaned_data['message']
+            context = {
+                'email':from_email, 'subject': subject, 'name':name, 'message':message,
+            }
+            template = render_to_string('oncl_app/feedback/admin_feedback_sent.html', context)
+            body = render_to_string('oncl_app/feedback/user_mail.html', context)
             try:
-                send_mail(subject, "From " + name + ". EMail: " + from_email + ". " + message, from_email, ['4projtest@gmail.com'])
+                send_mail(subject, template, from_email, [settings.EMAIL_HOST_USER], html_message=template)
+                send_mail('Thank you, For your feedback!', body, settings.EMAIL_HOST_USER, [from_email], html_message=body)
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
             return redirect('success')
     return render(request, "oncl_app/feedback/feedback.html", {'form': form})
-    print(from_email)
 
 def successView(request):
         return render(request,'oncl_app/feedback/feedback_sent.html')
-
-@login_required(login_url='login')
-def audio_page(request):
-    return render(request,'oncl_app/study_session_audio.html')
-
-@login_required(login_url='login')
-def dashboard_page(request):
-	username = request.user.get_username()
-	return render(request, 'oncl_app/dashboard.html',{'username':username})
 
 def register_page(request):
 	if request.user.is_authenticated:
@@ -70,11 +66,16 @@ def register_page(request):
 			form = CreateUserForm(request.POST)
 			if form.is_valid():
 				form.save()
-				user = form.cleaned_data.get('username')
+				user = form.cleaned_data['username']
+				email = form.cleaned_data['email']
+				first_name = form.cleaned_data['first_name']
+				last_name = form.cleaned_data['last_name']
+				context = {'username':user, 'email':email, 'first_name':first_name, 'last_name':last_name}
+				template = render_to_string('oncl_app/login_register/register_mail.html', context)
+				send_mail('OnCl Account Created Successfully', template, settings.EMAIL_HOST_USER, [email], html_message=template)				
+				
 				messages.success(request, 'Hey ' + user + '! Your Account is Created Succesfully!')
-
 				return redirect('login')
-
 		context = {'form':form}
 		return render(request, 'oncl_app/login_register/register.html', context)
 
@@ -90,6 +91,8 @@ def login_page(request):
 
 			if user is not None:
 				login(request, user)
+				template = render_to_string('oncl_app/login_register/login_mail.html', {'email':request.user.email})
+				send_mail('OnCl Account Login Alert', template, settings.EMAIL_HOST_USER, [request.user.email], html_message=template)
 				return redirect('dashboard')
 			else:
 				messages.warning(request, 'Username or Password is Incorrect!')
@@ -100,6 +103,11 @@ def login_page(request):
 def logoutUser(request):
 	logout(request)
 	return redirect('login')
+
+@login_required(login_url='login')
+def dashboard_page(request):
+	username = request.user.get_username()
+	return render(request, 'oncl_app/dashboard.html', {'username':username})
 
 class PCS_Cloud_List(ListView):
     model = PCS_Cloud
@@ -172,6 +180,10 @@ class TaskReorder(View):
                 self.request.user.set_task_order(positionList)
 
         return redirect(reverse_lazy('tasks'))
+
+@login_required(login_url='login')
+def audio_page(request):
+    return render(request,'oncl_app/study_session_audio.html')
 
 def pages(request):
     context = {}
