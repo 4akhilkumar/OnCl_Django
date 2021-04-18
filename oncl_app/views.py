@@ -9,7 +9,10 @@ from django.template import loader
 from django.http import HttpResponse
 from django import template
 
+from django.template.loader import render_to_string
+from django.conf import settings
 from django.core.mail import BadHeaderError, send_mail
+from django.core import mail
 
 # Imports for Reordering Feature
 from django.views import View
