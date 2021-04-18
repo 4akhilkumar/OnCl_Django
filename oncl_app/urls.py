@@ -1,6 +1,6 @@
 from django.urls import path, re_path
 from django.contrib.auth import views as auth_views
-from .views import TaskList, TaskCreate, TaskUpdate, DeleteView, TaskReorder
+from .views import TaskList, TaskCreate, TaskUpdate, DeleteView, TaskReorder, PCS_Cloud_List, PCS_Cloud_Detail, PCS_Cloud_Create, PCS_Cloud_Update, PCS_Cloud_Delete
 from . import views
 
 urlpatterns = [
@@ -20,11 +20,14 @@ urlpatterns = [
     path('reset_password_complete/',
         auth_views.PasswordResetCompleteView.as_view(template_name="oncl_app/password_reset/password_reset_complete.html"),
         name="password_reset_complete"),
-    
-    path('feedback/', views.feedback_page, name='feedback'),
-    path('success/', views.successView, name='success'),
 
-    path('audio/', views.audio_page, name = 'audio'), 
+    path('dashboard/', views.dashboard_page, name = 'dashboard'),
+    
+    path('pcs_cloud/', PCS_Cloud_List.as_view(template_name="oncl_app/PCS_Cloud/PCS_Cloud_List.html"), name='pcs_cloud'),
+    path('session/<int:pk>/', PCS_Cloud_Detail.as_view(template_name="oncl_app/PCS_Cloud/session.html"), name='session'),
+    path('pcs_cloud_create/', PCS_Cloud_Create.as_view(template_name="oncl_app/PCS_Cloud/PCS_Cloud_Form.html"), name='pcs_cloud_create'),
+    path('pcs_cloud_update/<int:pk>/', PCS_Cloud_Update.as_view(template_name="oncl_app/PCS_Cloud/PCS_Cloud_Form.html"), name='pcs_cloud_update'),
+    path('pcs_cloud_delete/<int:pk>/', PCS_Cloud_Delete.as_view(template_name="oncl_app/PCS_Cloud/PCS_Cloud_Delete.html"), name='pcs_cloud_delete'),
 
     path('tasks/', 
         TaskList.as_view(template_name="oncl_app/task/task_list.html"),
@@ -40,7 +43,10 @@ urlpatterns = [
         name='task-delete'),
     path('task-reorder/', TaskReorder.as_view(), name='task-reorder'),
 
-    path('dashboard/', views.dashboard_page, name = 'dashboard'),
+    path('audio/', views.audio_page, name = 'audio'), 
+
+    path('feedback/', views.feedback_page, name='feedback'),
+    path('success/', views.successView, name='success'),
 
     re_path(r'^.*\.*', views.pages, name='pages'),
 ]
