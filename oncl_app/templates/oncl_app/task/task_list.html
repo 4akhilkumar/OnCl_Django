@@ -10,8 +10,10 @@
 
 <div id="search-add-wrapper">
     <form method="GET" style="display: flex;">
-        <input type='text' aria-label="Search" name='search-area' value="{{search_input}}" style="border-radius: 50px 0px 0px 50px; padding: 8px 8px 8px 15px;">
-        <div style="margin-left: -0.1rem;">
+        <div>
+            <input type='text' aria-label="Search" name='search-area' value="{{search_input}}" style="border-radius: 50px 0px 0px 50px; padding: 8px 8px 8px 15px;">
+        </div>
+        <div style="margin-left: -1.4rem;">
             <button type="submit" class="button" aria-label="Search Button" style="border-radius: 0px 50px 50px 0px;"><i class="fas fa-search"></i></button>
         </div>
     </form>
@@ -42,9 +44,9 @@
         </div>
     </div>
     {% empty %}
-    <div style="text-align: center; font-family: 'Yantramanav', sans-serif; font-weight: bolder; font-size: 20px;">
+    <div style="text-align: center; font-family: 'Yantramanav', sans-serif; font-weight: bolder; font-size: 18px;">
         <p>No New Tasks are Created!</p>
-        <p> Create a <a style="text-decoration: none;" href="{% url 'task-create' %}" style="color: #4285f4; font-family: 'Yantramanav', sans-serif;">New Task </a>? </p>
+        <p> Create a <a style="text-decoration: none;" href="{% url 'task-create' %}" style="color: #4285f4; font-family: 'Yantramanav', sans-serif; font-size: 18px;">New Task </a>? </p>
     </div>
     {% endfor %}
 </div>
