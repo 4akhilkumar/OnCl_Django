@@ -27,6 +27,7 @@ from .models import Task, PCS_Cloud
 from .models import *
 from .forms import CreateUserForm, ContactForm, PositionForm
 
+# Create your views here.
 def home_page(request):
     return render(request,'oncl_app/home.html')
 
