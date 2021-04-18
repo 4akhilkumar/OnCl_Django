@@ -397,11 +397,22 @@ footer .end {
   to { width: 100% }
 }
 
+.navbar-brand {
+  margin-right: 0rem;
+}
+
 </style>
 </head>
 <body>
 
-  <nav class="navbar sticky-top navbar-light bg-light" style="padding: 18px;">
+  <nav class="navbar sticky-top navbar-light bg-light"
+  
+  {% if request.user.is_authenticated %}
+  style="padding: 15px;"
+  {% else %}
+  style="padding: 18px;"
+  {% endif %}
+  >
     <a href="/" class="navbar-brand">
         <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" alt="OnCl Logo">
         <span style="font-weight: 500; font-family: 'Fredoka One', cursive; color: #3c4043; font-size: 1.6rem;">
@@ -409,7 +420,12 @@ footer .end {
         </span>
     </a>
     <div onclick="login_page()" class="login_button" style="cursor: pointer;color: #ffffff; background-color: #424242; box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%); padding: 10px; border-radius: 5px;">
+
+      {% if request.user.is_authenticated %}
+      <a href="{% url 'logout' %}" style="text-decoration: none; color: #FFFFFF;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      {% else %}
       <a href="{% url 'login' %}" style="text-decoration: none; color: #FFFFFF;"><i class="fas fa-sign-in-alt"></i> Login</a>
+      {% endif %}
     </div>
   </nav>
 
