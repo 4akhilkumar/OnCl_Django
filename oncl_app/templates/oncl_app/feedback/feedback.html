@@ -135,9 +135,10 @@
             <div class="col-md-6">
               <form class="mb-5" method="post" id="contactForm" name="contactForm">
                 {% csrf_token %}
+                {% if request.user.is_authenticated %}
                 <div class="row">
                   <div class="col-md-12 form-group">
-                    <input type="text" class="form-control" name="name" id="id_name" maxlength="40" required placeholder="Your Name">
+                    <input type="text" class="form-control" name="name" value='{{request.user.first_name}} {{request.user.last_name}}' readonly required id="id_name" maxlength="40" placeholder="Your Name">
                     <div id="messagename">
                         <p>
                             <p id="lengthfn" class="invalidname"></p>
@@ -145,6 +146,31 @@
                     </div>
                   </div>
                 </div>
+                {% else %}
+                <div class="row">
+                  <div class="col-md-12 form-group">
+                    <input type="text" class="form-control" name="name" required id="id_name" maxlength="40" placeholder="Your Name">
+                    <div id="messagename">
+                        <p>
+                            <p id="lengthfn" class="invalidname"></p>
+                        </p>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+
+                {% if request.user.is_authenticated %}
+                <div class="row">
+                  <div class="col-md-12 form-group">
+                    <input type="email" class="form-control" name="from_email" value={{request.user.email}} readonly required id="id_from_email" placeholder="Email">
+                    <div id="messageemail">
+                        <p>
+                            <p id="email" class="invalidemail"></p>
+                        </p>
+                    </div>
+                  </div>
+                </div>
+                {% else %}
                 <div class="row">
                   <div class="col-md-12 form-group">
                     <input type="email" class="form-control" name="from_email" required id="id_from_email" placeholder="Email">
@@ -155,6 +181,7 @@
                     </div>
                   </div>
                 </div>
+                {% endif %}
                 <div class="row">
                   <div class="col-md-12 form-group">
                     <input type="text" class="form-control" name="subject" maxlength="40" required id="id_subject" placeholder="Subject">
