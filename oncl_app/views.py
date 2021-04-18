@@ -20,12 +20,9 @@ from django.urls import reverse_lazy
 
 from django.db import transaction
 
-# Create your views here.
-from .models import Task
+from .models import Task, PCS_Cloud
 from .models import *
-from .forms import CreateUserForm
-from .forms import ContactForm
-from .forms import PositionForm
+from .forms import CreateUserForm, ContactForm, PositionForm
 
 def home_page(request):
     return render(request,'oncl_app/home.html')
@@ -99,6 +96,30 @@ def login_page(request):
 def logoutUser(request):
 	logout(request)
 	return redirect('login')
+
+class PCS_Cloud_List(ListView):
+    model = PCS_Cloud
+    context_object_name = 'sessions'
+
+class PCS_Cloud_Detail(DetailView):
+    model = PCS_Cloud
+    context_object_name = 'session'
+    template_name = 'oncl_app/PCS_cloud/session.html'
+
+class PCS_Cloud_Create(CreateView):
+    model = PCS_Cloud
+    fields = '__all__'
+    success_url = reverse_lazy('pcs_cloud')
+
+class PCS_Cloud_Update(UpdateView):
+    model = PCS_Cloud
+    fields = '__all__'
+    success_url = reverse_lazy('pcs_cloud')
+
+class PCS_Cloud_Delete(DeleteView):
+    model = PCS_Cloud
+    context_object_name = 'session'
+    success_url = reverse_lazy('pcs_cloud')
 
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
