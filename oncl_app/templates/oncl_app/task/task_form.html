@@ -9,10 +9,12 @@
 <div class="card-body">
     <form method="POST" action="">
         {% csrf_token %}
-        <!-- {{form.as_p}} -->
-        <table>
-            {{ form }}
-        </table>
+        Title
+        <input type="text" name="title" value={{task.title}} maxlength="200" required id="id_title">
+        Description
+        <textarea name="description" cols="40" rows="10" id="id_description">{{task.description}}</textarea>
+        Status
+        {{form.complete}}
         <button class="submit_button" type="submit"><i class="fas fa-check-circle"></i>&nbsp;Submit</button>
     </form>
 </div>
