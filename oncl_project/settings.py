@@ -29,7 +29,7 @@ SECRET_KEY = 'g0*jpmt84jn$ea@8xazv1=w#$p+g=rwa!wd&osyeo2y0e8meh8'
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 # load production server from .env
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', config('SERVER', default='127.0.0.1')]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'oncl.herokuapp.com', config('SERVER', default='127.0.0.1')]
 
 
 # Application definition
