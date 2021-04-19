@@ -17,8 +17,7 @@
             <button type="submit" class="button" aria-label="Search Button" style="border-radius: 0px 50px 50px 0px;"><i class="fas fa-search"></i></button>
         </div>
     </form>
-    {% if count == 0 %}
-    {% else %}
+    {% if tasks|length > 0 %}
     <div>
         <a id="add-link" aria-label="To Create New Task" href="{% url 'task-create' %}"><i class="fas fa-plus-circle"></i></a>
     </div>
