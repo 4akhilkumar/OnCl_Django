@@ -28,6 +28,15 @@ from .models import *
 from .forms import CreateUserForm, ContactForm, PositionForm
 
 # Create your views here.
+def te_page(request):
+    return render(request, 'oncl_app/login_register/register_mail.html')
+
+def whin_page(request):
+    return render(request, 'oncl_app/static_files_folder/whin.html')
+
+def oncl_page(request):
+    return render(request, 'oncl_app/static_files_folder/oncl.html')
+
 def home_page(request):
     return render(request,'oncl_app/home.html')
 
@@ -72,7 +81,7 @@ def register_page(request):
 				last_name = form.cleaned_data['last_name']
 				context = {'username':user, 'email':email, 'first_name':first_name, 'last_name':last_name}
 				template = render_to_string('oncl_app/login_register/register_mail.html', context)
-				send_mail('OnCl Account Created Successfully', template, settings.EMAIL_HOST_USER, [email], html_message=template)				
+				send_mail(first_name + ', welcome to your new OnCl Account', template, settings.EMAIL_HOST_USER, [email], html_message=template)				
 				
 				messages.success(request, 'Hey ' + user + '! Your Account is Created Succesfully!')
 				return redirect('login')
