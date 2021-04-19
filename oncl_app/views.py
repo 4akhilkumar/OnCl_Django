@@ -35,7 +35,7 @@ def whin_page(request):
     return render(request, 'oncl_app/static_files_folder/whin.html')
 
 def oncl_page(request):
-    return render(request, 'oncl_app/static_files_folder/oncl.html')
+    return render(request, 'oncl_app/static_files_folder/OnCl.html')
 
 def home_page(request):
     return render(request,'oncl_app/home.html')
