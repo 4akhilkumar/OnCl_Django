@@ -4,6 +4,11 @@ from .views import TaskList, TaskCreate, TaskUpdate, DeleteView, TaskReorder, PC
 from . import views
 
 urlpatterns = [
+    path('te_page/', views.te_page, name = 'te_page'),
+
+    path('whin_page/', views.whin_page, name = 'whin_page'),
+    path('oncl_page/', views.oncl_page, name = 'oncl_page'),
+
     path('', views.home_page, name = 'home'),
     path('login/', views.login_page, name = 'login'),
     path('register/', views.register_page, name = 'register'),
