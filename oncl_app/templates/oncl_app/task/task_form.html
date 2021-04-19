@@ -101,6 +101,10 @@
     -ms-transform: scale(-1, 1);
     transform: scale(-1, 1);
 }
+
+input[type=checkbox] {
+	color: red;
+}
 </style>
 </head>
 <body>
@@ -115,8 +119,8 @@
 	</nav>
 	
 	<div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login100 p-l-40 p-r-40 p-t-55 p-b-55" style="border-color: #bdbdbd;">
+		<div class="container-login100" style="background-color: #e3f2fd;">
+			<div class="wrap-login100 p-l-40 p-r-40 p-t-55 p-b-55" style="border-color: #64b5f6;">
 				<form class="login100-form validate-form flex-sb flex-w" method="POST" action="">
 					<span class="login100-form-title p-b-32">
 						<img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;To Do List | OnCl
@@ -126,7 +130,7 @@
 						<i class="fas fa-signature"></i></i>&nbsp;Task Title
 					</span>
 					<div class="wrap-input100 validate-input m-b-20">
-						<input class="input100" name="title" value='{{task.title}}'  placeholder="Task Title" required id="id_title">
+						<input class="input100" name="title" value='{{task.title}}' maxlength="50"  placeholder="Task Title" required id="id_title">
 						<span class="focus-input100"></span>
 					</div>
 
@@ -134,20 +138,26 @@
 						<i class="fas fa-align-left"></i>&nbsp;Task Description
 					</span>
 					<div class="wrap-input100 validate-input m-b-20">
-						<textarea class="input100" name="description" style="padding: 15px 25px 0 25px;"  placeholder="Task Description" id="id_description" required>{{task.description}}</textarea>
+						<textarea class="input100" name="description" maxlength="200" style="padding: 15px 25px 0 25px; height: 150px;"  placeholder="Task Description" id="id_description" required>{{task.description}}</textarea>
 						<span class="focus-input100"></span>
 					</div>
 					
 					<div class="flex-sb-m w-full p-b-15">
 						<div class="contact100-form-checkbox">
+							<i class="fas fa-hourglass-start"></i>
 								<b>Completed</b> &nbsp;
-                                {{form.complete}}
+                                <input type="checkbox" name="complete" id="id_complete"
+								{% if task.complete == True %}
+								checked
+								{% else %}
+								{% endif %}
+								>
 						</div>
 					</div>
 
 					<div class="container-login100-form-btn" style="justify-content: space-between">
-						<button class="login100-form-btn" style="border-radius: 6px; background-color: #42a5f5;" type="submit" value="">
-							<i class="fas fa-check-circle"></i>&nbsp;Add Task
+						<button class="login100-form-btn" style="border-radius: 6px; background-color: #ef5350;" type="submit" value="">
+							<i class="fas fa-check-circle"></i>&nbsp;Save Task
 						</button>
                         &nbsp;&nbsp;
 						<a type="button" href="{% url 'tasks' %}" class="login101-form-btn" style="border-color: black; border-radius: 6px;">
