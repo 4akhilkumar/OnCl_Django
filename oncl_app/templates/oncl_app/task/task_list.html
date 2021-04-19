@@ -17,9 +17,12 @@
             <button type="submit" class="button" aria-label="Search Button" style="border-radius: 0px 50px 50px 0px;"><i class="fas fa-search"></i></button>
         </div>
     </form>
+    {% if count == 0 %}
+    {% else %}
     <div>
         <a id="add-link" aria-label="To Create New Task" href="{% url 'task-create' %}"><i class="fas fa-plus-circle"></i></a>
     </div>
+    {% endif %}
 </div>
 
 <!-- Hidden form. Form submits new item positions -->
@@ -45,8 +48,12 @@
     </div>
     {% empty %}
     <div style="text-align: center; font-family: 'Yantramanav', sans-serif; font-weight: bolder; font-size: 18px;">
-        <p>No New Tasks are Created!</p>
-        <p> Create a <a style="text-decoration: none;" href="{% url 'task-create' %}" style="color: #4285f4; font-family: 'Yantramanav', sans-serif; font-size: 18px;">New Task </a>? </p>
+        <p>No New Tasks are Created.</p>
+        <p> Create a 
+            <a style="text-decoration: none;" href="{% url 'task-create' %}">
+              <span style="color: #4285f4; font-family: 'Yantramanav', sans-serif; font-size: 18px;">New Task</span> 
+            </a>!
+        </p>
     </div>
     {% endfor %}
 </div>
