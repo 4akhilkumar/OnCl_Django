@@ -95,13 +95,16 @@
     var hrs = _date.getHours();
     var greet;
 
-    if (hrs < 12)
+    if (hr >= 0 && hr < 12) {
         greet = 'Good Morning';
-    else if (hrs >= 12 && hrs <= 17)
+    }
+    else if (hr >= 12 && hr <= 17) {
         greet = 'Good Afternoon';
-    else if (hrs >= 17 && hrs <= 24)
+    }
+    else {
         greet = 'Good Evening';
-
+    }
+    
     document.getElementById('lblGreetings').innerHTML =
         '<main role="main" class="container">'+
         '<div class="starter-template">'+
