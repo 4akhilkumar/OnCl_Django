@@ -50,6 +50,10 @@ urlpatterns = [
 
     path('audio/', views.audio_page, name = 'audio'), 
 
+    path('terms_of_service_page/', views.terms_of_service_page, name='terms_of_service_page'),
+    path('privacy_policy_page/', views.privacy_policy_page, name='privacy_policy_page'),
+    path('cookies_policy_page/', views.cookies_policy_page, name='cookies_policy_page'),
+    path('GDPR_privacy_policy_page/', views.GDPR_privacy_policy_page, name='GDPR_privacy_policy_page'),
     path('feedback/', views.feedback_page, name='feedback'),
     path('success/', views.successView, name='success'),
 
