@@ -40,6 +40,18 @@ def oncl_page(request):
 def home_page(request):
     return render(request,'oncl_app/home.html')
 
+def terms_of_service_page(request):
+    return render(request,'oncl_app/footer_content_pages/legal/Terms of Service.html')
+
+def privacy_policy_page(request):
+    return render(request,'oncl_app/footer_content_pages/legal/Privacy Policy.html')
+
+def cookies_policy_page(request):
+    return render(request,'oncl_app/footer_content_pages/legal/Cookies Policy.html')
+
+def GDPR_privacy_policy_page(request):
+    return render(request,'oncl_app/footer_content_pages/legal/GDPR Privacy Policy.html')
+
 def feedback_page(request):
     if request.method == 'GET':
         form = ContactForm()
