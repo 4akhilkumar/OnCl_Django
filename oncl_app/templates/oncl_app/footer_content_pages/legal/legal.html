@@ -17,6 +17,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <!-- Font Style for Navbar -->
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <!-- Login Button -->
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <!-- Bootstrap Link -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- Jquery Link -->
@@ -122,6 +124,16 @@
         .div_in_body {
             padding: 50px;
         }
+
+        @media screen and (max-width:375px) {
+            .div_in_body {
+               padding: 20px;
+            }
+        }
+
+        a {
+            font-weight: bolder;
+        }
     </style>
 </head>
 <body>
@@ -140,11 +152,10 @@
           </span>
       </a>
       <div onclick="login_page()" class="login_button" style="cursor: pointer;color: #ffffff; background-color: #424242; box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%); padding: 10px; border-radius: 5px;">
-  
         {% if request.user.is_authenticated %}
-        <a href="{% url 'logout' %}" style="text-decoration: none; color: #FFFFFF;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <a href="{% url 'logout' %}" style="text-decoration: none; color: #FFFFFF; font-family: 'Varela Round', sans-serif;"><i class="fas fa-sign-out-alt"></i> Logout</a>
         {% else %}
-        <a href="{% url 'login' %}" style="text-decoration: none; color: #FFFFFF;"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="{% url 'login' %}" style="text-decoration: none; color: #FFFFFF; font-family: 'Varela Round', sans-serif;"><i class="fas fa-sign-in-alt"></i> Login</a>
         {% endif %}
       </div>
     </nav>
