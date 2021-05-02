@@ -20,4 +20,7 @@
 ### To make me live you need to follow the below instructions,
 1. [Intall Stabled Python](https://www.python.org/downloads/windows/)
 2. My Requirements <code> py -m pip install -r requirements.txt </code>
-3. To view on browser http://127.0.0.1:8000/ [Local Host Address]
+3. For Packaging Up Your Model Changes Into Individual Migration Files <code> py manage.py makemigrations </code>
+4. For Applying Those To Your Database <code> py manage.py migrate </code>
+5. To Start My Server <code> py manage.py runserver </code>
+6. To View On Browser http://127.0.0.1:8000/ [Local Host Address]
