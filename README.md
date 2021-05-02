@@ -17,7 +17,7 @@
 | Coding Compiler | Coding Compiler | Coding Compiler |
 | Feedback | Feedback | Feedback |
 
-To make me live you need to follow below commands,
+### To make me live you need to follow the below instructions,
 1. [Intall Stabled Python](https://www.python.org/downloads/windows/)
 2. My Requirements <code> py -m pip install -r requirements.txt </code>
 3. To view on browser http://127.0.0.1:8000/ [Local Host Address]
