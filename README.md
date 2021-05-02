@@ -18,7 +18,7 @@
 | Feedback | Feedback | Feedback |
 
 ### To make me live you need to follow the below instructions,
-1. [Intall Stabled Python](https://www.python.org/downloads/windows/)
+1. [Install Stabled Python](https://www.python.org/downloads/windows/)
 2. My Requirements <code> py -m pip install -r requirements.txt </code>
 3. For Packaging Up Your Model Changes Into Individual Migration Files <code> py manage.py makemigrations </code>
 4. For Applying Those To Your Database <code> py manage.py migrate </code>
