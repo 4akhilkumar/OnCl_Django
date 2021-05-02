@@ -6,6 +6,8 @@
 | :---: |:---:| :---:|
 | CRUD Faculty | - | - |
 | CRUD Student | - | - |
+| CRUD E-Library | View E-Library | View E-Library |
+| CRUD Timetable | View Timetable | View Timetable |
 | CRUD Announcements | CRUD Announcements | View Announcements |
 | A/R Permissions | Request Permissions | Request Permissions |
 | View Exam | CRUD Exams | View/Submit Exams |
