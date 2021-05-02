@@ -128,7 +128,7 @@ def logoutUser(request):
 @login_required(login_url='login')
 def dashboard_page(request):
 	username = request.user.get_username()
-	return render(request, 'oncl_app/dashboard.html', {'username':username})
+	return render(request, 'oncl_app/dashboard_student.html', {'username':username})
 
 class PCS_Cloud_List(ListView):
     model = PCS_Cloud
