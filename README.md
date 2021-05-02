@@ -1,7 +1,7 @@
 # OnCl - Edu. Cloud | Django Web Framework
 <b>OnCl - Edu. Cloud</b> is an web application for Education Management System or EMS and which is developed using Django web framework.
 
-### Modules in OnCl - Edu. Cloud
+## Modules in OnCl - Edu. Cloud
 | Administrator | Faculty | Student |
 | :---: |:---:| :---:|
 | CRUD Faculty | - | - |
@@ -12,6 +12,8 @@
 | View Exam Marks | CRUD Exam Marks | View Exam Marks |
 | FAR Space | FAR Space | FAR Space |
 | To Do List | To Do List | To Do List |
+| Coding Compiler | Coding Compiler | Coding Compiler |
+| Feedback | Feedback | Feedback |
 
 To make me live you need to follow below commands,
 1. [Intall Stabled Python](https://www.python.org/downloads/windows/)
