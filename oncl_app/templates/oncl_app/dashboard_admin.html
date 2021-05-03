@@ -159,13 +159,13 @@
 		transform: rotate(180deg);
 }
 	.User-avtar span {
-		width: 165px;
+		width: 190px;
 		font-size: 16px;
 		position: absolute;
 		display: inline-block;
 		min-width: 90px;
 		top: 5px;
-		left: -175px;
+		left: -200px;
 		font-weight: bold;
 		white-space: nowrap;
 		overflow: hidden;
@@ -234,7 +234,7 @@
 	.User-Dropdown > li a:hover {
 		margin-left: 5px;
 }
-@media screen and (max-width: 510px){
+@media screen and (max-width: 550px){
 	._username {
 		visibility:hidden;
 	}
@@ -381,7 +381,10 @@ h1 {
 				  {% endif %}
 			  </div>
 		      <ul class="User-Dropdown" style="font-weight: 700; box-shadow: 0 20px 40px 5px rgba(0, 0, 0, 0.25);">
-				 <li> <a href="{% url 'admin_dashboard' %}" style="padding: 0px;">Signed in as {{username}} </a></li>
+				 <li style="line-height: 1.5; padding: 0.6em 0 0 0;" onclick="admin_dashboard()"> 
+					<div style="padding-top: 1px; padding: 0px;"> Signed in as </div>
+					<div>{{username}}</div>
+				 </li>
 		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="#">My Profile</a></li>
 				 <div role="none" class="dropdown-divider"></div>
 				 <li><span><i class="fas fa-user-graduate"></i></span> <a href="#">Student Mgmt.</a></li>
@@ -497,6 +500,9 @@ h1 {
   	      $('.User-avtar').removeClass('__opened');
   	  $('.User-Dropdown').removeClass("U-open");
   	});
+	  function admin_dashboard() {
+		  window.location.replace("{% url 'admin_dashboard' %}");
+	  }
   </script>
 
 </body>
