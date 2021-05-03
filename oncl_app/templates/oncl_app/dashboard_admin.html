@@ -33,7 +33,7 @@
 
     <link rel="apple-touch-icon" href="{% static 'oncl_app/images/whin.webp' %}" type="image/icon type">
     <link rel="icon" href="{% static 'oncl_app/images/whin.webp' %}" type="image/icon type">
-    <title>Dashboard | OnCl - Edu. Cloud</title>
+    <title>Admin Dashboard | OnCl - Edu. Cloud</title>
 	
 	<!-- Google Tag Manager -->
   	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -381,9 +381,11 @@ h1 {
 				  {% endif %}
 			  </div>
 		      <ul class="User-Dropdown" style="font-weight: 700; box-shadow: 0 20px 40px 5px rgba(0, 0, 0, 0.25);">
-				 <li> <a href="{% url 'dashboard' %}" style="padding: 0px;">Signed in as {{username}} </a></li>
+				 <li> <a href="{% url 'admin_dashboard' %}" style="padding: 0px;">Signed in as {{username}} </a></li>
 		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="#">My Profile</a></li>
 				 <div role="none" class="dropdown-divider"></div>
+				 <li><span><i class="fas fa-user-graduate"></i></span> <a href="#">Student Mgmt.</a></li>
+				 <li><span><i class="fas fa-chalkboard-teacher"></i></span> <a href="#">Faculty Mgmt.</a></li>
 				 <li><span><i class="fas fa-photo-video"></i> </span> <a href="{% url 'pcs_cloud' %}">PCS Cloud</a></li>
 				 <li><span><i class="far fa-edit"></i> </span> <a href="#">Exams</a></li>
 				 <li><span><i class="far fa-calendar-alt"></i> </span> <a href="#">Schedule</a></li>
@@ -402,6 +404,24 @@ h1 {
 
 	<div class="main">
 		<ul class="cards">
+		<li class="cards_item">
+			<div class="card">
+				<div class="card_icon"><span style="font-size: 95px; color: #607d8b; margin: 10% 0 12.5px 0;" class="fas fa-user-graduate"></span></div>
+				<div class="card_content" style="background: linear-gradient(to bottom left, #b0bec5 40%, #FFFFFF 100%);">
+			   		<h2 class="card_title">Course Sessions E - Cloud</h2>
+			   		<p class="card_text">Use the <b>Course Sessions  E - Cloud</b> to view your course classes which 're happened in past & you can also <i class="fas fa-share-alt-square"></i> with your <i class="fas fa-user-friends"></i> friends.</p>                
+			 	</div>
+		   </div>
+		</li>
+		<li class="cards_item">
+			<div class="card">
+				<div class="card_icon"><span style="font-size: 95px; color: #ec407a; margin: 10% 0 12.5px 0;" class="fas fa-chalkboard-teacher"></span></div>
+				<div class="card_content" style="background: linear-gradient(to bottom left, #f8bbd0 40%, #FFFFFF 100%);">
+			   		<h2 class="card_title">Course Sessions E - Cloud</h2>
+			   		<p class="card_text">Use the <b>Course Sessions  E - Cloud</b> to view your course classes which 're happened in past & you can also <i class="fas fa-share-alt-square"></i> with your <i class="fas fa-user-friends"></i> friends.</p>                
+			 	</div>
+		   </div>
+		</li>
 		  <li class="cards_item">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #4285f4; margin-top: 10%;" class="material-icons"> video_library </span></div>
