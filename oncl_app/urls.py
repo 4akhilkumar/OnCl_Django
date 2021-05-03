@@ -27,7 +27,10 @@ urlpatterns = [
         name="password_reset_complete"),
 
     path('dashboard/', views.dashboard_page, name = 'dashboard'),
-    
+    path('student_dashboard/', views.dashboard_student_page, name = 'student_dashboard'),
+    path('faculty_dashboard/', views.dashboard_faculty_page, name = 'faculty_dashboard'),
+    path('admin_dashboard/', views.dashboard_admin_page, name = 'admin_dashboard'),
+
     path('pcs_cloud/', PCS_Cloud_List.as_view(template_name="oncl_app/PCS_Cloud/PCS_Cloud_List.html"), name='pcs_cloud'),
     path('session/<int:pk>/', PCS_Cloud_Detail.as_view(template_name="oncl_app/PCS_Cloud/session.html"), name='session'),
     path('pcs_cloud_create/', PCS_Cloud_Create.as_view(template_name="oncl_app/PCS_Cloud/PCS_Cloud_Form.html"), name='pcs_cloud_create'),
