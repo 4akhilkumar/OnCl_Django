@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.template import loader
 from django.http import HttpResponse
@@ -26,6 +27,7 @@ from django.db import transaction
 from .models import Task, PCS_Cloud
 from .models import *
 from .forms import CreateUserForm, ContactForm, PositionForm
+from .decorators import unauthenticated_user, allowed_users
 
 # Create your views here.
 def te_page(request):
@@ -78,57 +80,85 @@ def feedback_page(request):
 def successView(request):
         return render(request,'oncl_app/feedback/feedback_sent.html')
 
+@unauthenticated_user
 def register_page(request):
-	if request.user.is_authenticated:
-		return redirect('dashboard')
-	else:
-		form = CreateUserForm()
-		if request.method == 'POST':
-			form = CreateUserForm(request.POST)
-			if form.is_valid():
-				form.save()
-				user = form.cleaned_data['username']
-				email = form.cleaned_data['email']
-				first_name = form.cleaned_data['first_name']
-				last_name = form.cleaned_data['last_name']
-				context = {'username':user, 'email':email, 'first_name':first_name, 'last_name':last_name}
-				template = render_to_string('oncl_app/login_register/register_mail.html', context)
-				send_mail(first_name + ', welcome to your new OnCl Account', template, settings.EMAIL_HOST_USER, [email], html_message=template)				
-				
-				messages.success(request, 'Hey ' + user + '! Your Account is Created Succesfully!')
-				return redirect('login')
-		context = {'form':form}
-		return render(request, 'oncl_app/login_register/register.html', context)
+    form = CreateUserForm()
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
 
+            group = Group.objects.get(name='Faculty')
+            user.groups.add(group)
+
+            context = {'username':username, 'email':email, 'first_name':first_name, 'last_name':last_name}
+            template = render_to_string('oncl_app/login_register/register_mail.html', context)
+            # send_mail(first_name + ', welcome to your new OnCl Account', template, settings.EMAIL_HOST_USER, [email], html_message=template)				
+            
+            messages.success(request, 'Hey ' + username + '! Your Account is Created Succesfully!')
+            return redirect('login')
+    context = {'form':form}
+    return render(request, 'oncl_app/login_register/register.html', context)
+
+@unauthenticated_user
 def login_page(request):
-	if request.user.is_authenticated:
-		return redirect('dashboard')
-	else:
-		if request.method == 'POST':
-			username = request.POST.get('username')
-			password =request.POST.get('password')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password =request.POST.get('password')
 
-			user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=username, password=password)
 
-			if user is not None:
-				login(request, user)
-				template = render_to_string('oncl_app/login_register/login_mail.html', {'email':request.user.email})
-				send_mail('OnCl Account Login Alert', template, settings.EMAIL_HOST_USER, [request.user.email], html_message=template)
-				return redirect('dashboard')
-			else:
-				messages.warning(request, 'Username or Password is Incorrect!')
+        if user is not None:
+            login(request, user)
+            template = render_to_string('oncl_app/login_register/login_mail.html', {'email':request.user.email})
+            # send_mail('OnCl Account Login Alert', template, settings.EMAIL_HOST_USER, [request.user.email], html_message=template)
+            
+            group = None
+            if request.user.groups.exists():
+                group = request.user.groups.all()[0].name
+            if group == 'Student':
+                return redirect('student_dashboard')
+            elif group == 'Faculty':
+                return redirect('faculty_dashboard')
+            else:
+                return redirect('admin_dashboard')
 
-		context = {}
-		return render(request, 'oncl_app/login_register/login.html', context)
+        else:
+            messages.warning(request, 'Username or Password is Incorrect!')
+
+    context = {}
+    return render(request, 'oncl_app/login_register/login.html', context)
 
 def logoutUser(request):
 	logout(request)
 	return redirect('login')
 
-@login_required(login_url='login')
+@unauthenticated_user
 def dashboard_page(request):
 	username = request.user.get_username()
+	return #
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Student'])
+def dashboard_student_page(request):
+	username = request.user.get_username()
 	return render(request, 'oncl_app/dashboard_student.html', {'username':username})
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Faculty'])
+def dashboard_faculty_page(request):
+	username = request.user.get_username()
+	return render(request, 'oncl_app/dashboard_faculty.html', {'username':username})
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def dashboard_admin_page(request):
+	username = request.user.get_username()
+	return render(request, 'oncl_app/dashboard_admin.html', {'username':username})
 
 class PCS_Cloud_List(ListView):
     model = PCS_Cloud
