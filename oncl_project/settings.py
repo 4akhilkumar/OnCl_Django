@@ -166,6 +166,8 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 # TIME = False
 SESSION_EXPIRE_AT_BROWSER_CLOSE= True
 # SESSION_COOKIE_AGE = TIME
