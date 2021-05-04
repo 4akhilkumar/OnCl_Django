@@ -236,6 +236,9 @@ class TaskReorder(View):
 def audio_page(request):
     return render(request,'oncl_app/study_session_audio.html')
 
+def unauthorized_access(request):
+    return render(request, 'oncl_app/page_not_found/page-401.html')
+
 def pages(request):
     context = {}
     try:
