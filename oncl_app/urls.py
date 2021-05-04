@@ -59,6 +59,7 @@ urlpatterns = [
     path('GDPR_privacy_policy_page/', views.GDPR_privacy_policy_page, name='GDPR_privacy_policy_page'),
     path('feedback/', views.feedback_page, name='feedback'),
     path('success/', views.successView, name='success'),
-
+    
+    path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     re_path(r'^.*\.*', views.pages, name='pages'),
 ]
