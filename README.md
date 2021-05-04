@@ -22,8 +22,8 @@
 2. Install the virtualenv package <code> pip install virtualenv </code>
 3. Create the virtual environment <code> virtualenv venv </code>
 4. Activate the virtual environment <code> venv\Scripts\activate </code>
-* [Any python commands you use will now work with your virtual environment]
-* [To deactive the virtual environemnt then use can type the below command or else you can continue with the next instruction]
+> Any python commands you use will now work with your virtual environment.
+> To deactive the virtual environemnt then use can type the below command or else you can continue with the next instruction.
 5. Deactivate the virtual environment <code> deactivate </code>
 6. My Requirements <code> py -m pip install -r requirements.txt </code>
 7. For Packaging Up Your Model Changes Into Individual Migration Files <code> py manage.py makemigrations </code>
