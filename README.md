@@ -19,8 +19,14 @@
 
 ### To make me live you need to follow the below instructions,
 1. [Install Stabled Python](https://www.python.org/downloads/windows/)
-2. My Requirements <code> py -m pip install -r requirements.txt </code>
-3. For Packaging Up Your Model Changes Into Individual Migration Files <code> py manage.py makemigrations </code>
-4. For Applying Those To Your Database <code> py manage.py migrate </code>
-5. To Start My Server <code> py manage.py runserver </code>
-6. To View On Browser http://127.0.0.1:8000/ [Local Host Address]
+2. Install the virtualenv package <code> pip install virtualenv </code>
+3. Create the virtual environment <code> virtualenv venv </code>
+4. Activate the virtual environment <code> venv\Scripts\activate </code>
+[Any python commands you use will now work with your virtual environment]
+[To deactive the virtual environemnt then use can type the below command or else you can continue with the next instruction]
+5. Deactivate the virtual environment <code> deactivate </code>
+6. My Requirements <code> py -m pip install -r requirements.txt </code>
+7. For Packaging Up Your Model Changes Into Individual Migration Files <code> py manage.py makemigrations </code>
+8. For Applying Those To Your Database <code> py manage.py migrate </code>
+9. To Start My Server <code> py manage.py runserver </code>
+10. To View On Browser http://127.0.0.1:8000/ [Local Host Address]
