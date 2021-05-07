@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# Note: If migrations didn't detected then use this command -> py manage.py makemigrations app_name
+
 # Create your models here.
 class PCS_Cloud(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
