@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="189.383 85.345 20.671 20.816" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 187.676 83.955 L 211.676 83.955 L 211.676 107.955 L 187.676 107.955 Z" fill="none"/>
+  <path d="M 190.676 96.955 L 198.676 96.955 L 198.676 86.955 L 190.676 86.955 L 190.676 96.955 Z M 190.676 104.955 L 198.676 104.955 L 198.676 98.955 L 190.676 98.955 L 190.676 104.955 Z M 200.676 104.955 L 208.676 104.955 L 208.676 94.955 L 200.676 94.955 L 200.676 104.955 Z M 200.676 86.955 L 200.676 92.955 L 208.676 92.955 L 208.676 86.955 L 200.676 86.955 Z" style="paint-order: fill; fill-rule: evenodd; fill: rgb(255, 99, 71);"/>
+  <rect x="190.696" y="86.977" width="7.952" height="9.96" style="fill-rule: evenodd; paint-order: fill; fill: rgb(255, 99, 71);"/>
+  <rect x="200.666" y="94.945" width="8.026" height="10.002" style="fill-rule: evenodd; paint-order: fill; fill: rgb(95, 149, 235);"/>
+  <rect x="190.648" y="98.933" width="8.037" height="6.017" style="fill-rule: evenodd; paint-order: fill; fill: rgb(118, 233, 137);"/>
+  <rect x="200.67" y="86.945" width="8.046" height="6.007" style="fill-rule: evenodd; paint-order: fill; fill: rgb(252, 200, 52);"/>
+</svg>
