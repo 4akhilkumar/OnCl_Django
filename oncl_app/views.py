@@ -255,9 +255,13 @@ def pages(request):
         html_template = loader.get_template( 'oncl_app/page_not_found/page-500.html' )
         return HttpResponse(html_template.render(context, request))
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def add_semester(request):
     return render(request, "oncl_app/admin_templates/semester_templates/add_semester.html")
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def add_semester_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -275,6 +279,8 @@ def add_semester_save(request):
             messages.error(request, "Failed to Add Semester Year!")
             return redirect("add_semester")
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def edit_semester(request, semester_id):
     semester_year = Semester.objects.get(id=semester_id)
     context = {
@@ -282,6 +288,8 @@ def edit_semester(request, semester_id):
     }
     return render(request, "oncl_app/admin_templates/semester_templates/edit_semester.html", context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def edit_semester_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method!")
@@ -303,6 +311,8 @@ def edit_semester_save(request):
             messages.error(request, "Failed to Update Semester!.")
             return redirect('/edit_semester/'+semester_id)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def delete_semester(request, semester_id):
     semester = Semester.objects.get(id=semester_id)
     try:
@@ -313,6 +323,8 @@ def delete_semester(request, semester_id):
         messages.error(request, "Failed to Delete Semester!")
         return redirect('manage_semester')
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def manage_semester(request):
     semester_years = Semester.objects.all()
     context = {
@@ -320,9 +332,13 @@ def manage_semester(request):
     }
     return render(request, "oncl_app/admin_templates/semester_templates/manage_semester.html", context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def add_branch(request):
     return render(request, "oncl_app/admin_templates/branch_templates/add_branch.html")
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def add_branch_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method!")
@@ -338,6 +354,8 @@ def add_branch_save(request):
             messages.error(request, "Failed to Add Branch!")
             return redirect('add_branch')
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def manage_branch(request):
     branches = Branches.objects.all()
     context = {
@@ -345,6 +363,8 @@ def manage_branch(request):
     }
     return render(request, 'oncl_app/admin_templates/branch_templates/manage_branch.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def edit_branch(request, branch_id):
     branch = Branches.objects.get(id=branch_id)
     context = {
@@ -353,6 +373,8 @@ def edit_branch(request, branch_id):
     }
     return render(request, 'oncl_app/admin_templates/branch_templates/edit_branch.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def edit_branch_save(request):
     if request.method != "POST":
         HttpResponse("Invalid Method")
@@ -372,6 +394,8 @@ def edit_branch_save(request):
             messages.error(request, "Failed to Update Branch!")
             return redirect('/edit_branch/'+branch_id+'/')
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def delete_branch(request, branch_id):
     branch = Branches.objects.get(id=branch_id)
     try:
@@ -382,6 +406,8 @@ def delete_branch(request, branch_id):
         messages.error(request, "Failed to Delete Branch!")
         return redirect('manage_branch')
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def add_subject(request):
     courses = Branches.objects.all()
     staffs = User.objects.filter(is_staff=True)
@@ -391,6 +417,8 @@ def add_subject(request):
     }
     return render(request, 'oncl_app/admin_templates/subject_templates/add_subject.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def add_subject_save(request):
     if request.method != "POST":
         messages.error(request, "Method Not Allowed!")
@@ -413,6 +441,8 @@ def add_subject_save(request):
             messages.error(request, "Failed to Add Subject!")
             return redirect('add_subject')
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def manage_subject(request):
     subjects = Subjects.objects.all()
     context = {
@@ -420,6 +450,8 @@ def manage_subject(request):
     }
     return render(request, 'oncl_app/admin_templates/subject_templates/manage_subject.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def edit_subject(request, subject_id):
     subject = Subjects.objects.get(id=subject_id)
     courses = Branches.objects.all()
@@ -432,6 +464,8 @@ def edit_subject(request, subject_id):
     }
     return render(request, 'oncl_app/admin_templates/subject_templates/edit_subject.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def edit_subject_save(request):
     if request.method != "POST":
         HttpResponse("Invalid Method.")
@@ -463,6 +497,8 @@ def edit_subject_save(request):
             return HttpResponseRedirect(reverse("edit_subject", kwargs={"subject_id":subject_id}))
             # return redirect('/edit_subject/'+subject_id)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def delete_subject(request, subject_id):
     subject = Subjects.objects.get(id=subject_id)
     try:
