@@ -73,6 +73,13 @@ urlpatterns = [
     path('edit_branch/<branch_id>/', views.edit_branch, name="edit_branch"),
     path('edit_branch_save/', views.edit_branch_save, name="edit_branch_save"),
     path('delete_branch/<branch_id>/', views.delete_branch, name="delete_branch"),
+
+    path('add_subject/', views.add_subject, name="add_subject"),
+    path('add_subject_save/', views.add_subject_save, name="add_subject_save"),
+    path('manage_subject/', views.manage_subject, name="manage_subject"),
+    path('edit_subject/<subject_id>/', views.edit_subject, name="edit_subject"),
+    path('edit_subject_save/', views.edit_subject_save, name="edit_subject_save"),
+    path('delete_subject/<subject_id>/', views.delete_subject, name="delete_subject"),
     
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     re_path(r'^.*\.*', views.pages, name='pages'),
