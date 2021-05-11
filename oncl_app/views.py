@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.template import loader
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django import template
 
 from django.template.loader import render_to_string
@@ -20,7 +20,7 @@ from django.views import View
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from django.db import transaction
 
@@ -345,7 +345,6 @@ def manage_branch(request):
     }
     return render(request, 'oncl_app/admin_templates/branch_templates/manage_branch.html', context)
 
-
 def edit_branch(request, branch_id):
     branch = Branches.objects.get(id=branch_id)
     context = {
@@ -353,7 +352,6 @@ def edit_branch(request, branch_id):
         "id": branch_id
     }
     return render(request, 'oncl_app/admin_templates/branch_templates/edit_branch.html', context)
-
 
 def edit_branch_save(request):
     if request.method != "POST":
@@ -374,7 +372,6 @@ def edit_branch_save(request):
             messages.error(request, "Failed to Update Branch!")
             return redirect('/edit_branch/'+branch_id+'/')
 
-
 def delete_branch(request, branch_id):
     branch = Branches.objects.get(id=branch_id)
     try:
@@ -385,3 +382,93 @@ def delete_branch(request, branch_id):
         messages.error(request, "Failed to Delete Branch!")
         return redirect('manage_branch')
 
+def add_subject(request):
+    courses = Branches.objects.all()
+    staffs = User.objects.filter(is_staff=True)
+    context = {
+        "courses": courses,
+        "staffs": staffs
+    }
+    return render(request, 'oncl_app/admin_templates/subject_templates/add_subject.html', context)
+
+def add_subject_save(request):
+    if request.method != "POST":
+        messages.error(request, "Method Not Allowed!")
+        return redirect('add_subject')
+    else:
+        subject_name = request.POST.get('subject')
+
+        course_id = request.POST.get('course')
+        course = Branches.objects.get(id=course_id)
+        
+        staff_id = request.POST.get('staff')
+        staff = User.objects.get(id=staff_id)
+
+        try:
+            subject = Subjects(subject_name=subject_name, course_id=course, staff_id=staff)
+            subject.save()
+            messages.success(request, "Subject Added Successfully.")
+            return redirect('manage_subject')
+        except:
+            messages.error(request, "Failed to Add Subject!")
+            return redirect('add_subject')
+
+def manage_subject(request):
+    subjects = Subjects.objects.all()
+    context = {
+        "subjects": subjects
+    }
+    return render(request, 'oncl_app/admin_templates/subject_templates/manage_subject.html', context)
+
+def edit_subject(request, subject_id):
+    subject = Subjects.objects.get(id=subject_id)
+    courses = Branches.objects.all()
+    staffs = User.objects.filter(is_staff=True)
+    context = {
+        "subject": subject,
+        "courses": courses,
+        "staffs": staffs,
+        "id": subject_id
+    }
+    return render(request, 'oncl_app/admin_templates/subject_templates/edit_subject.html', context)
+
+def edit_subject_save(request):
+    if request.method != "POST":
+        HttpResponse("Invalid Method.")
+    else:
+        subject_id = request.POST.get('subject_id')
+        subject_name = request.POST.get('subject')
+        course_id = request.POST.get('course')
+        staff_id = request.POST.get('staff')
+
+        try:
+            subject = Subjects.objects.get(id=subject_id)
+            subject.subject_name = subject_name
+
+            course = Branches.objects.get(id=course_id)
+            subject.course_id = course
+
+            staff = User.objects.get(id=staff_id)
+            subject.staff_id = staff
+            
+            subject.save()
+
+            messages.success(request, "Subject Updated Successfully.")
+            # return redirect('/edit_subject/'+subject_id)
+            return redirect('manage_subject')
+            # return HttpResponseRedirect(reverse("edit_subject", kwargs={"subject_id":subject_id}))
+
+        except:
+            messages.error(request, "Failed to Update Subject!")
+            return HttpResponseRedirect(reverse("edit_subject", kwargs={"subject_id":subject_id}))
+            # return redirect('/edit_subject/'+subject_id)
+
+def delete_subject(request, subject_id):
+    subject = Subjects.objects.get(id=subject_id)
+    try:
+        subject.delete()
+        messages.success(request, "Subject Deleted Successfully.")
+        return redirect('manage_subject')
+    except:
+        messages.error(request, "Failed to Delete Subject!")
+        return redirect('manage_subject')
