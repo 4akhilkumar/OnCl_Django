@@ -287,6 +287,7 @@ h1 {
 .cards_item {
   display: flex;
   padding: 1rem;
+  cursor: pointer;
 }
 
 @media (min-width: 40rem) {
@@ -387,15 +388,14 @@ h1 {
 				 </li>
 		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="#">My Profile</a></li>
 				 <div role="none" class="dropdown-divider"></div>
-				 <li><span><i class="fas fa-user-graduate"></i></span> <a href="#">Student Mgmt.</a></li>
-				 <li><span><i class="fas fa-chalkboard-teacher"></i></span> <a href="#">Faculty Mgmt.</a></li>
-				 <li><span><i class="fas fa-photo-video"></i> </span> <a href="{% url 'pcs_cloud' %}">PCS Cloud</a></li>
-				 <li><span><i class="far fa-edit"></i> </span> <a href="#">Exams</a></li>
-				 <li><span><i class="far fa-calendar-alt"></i> </span> <a href="#">Schedule</a></li>
-				 <li><span><i class="fas fa-book"></i> </span> <a href="#">E - Library</a></li>
+				 <li><span><i class="fas fa-school"></i></span> <a href="{% url 'manage_semester' %}" target="_blank">Sem. Mgmt.</a></li>
+				 <li><span><i class="fas fa-code-branch"></i></span> <a href="{% url 'manage_branch' %}" target="_blank">Branch Mgmt.</a></li>
+				 <li><span><i class="fas fa-book"></i> </span> <a href="#" target="_blank">subjects Mgmt.</a></li>
+				 <li><span><i class="far fa-calendar-alt"></i> </span> <a href="#" target="_blank">Schedule</a></li>
+				 <li><span><i class="fas fa-swatchbook"></i> </span> <a href="#" target="_blank">E - Library</a></li>
 				 <div role="none" class="dropdown-divider"></div>
-				 <li><span><i class="far fa-list-alt"></i> </span> <a href="{% url 'tasks' %}">To Do List</a></li>
-				 <li><span><i class="fas fa-music"></i> </span> <a href="{% url 'audio' %}">FAR Space</a></li>
+				 <li><span><i class="far fa-list-alt"></i> </span> <a href="{% url 'tasks' %}" target="_blank">To Do List</a></li>
+				 <li><span><i class="fas fa-music"></i> </span> <a href="{% url 'audio' %}" target="_blank">FAR Space</a></li>
 				 <div role="none" class="dropdown-divider"></div>
 		         <li><span><i class="fas fa-sign-out-alt"></i></span> <a href="{% url 'logout' %}">Logout</a></li>
 		      </ul>
