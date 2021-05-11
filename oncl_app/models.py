@@ -32,3 +32,16 @@ class Task(models.Model):
 
     class Meta:
         order_with_respect_to = 'user'
+
+class Semester(models.Model):
+    id = models.AutoField(primary_key=True)
+    semester_start_year = models.DateField()
+    semester_end_year = models.DateField()
+    objects = models.Manager()
+
+class Branches(models.Model):
+    id = models.AutoField(primary_key=True)
+    branch_name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = models.Manager()
