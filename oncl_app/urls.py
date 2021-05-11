@@ -59,6 +59,20 @@ urlpatterns = [
     path('GDPR_privacy_policy_page/', views.GDPR_privacy_policy_page, name='GDPR_privacy_policy_page'),
     path('feedback/', views.feedback_page, name='feedback'),
     path('success/', views.successView, name='success'),
+
+    path('add_semester/', views.add_semester, name="add_semester"),
+    path('add_semester_save/', views.add_semester_save, name="add_semester_save"),
+    path('edit_semester/<semester_id>', views.edit_semester, name="edit_semester"),
+    path('edit_semester_save/', views.edit_semester_save, name="edit_semester_save"),
+    path('delete_semester/<semester_id>/', views.delete_semester, name="delete_semester"),
+    path('manage_semester/', views.manage_semester, name="manage_semester"),
+
+    path('add_branch/', views.add_branch, name="add_branch"),
+    path('add_branch_save/', views.add_branch_save, name="add_branch_save"),
+    path('manage_branch/', views.manage_branch, name="manage_branch"),
+    path('edit_branch/<branch_id>/', views.edit_branch, name="edit_branch"),
+    path('edit_branch_save/', views.edit_branch_save, name="edit_branch_save"),
+    path('delete_branch/<branch_id>/', views.delete_branch, name="delete_branch"),
     
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     re_path(r'^.*\.*', views.pages, name='pages'),
