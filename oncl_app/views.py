@@ -24,7 +24,6 @@ from django.urls import reverse_lazy
 
 from django.db import transaction
 
-from .models import Task, PCS_Cloud
 from .models import *
 from .forms import CreateUserForm, ContactForm, PositionForm
 from .decorators import unauthenticated_user, allowed_users
@@ -255,3 +254,134 @@ def pages(request):
     except:
         html_template = loader.get_template( 'oncl_app/page_not_found/page-500.html' )
         return HttpResponse(html_template.render(context, request))
+
+def add_semester(request):
+    return render(request, "oncl_app/admin_templates/semester_templates/add_semester.html")
+
+def add_semester_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect('add_branch')
+    else:
+        semester_start_year = request.POST.get('semester_start_year')
+        semester_end_year = request.POST.get('semester_end_year')
+
+        try:
+            semesteryear = Semester(semester_start_year=semester_start_year, semester_end_year=semester_end_year)
+            semesteryear.save()
+            messages.success(request, "Semester Added Successfully.")
+            return redirect("manage_semester")
+        except:
+            messages.error(request, "Failed to Add Semester Year!")
+            return redirect("add_semester")
+
+def edit_semester(request, semester_id):
+    semester_year = Semester.objects.get(id=semester_id)
+    context = {
+        "semester_year": semester_year
+    }
+    return render(request, "oncl_app/admin_templates/semester_templates/edit_semester.html", context)
+
+def edit_semester_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method!")
+        return redirect('manage_semester')
+    else:
+        semester_id = request.POST.get('semester_id')
+        semester_start_year = request.POST.get('semester_start_year')
+        semester_end_year = request.POST.get('semester_end_year')
+
+        try:
+            semester_year = Semester.objects.get(id=semester_id)
+            semester_year.semester_start_year = semester_start_year
+            semester_year.semester_end_year = semester_end_year
+            semester_year.save()
+
+            messages.success(request, "Semester Updated Successfully.")
+            return redirect('manage_semester')
+        except:
+            messages.error(request, "Failed to Update Semester!.")
+            return redirect('/edit_semester/'+semester_id)
+
+def delete_semester(request, semester_id):
+    semester = Semester.objects.get(id=semester_id)
+    try:
+        semester.delete()
+        messages.success(request, "Semester Deleted Successfully.")
+        return redirect('manage_semester')
+    except:
+        messages.error(request, "Failed to Delete Semester!")
+        return redirect('manage_semester')
+
+def manage_semester(request):
+    semester_years = Semester.objects.all()
+    context = {
+        "semester_years": semester_years
+    }
+    return render(request, "oncl_app/admin_templates/semester_templates/manage_semester.html", context)
+
+def add_branch(request):
+    return render(request, "oncl_app/admin_templates/branch_templates/add_branch.html")
+
+def add_branch_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method!")
+        return redirect('add_branch')
+    else:
+        branch = request.POST.get('branch')
+        try:
+            branch_model = Branches(branch_name=branch)
+            branch_model.save()
+            messages.success(request, "Branch Added Successfully.")
+            return redirect('manage_branch')
+        except:
+            messages.error(request, "Failed to Add Branch!")
+            return redirect('add_branch')
+
+def manage_branch(request):
+    branches = Branches.objects.all()
+    context = {
+        "branches": branches
+    }
+    return render(request, 'oncl_app/admin_templates/branch_templates/manage_branch.html', context)
+
+
+def edit_branch(request, branch_id):
+    branch = Branches.objects.get(id=branch_id)
+    context = {
+        "branch": branch,
+        "id": branch_id
+    }
+    return render(request, 'oncl_app/admin_templates/branch_templates/edit_branch.html', context)
+
+
+def edit_branch_save(request):
+    if request.method != "POST":
+        HttpResponse("Invalid Method")
+    else:
+        branch_id = request.POST.get('branch_id')
+        branch_name = request.POST.get('branch')
+
+        try:
+            branch = Branches.objects.get(id=branch_id)
+            branch.branch_name = branch_name
+            branch.save()
+
+            messages.success(request, "Branch Updated Successfully!")
+            return redirect('manage_branch')
+
+        except:
+            messages.error(request, "Failed to Update Branch!")
+            return redirect('/edit_branch/'+branch_id+'/')
+
+
+def delete_branch(request, branch_id):
+    branch = Branches.objects.get(id=branch_id)
+    try:
+        branch.delete()
+        messages.success(request, "Branch Deleted Successfully.")
+        return redirect('manage_branch')
+    except:
+        messages.error(request, "Failed to Delete Branch!")
+        return redirect('manage_branch')
+
