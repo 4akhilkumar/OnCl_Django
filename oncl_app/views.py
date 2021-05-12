@@ -7,8 +7,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.template import loader
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django import template
+import json
 
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -21,6 +22,8 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy, reverse
+
+from django.views.decorators.csrf import csrf_exempt
 
 from django.db import transaction
 
@@ -689,3 +692,164 @@ def delete_student(request, student_id):
     except:
         messages.error(request, "Failed to Delete Student!")
         return redirect('manage_student')
+
+def admin_view_attendance(request):
+    subjects = Subjects.objects.all()
+    semester = Semester.objects.all()
+    context = {
+        "subjects": subjects,
+        "semester": semester
+    }
+    return render(request, "oncl_app/admin_templates/attendance_templates/view_attendance.html", context)
+
+@csrf_exempt
+def admin_get_attendance_dates(request):
+    # Getting Values from Ajax POST 'Fetch Student'
+    subject_id = request.POST.get("subject")
+    semester = request.POST.get("semester_id")
+
+    # Students enroll to Course, Course has Subjects
+    # Getting all data from subject model based on subject_id
+    subject_model = Subjects.objects.get(id=subject_id)
+
+    semester_model = Semester.objects.get(id=semester)
+
+    # students = Students.objects.filter(course_id=subject_model.course_id, session_year_id=session_model)
+    attendance = Attendance.objects.filter(subject_id=subject_model, semester_id=semester_model)
+
+    # Only Passing Student Id and Student Name Only
+    list_data = []
+
+    for attendance_single in attendance:
+        data_small = {"id":attendance_single.id, "attendance_date":str(attendance_single.attendance_date), "semester_id":attendance_single.semester_id.id}
+        list_data.append(data_small)
+
+    return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
+
+@csrf_exempt
+def admin_get_attendance_student(request):
+    # Getting Values from Ajax POST 'Fetch Student'
+    attendance_date = request.POST.get('attendance_date')
+    attendance = Attendance.objects.get(id=attendance_date)
+
+    attendance_data = AttendanceReport.objects.filter(attendance_id=attendance)
+    # Only Passing Student Id and Student Name Only
+    list_data = []
+
+    for student in attendance_data:
+        data_small={"id":student.student_id.admin.id, "name":student.student_id.admin.first_name+" "+student.student_id.admin.last_name, "status":student.status}
+        list_data.append(data_small)
+
+    return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
+
+def student_leave_view(request):
+    leaves = LeaveReportStudent.objects.all()
+    context = {
+        "leaves": leaves
+    }
+    return render(request, 'oncl_app/admin_templates/permission_templates/student_permissions.html', context)
+
+def student_leave_approve(request, leave_id):
+    leave = LeaveReportStudent.objects.get(id=leave_id)
+    leave.leave_status = 1
+    leave.save()
+    return redirect('student_leave_view')
+
+def student_leave_reject(request, leave_id):
+    leave = LeaveReportStudent.objects.get(id=leave_id)
+    leave.leave_status = 2
+    leave.save()
+    return redirect('student_leave_view')
+
+def staff_leave_view(request):
+    leaves = LeaveReportStaff.objects.all()
+    context = {
+        "leaves": leaves
+    }
+    return render(request, 'oncl_app/admin_templates/permission_templates/faculty_permissions.html', context)
+
+def staff_leave_approve(request, leave_id):
+    leave = LeaveReportStaff.objects.get(id=leave_id)
+    leave.leave_status = 1
+    leave.save()
+    return redirect('staff_leave_view')
+
+def staff_leave_reject(request, leave_id):
+    leave = LeaveReportStaff.objects.get(id=leave_id)
+    leave.leave_status = 2
+    leave.save()
+    return redirect('staff_leave_view')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def add_announcement(request):
+    return render(request, "oncl_app/admin_templates/announcements_templates/add_announcement.html")
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def add_announcement_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method!")
+        return redirect('add_announcement')
+    else:
+        announcement = request.POST.get('announcement')
+        try:
+            announcement_model = Announcements_news(what_an=announcement)
+            announcement_model.save()
+            messages.success(request, "Announcement Added Successfully.")
+            return redirect('manage_announcement')
+        except:
+            messages.error(request, "Failed to Add Announcement!")
+            return redirect('add_announcement')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def manage_announcement(request):
+    announcements = Announcements_news.objects.all()
+    context = {
+        "announcements": announcements
+    }
+    return render(request, 'oncl_app/admin_templates/announcements_templates/manage_announcements.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def edit_announcement(request, announcement_id):
+    announcement = Announcements_news.objects.get(id=announcement_id)
+    context = {
+        "announcement": announcement,
+        "id": announcement_id
+    }
+    return render(request, 'oncl_app/admin_templates/announcements_templates/edit_announcement.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def edit_announcement_save(request):
+    if request.method != "POST":
+        HttpResponse("Invalid Method")
+    else:
+        announcement_id = request.POST.get('announcement_id')
+        what_an = request.POST.get('announcement')
+
+        try:
+            announcement = Announcements_news.objects.get(id=announcement_id)
+            announcement.what_an = what_an
+            announcement.save()
+
+            messages.success(request, "Announcement Updated Successfully!")
+            return redirect('manage_announcement')
+
+        except:
+            messages.error(request, "Failed to Update Announcement!")
+            return redirect('/edit_announcement/'+announcement_id+'/')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def delete_announcement(request, announcement_id):
+    announcement = Announcements_news.objects.get(id=announcement_id)
+    try:
+        announcement.delete()
+        messages.success(request, "Announcement Deleted Successfully.")
+        return redirect('manage_announcement')
+    except:
+        messages.error(request, "Failed to Delete Announcement!")
+        return redirect('manage_announcement')
