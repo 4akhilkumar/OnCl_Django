@@ -25,7 +25,7 @@ from django.urls import reverse_lazy, reverse
 from django.db import transaction
 
 from .models import *
-from .forms import CreateUserForm, ContactForm, PositionForm
+from .forms import CreateUserForm, ContactForm, PositionForm, StaffsForm
 from .decorators import unauthenticated_user, allowed_users
 
 # Create your views here.
@@ -508,3 +508,90 @@ def delete_subject(request, subject_id):
     except:
         messages.error(request, "Failed to Delete Subject!")
         return redirect('manage_subject')
+    form = CreateUserForm()
+    staff_form = StaffsForm()
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        staff_form = StaffsForm(request.POST)
+
+        if form.is_valid() and staff_form.is_valid():
+            user = form.save()
+            staff = staff_form.save(commit=False)
+            staff.user = user
+            staff.save()
+
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            
+            user = authenticate(username = username, password = password)
+
+            group = Group.objects.get(name='Faculty')
+            user.groups.add(group)
+
+            return redirect('manage_staff')
+        else:
+            form = CreateUserForm()
+            staff_form = StaffsForm()
+
+    context = {'form':form, 'staff_form':staff_form}        
+    return render(request, "oncl_app/admin_templates/faculty_templates/add_faculty.html", context)
+
+def manage_staff(request):
+    staffs = Staffs.objects.all()
+    context = {
+        "staffs": staffs
+    }
+    return render(request, "oncl_app/admin_templates/faculty_templates/manage_faculty.html", context)
+
+def edit_staff(request, staff_id):
+    staff = Staffs.objects.get(user=staff_id)
+
+    context = {
+        "staff": staff,
+        "id": staff_id
+    }
+    return render(request, "oncl_app/admin_templates/faculty_templates/edit_faculty.html", context)
+
+def edit_staff_save(request):
+    if request.method != "POST":
+        return HttpResponse("<h2>Method Not Allowed</h2>")
+    else:
+        staff_id = request.POST.get('staff_id')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        address = request.POST.get('address')
+
+        try:
+            # INSERTING into User Model
+            user = User.objects.get(id=staff_id)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.email = email
+            user.username = username
+            user.save()
+            
+            # INSERTING into Staff Model
+            staff_model = Staffs.objects.get(user=staff_id)
+            staff_model.address = address
+            staff_model.save()
+
+            messages.success(request, "Faculty Updated Successfully.")
+            # return redirect('/edit_staff/'+staff_id)
+            return redirect('manage_staff')
+
+        except:
+            messages.error(request, "Failed to Update Faculty!")
+            return redirect('/edit_staff/'+staff_id+"/")
+
+def delete_staff(request, staff_id):
+    staff = Staffs.objects.get(user=staff_id)
+    try:
+        staff.delete()
+        staff.user.delete()
+        messages.success(request, "Faculty Deleted Successfully.")
+        return redirect('manage_staff')
+    except:
+        messages.error(request, "Failed to Delete Faculty!")
+        return redirect('manage_staff')
