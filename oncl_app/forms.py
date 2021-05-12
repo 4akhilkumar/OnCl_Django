@@ -1,3 +1,4 @@
+from oncl_app.models import Staffs
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -16,3 +17,8 @@ class ContactForm(forms.Form):
     from_email = forms.EmailField(required=True)
     subject = forms.CharField(required=True)
     message = forms.CharField(widget=forms.Textarea, required=True)
+
+class StaffsForm(forms.ModelForm):
+    class Meta:
+        model = Staffs
+        fields = ('address',)
