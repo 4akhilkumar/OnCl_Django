@@ -391,8 +391,8 @@ h1 {
 				 <li><span><i class="fas fa-school"></i></span> <a href="{% url 'manage_semester' %}" target="_blank">Sem. Mgmt.</a></li>
 				 <li><span><i class="fas fa-code-branch"></i></span> <a href="{% url 'manage_branch' %}" target="_blank">Branch Mgmt.</a></li>
 				 <li><span><i class="fas fa-book"></i> </span> <a href="{% url 'manage_subject' %}" target="_blank">subjects Mgmt.</a></li>
-				 <li><span><i class="far fa-calendar-alt"></i> </span> <a href="#" target="_blank">Schedule</a></li>
-				 <li><span><i class="fas fa-swatchbook"></i> </span> <a href="#" target="_blank">E - Library</a></li>
+				 <li><span><i class="fas fa-hand-paper"></i> </span> <a href="{% url 'admin_view_attendance' %}" target="_blank">Attendance</a></li>
+				 <li><span><i class="fas fa-fist-raised"></i> </span> <a href="#" target="_blank">Leave Info.</a></li>
 				 <div role="none" class="dropdown-divider"></div>
 				 <li><span><i class="far fa-list-alt"></i> </span> <a href="{% url 'tasks' %}" target="_blank">To Do List</a></li>
 				 <li><span><i class="fas fa-music"></i> </span> <a href="{% url 'audio' %}" target="_blank">FAR Space</a></li>
@@ -461,9 +461,9 @@ h1 {
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item">
+		  <li class="cards_item" onclick="manage_announcements()">
 			<div class="card">
-			  <div class="card_icon"><span style="font-size: 100px; color: #F1615C; margin-top: 10%;" class="material-icons"> new_releases </span></div>
+			  <div class="card_icon"><span style="font-size: 100px; color: #F1615C; margin-top: 10%;" class="material-icons"> campaign </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #f8bbd0 40%, #FFFFFF 100%);">
 				<h2 class="card_title">News & Announcements</h2>
 				<p class="card_text">Informing you about the changing events, issues, and characters in the Institution. And Completely aware of all <i class="fas fa-rss-square"></i> changes.</p>                
@@ -472,7 +472,7 @@ h1 {
 		  </li>
 		  <li class="cards_item">
 			<div class="card">
-			  <div class="card_icon"><span style="font-size: 100px; color: #757575; margin-top: 10%;" class="material-icons"> library_books </span></div>
+			  <div class="card_icon"><span style="font-size: 95px; color: #607d8b; margin: 10% 0 12.5px 0;" class="fas fa-swatchbook"></span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #bdbdbd 40%, #FFFFFF 100%);">
 				<h2 class="card_title">E - Library</h2>
 				<p class="card_text">Utilizing <b>E - Library</b> Provides you to access to books, journals, articles & any other info. and enjoy reading <i class="fas fa-swatchbook"></i> books.</p>                
@@ -508,6 +508,9 @@ h1 {
 	  }
 	  function manage_student() {
 		  window.open("{% url 'manage_student' %}");
+	  }
+	  function manage_announcements() {
+		  window.open("{% url 'manage_announcement' %}");
 	  }
   </script>
 
