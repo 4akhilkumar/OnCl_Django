@@ -62,7 +62,9 @@
                                 <th>Announcement</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
+                                {% if request.user.is_staff %}
                                 <th>Action</th>
+                                {% endif %}
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,10 +74,12 @@
                                 <td>{{ announcement.what_an }}</td>
                                 <td>{{ announcement.created_at }}</td>
                                 <td>{{ announcement.updated_at }}</td>
+                                {% if request.user.is_staff %}
                                 <td>
                                     <a href="{% url 'edit_announcement' announcement.id %}" class="btn btn-success">Edit</a> 
-                                    <a href="{% url 'delete_announcement' announcement.id %}" class="btn btn-danger">Delete</a>
+                                    <a href="{% url 'delete_announcement' announcement.id %}" class="btn btn-danger">Delete</a>                                    
                                 </td>
+                                {% endif %}
                                 </tr>
                                 {% endfor %}
                                 
