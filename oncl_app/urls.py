@@ -92,6 +92,24 @@ urlpatterns = [
     path('edit_student_save/', views.edit_student_save, name="edit_student_save"),
     path('manage_student/', views.manage_student, name="manage_student"),
     path('delete_student/<student_id>/', views.delete_student, name="delete_student"),
+
+    path('admin_view_attendance/', views.admin_view_attendance, name="admin_view_attendance"),
+    path('admin_get_attendance_dates/', views.admin_get_attendance_dates, name="admin_get_attendance_dates"),
+    path('admin_get_attendance_student/', views.admin_get_attendance_student, name="admin_get_attendance_student"),
+
+    path('student_leave_view/', views.student_leave_view, name="student_leave_view"),
+    path('student_leave_approve/<leave_id>/', views.student_leave_approve, name="student_leave_approve"),
+    path('student_leave_reject/<leave_id>/', views.student_leave_reject, name="student_leave_reject"),
+    path('staff_leave_view/', views.staff_leave_view, name="staff_leave_view"),
+    path('staff_leave_approve/<leave_id>/', views.staff_leave_approve, name="staff_leave_approve"),
+    path('staff_leave_reject/<leave_id>/', views.staff_leave_reject, name="staff_leave_reject"),
+
+    path('add_announcement/', views.add_announcement, name="add_announcement"),
+    path('add_announcement_save/', views.add_announcement_save, name="add_announcement_save"),
+    path('manage_announcement/', views.manage_announcement, name="manage_announcement"),
+    path('edit_announcement/<announcement_id>/', views.edit_announcement, name="edit_announcement"),
+    path('edit_announcement_save/', views.edit_announcement_save, name="edit_announcement_save"),
+    path('delete_announcement/<announcement_id>/', views.delete_announcement, name="delete_announcement"),
     
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     re_path(r'^.*\.*', views.pages, name='pages'),
