@@ -80,6 +80,12 @@ urlpatterns = [
     path('edit_subject/<subject_id>/', views.edit_subject, name="edit_subject"),
     path('edit_subject_save/', views.edit_subject_save, name="edit_subject_save"),
     path('delete_subject/<subject_id>/', views.delete_subject, name="delete_subject"),
+
+    path('add_staff/', views.add_staff, name="add_staff"),
+    path('manage_staff/', views.manage_staff, name="manage_staff"),
+    path('edit_staff/<staff_id>/', views.edit_staff, name="edit_staff"),
+    path('edit_staff_save/', views.edit_staff_save, name="edit_staff_save"),
+    path('delete_staff/<staff_id>/', views.delete_staff, name="delete_staff"),
     
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     re_path(r'^.*\.*', views.pages, name='pages'),
