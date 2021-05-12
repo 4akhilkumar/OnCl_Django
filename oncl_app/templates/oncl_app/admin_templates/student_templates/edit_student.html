@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student</title>
+</head>
+<body>
+    <form action="{% url 'edit_student_save' %}" method="POST">
+        {% csrf_token %}
+        <div class="card-body">
+            <div class="form-group">
+                <label>Email address</label>
+                <input type="email" class="form-control" name="email" value="{{ student.user.email }}">
+            </div>
+
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" class="form-control" name="username" value="{{ student.user.username }}">
+            </div>
+
+            {% comment %} <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password" value="{{ student.user.password }}">
+            </div> {% endcomment %}
+
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" class="form-control" name="first_name" value="{{ student.user.first_name }}">
+            </div>
+
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" class="form-control" name="last_name" value="{{ student.user.last_name }}">
+                <input type="hidden" name="student_id" value="{{ student.user.id }}" />
+            </div>
+
+            <div class="form-group">
+                <label>Gender</label>
+                <input type="text" class="form-control" name="gender" value="{{ student.gender }}">
+            </div>
+
+            <div class="form-group">
+                <label>Address</label>
+                <textarea class="form-control" name="address">{{ student.address }}</textarea>
+            </div>
+        <button type="submit" class="btn btn-primary">Update Student</button>
+    </form>
+</body>
+</html>
