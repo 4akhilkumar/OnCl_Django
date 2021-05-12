@@ -407,7 +407,7 @@ h1 {
 
 	<div class="main">
 		<ul class="cards">
-		<li class="cards_item">
+		<li class="cards_item" onclick="manage_student()">
 			<div class="card">
 				<div class="card_icon"><span style="font-size: 95px; color: #607d8b; margin: 10% 0 12.5px 0;" class="fas fa-user-graduate"></span></div>
 				<div class="card_content" style="background: linear-gradient(to bottom left, #b0bec5 40%, #FFFFFF 100%);">
@@ -505,6 +505,9 @@ h1 {
 	  }
 	  function manage_faculty() {
 		  window.open("{% url 'manage_staff' %}");
+	  }
+	  function manage_student() {
+		  window.open("{% url 'manage_student' %}");
 	  }
   </script>
 
