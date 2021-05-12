@@ -25,7 +25,7 @@ from django.urls import reverse_lazy, reverse
 from django.db import transaction
 
 from .models import *
-from .forms import CreateUserForm, ContactForm, PositionForm, StaffsForm
+from .forms import CreateUserForm, ContactForm, PositionForm, StaffsForm, StudentsForm
 from .decorators import unauthenticated_user, allowed_users
 
 # Create your views here.
@@ -508,6 +508,8 @@ def delete_subject(request, subject_id):
     except:
         messages.error(request, "Failed to Delete Subject!")
         return redirect('manage_subject')
+
+def add_staff(request):
     form = CreateUserForm()
     staff_form = StaffsForm()
     if request.method == 'POST':
@@ -562,6 +564,7 @@ def edit_staff_save(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         address = request.POST.get('address')
+        gender = request.POST.get('gender')
 
         try:
             # INSERTING into User Model
@@ -575,6 +578,7 @@ def edit_staff_save(request):
             # INSERTING into Staff Model
             staff_model = Staffs.objects.get(user=staff_id)
             staff_model.address = address
+            staff_model.gender = gender
             staff_model.save()
 
             messages.success(request, "Faculty Updated Successfully.")
@@ -595,3 +599,93 @@ def delete_staff(request, staff_id):
     except:
         messages.error(request, "Failed to Delete Faculty!")
         return redirect('manage_staff')
+
+def add_student(request):
+    form = CreateUserForm()
+    student_form = StudentsForm()
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        student_form = StudentsForm(request.POST)
+
+        if form.is_valid() and student_form.is_valid():
+            user = form.save()
+            student = student_form.save(commit=False)
+            student.user = user
+            student.save()
+
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            
+            user = authenticate(username = username, password = password)
+
+            group = Group.objects.get(name='Student')
+            user.groups.add(group)
+
+            return redirect('manage_student')
+        else:
+            form = CreateUserForm()
+            student_form = StudentsForm()
+
+    context = {'form':form, 'student_form':student_form}        
+    return render(request, "oncl_app/admin_templates/student_templates/add_student.html", context)
+
+def manage_student(request):
+    students = Students.objects.all()
+    context = {
+        "students": students
+    }
+    return render(request, "oncl_app/admin_templates/student_templates/manage_student.html", context)
+
+def edit_student(request, student_id):
+    student = Students.objects.get(user=student_id)
+
+    context = {
+        "student": student,
+        "id": student_id
+    }
+    return render(request, "oncl_app/admin_templates/student_templates/edit_student.html", context)
+
+def edit_student_save(request):
+    if request.method != "POST":
+        return HttpResponse("<h2>Method Not Allowed</h2>")
+    else:
+        student_id = request.POST.get('student_id')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        address = request.POST.get('address')
+        gender = request.POST.get('gender')
+
+        try:
+            # INSERTING into User Model
+            user = User.objects.get(id=student_id)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.email = email
+            user.username = username
+            user.save()
+            
+            # INSERTING into Students Model
+            student_model = Students.objects.get(user=student_id)
+            student_model.address = address
+            student_model.gender = gender
+            student_model.save()
+
+            messages.success(request, "Student Updated Successfully.")
+            return redirect('manage_student')
+        
+        except:
+            messages.error(request, "Failed to Update Student!")
+            return redirect('/edit_student/'+student_id+"/")
+
+def delete_student(request, student_id):
+    student = Students.objects.get(user=student_id)
+    try:
+        student.delete()
+        student.user.delete()
+        messages.success(request, "Student Deleted Successfully.")
+        return redirect('manage_student')
+    except:
+        messages.error(request, "Failed to Delete Student!")
+        return redirect('manage_student')
