@@ -93,10 +93,6 @@ urlpatterns = [
     path('manage_student/', views.manage_student, name="manage_student"),
     path('delete_student/<student_id>/', views.delete_student, name="delete_student"),
 
-    path('admin_view_attendance/', views.admin_view_attendance, name="admin_view_attendance"),
-    path('admin_get_attendance_dates/', views.admin_get_attendance_dates, name="admin_get_attendance_dates"),
-    path('admin_get_attendance_student/', views.admin_get_attendance_student, name="admin_get_attendance_student"),
-
     path('student_leave_view/', views.student_leave_view, name="student_leave_view"),
     path('student_leave_approve/<leave_id>/', views.student_leave_approve, name="student_leave_approve"),
     path('student_leave_reject/<leave_id>/', views.student_leave_reject, name="student_leave_reject"),
