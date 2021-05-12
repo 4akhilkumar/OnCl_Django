@@ -287,6 +287,7 @@ h1 {
 .cards_item {
   display: flex;
   padding: 1rem;
+  cursor: pointer;
 }
 
 @media (min-width: 40rem) {
@@ -414,7 +415,7 @@ h1 {
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item">
+		  <li class="cards_item" onclick="manage_announcements()">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #F1615C; margin-top: 10%;" class="material-icons"> new_releases </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #f8bbd0 40%, #FFFFFF 100%);">
@@ -482,6 +483,9 @@ h1 {
   	});
 	  function faculty_dashboard() {
 		  window.location.replace("{% url 'faculty_dashboard' %}");
+	  }
+	  function manage_announcements() {
+		  window.open("{% url 'manage_announcement' %}");
 	  }
   </script>
 
