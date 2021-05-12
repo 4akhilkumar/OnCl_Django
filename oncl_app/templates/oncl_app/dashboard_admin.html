@@ -416,7 +416,7 @@ h1 {
 			 	</div>
 		   </div>
 		</li>
-		<li class="cards_item">
+		<li class="cards_item" onclick="manage_faculty()">
 			<div class="card">
 				<div class="card_icon"><span style="font-size: 95px; color: #ec407a; margin: 10% 0 12.5px 0;" class="fas fa-chalkboard-teacher"></span></div>
 				<div class="card_content" style="background: linear-gradient(to bottom left, #f8bbd0 40%, #FFFFFF 100%);">
@@ -502,6 +502,9 @@ h1 {
   	});
 	  function admin_dashboard() {
 		  window.location.replace("{% url 'admin_dashboard' %}");
+	  }
+	  function manage_faculty() {
+		  window.open("{% url 'manage_staff' %}");
 	  }
   </script>
 
