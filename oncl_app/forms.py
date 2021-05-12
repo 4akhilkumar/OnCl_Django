@@ -1,4 +1,4 @@
-from oncl_app.models import Staffs
+from oncl_app.models import *
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -21,4 +21,4 @@ class ContactForm(forms.Form):
 class StaffsForm(forms.ModelForm):
     class Meta:
         model = Staffs
-        fields = ('address',)
+        fields = ('gender','address',)

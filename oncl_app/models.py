@@ -58,6 +58,7 @@ class Subjects(models.Model):
 class Staffs(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete = models.CASCADE)
+    gender = models.CharField(max_length=50, default="")
     address = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
