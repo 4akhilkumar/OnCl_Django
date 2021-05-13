@@ -681,6 +681,13 @@ def edit_student_save(request):
         last_name = request.POST.get('last_name')
         address = request.POST.get('address')
         gender = request.POST.get('gender')
+        branch = request.POST.get('branch')
+        phone = request.POST.get('phone')
+        git_link = request.POST.get('git_link')
+        website_link = request.POST.get('website_link')
+        linkedin_link = request.POST.get('linkedin_link')
+        twitter_link = request.POST.get('twitter_link')
+        bio = request.POST.get('bio')
 
         try:
             # INSERTING into User Model
@@ -695,6 +702,13 @@ def edit_student_save(request):
             student_model = Students.objects.get(user=student_id)
             student_model.address = address
             student_model.gender = gender
+            student_model.branch = branch
+            student_model.phone = phone
+            student_model.git_link = git_link
+            student_model.website_link = website_link
+            student_model.linkedin_link = linkedin_link
+            student_model.twitter_link = twitter_link
+            student_model.bio = bio
             student_model.save()
 
             messages.success(request, "Student Updated Successfully.")
@@ -780,8 +794,9 @@ def add_announcement_save(request):
         return redirect('add_announcement')
     else:
         announcement = request.POST.get('announcement')
+        sub_an = request.POST.get('sub_an')
         try:
-            announcement_model = Announcements_news(what_an=announcement)
+            announcement_model = Announcements_news(what_an=announcement,sub_an=sub_an)
             announcement_model.save()
             messages.success(request, "Announcement Added Successfully.")
             return redirect('manage_announcement')
