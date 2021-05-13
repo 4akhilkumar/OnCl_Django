@@ -386,12 +386,12 @@ h1 {
 					<div style="padding-top: 1px; padding: 0px;"> Signed in as </div>
 					<div>{{username}}</div>
 				 </li>
-		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="#">My Profile</a></li>
+		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="{% url 'admin_profile' %}">My Profile</a></li>
 				 <div role="none" class="dropdown-divider"></div>
 				 <li><span><i class="fas fa-school"></i></span> <a href="{% url 'manage_semester' %}" target="_blank">Sem. Mgmt.</a></li>
 				 <li><span><i class="fas fa-code-branch"></i></span> <a href="{% url 'manage_branch' %}" target="_blank">Branch Mgmt.</a></li>
 				 <li><span><i class="fas fa-book"></i> </span> <a href="{% url 'manage_subject' %}" target="_blank">subjects Mgmt.</a></li>
-				 <li><span><i class="fas fa-hand-paper"></i> </span> <a href="{% url 'admin_view_attendance' %}" target="_blank">Attendance</a></li>
+				 <li><span><i class="fas fa-hand-paper"></i> </span> <a href="#" target="_blank">Attendance</a></li>
 				 <li><span><i class="fas fa-fist-raised"></i> </span> <a href="#" target="_blank">Leave Info.</a></li>
 				 <div role="none" class="dropdown-divider"></div>
 				 <li><span><i class="far fa-list-alt"></i> </span> <a href="{% url 'tasks' %}" target="_blank">To Do List</a></li>
@@ -471,7 +471,7 @@ h1 {
 			</div>
 		  </li>
 		  <li class="cards_item">
-			<div class="card">
+			<div class="card" onclick="view_elibrary()">
 			  <div class="card_icon"><span style="font-size: 95px; color: #607d8b; margin: 10% 0 12.5px 0;" class="fas fa-swatchbook"></span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #bdbdbd 40%, #FFFFFF 100%);">
 				<h2 class="card_title">E - Library</h2>
@@ -511,6 +511,9 @@ h1 {
 	  }
 	  function manage_announcements() {
 		  window.open("{% url 'manage_announcement' %}");
+	  }
+	  function view_elibrary() {
+		  window.open("{% url 'view' %}");
 	  }
   </script>
 

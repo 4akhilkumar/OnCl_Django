@@ -386,7 +386,7 @@ h1 {
 					<div style="padding-top: 1px; padding: 0px;"> Signed in as </div>
 					<div>{{username}}</div>
 				 </li>
-		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="#">My Profile</a></li>
+		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="{% url 'faculty_profile' %}">My Profile</a></li>
 				 <div role="none" class="dropdown-divider"></div>
 				 <li><span><i class="fas fa-photo-video"></i> </span> <a href="{% url 'pcs_cloud' %}">PCS Cloud</a></li>
 				 <li><span><i class="far fa-edit"></i> </span> <a href="#">Exams</a></li>
@@ -452,7 +452,7 @@ h1 {
 			</div>
 		  </li>
 		  <li class="cards_item">
-			<div class="card">
+			<div class="card" onload="view_elibrary()">
 			  <div class="card_icon"><span style="font-size: 100px; color: #757575; margin-top: 10%;" class="material-icons"> library_books </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #bdbdbd 40%, #FFFFFF 100%);">
 				<h2 class="card_title">E - Library</h2>
@@ -486,6 +486,9 @@ h1 {
 	  }
 	  function manage_announcements() {
 		  window.open("{% url 'manage_announcement' %}");
+	  }
+	  function view_elibrary() {
+		  window.open("{% url 'view' %}");
 	  }
   </script>
 
