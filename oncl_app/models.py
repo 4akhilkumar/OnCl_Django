@@ -58,6 +58,7 @@ class Subjects(models.Model):
 class Staffs(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete = models.CASCADE)
+    profile_image = models.ImageField(default='avatar.webp', upload_to='users/', null=True, blank=True)
     gender = models.CharField(max_length=50, default="")
     address = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -70,9 +71,16 @@ class Staffs(models.Model):
 class Students(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete = models.CASCADE)
-    branch = models.CharField(max_length=255, default="")
-    gender = models.CharField(max_length=50, default="")
-    address = models.TextField()
+    branch = models.CharField(max_length=100, default="Not Updated Yet!")
+    gender = models.CharField(max_length=50, default="Not Updated Yet!")
+    address = models.TextField(default="Not Updated Yet!")
+    phone = models.TextField(default="Not Updated Yet!")
+    git_link = models.TextField(default="Not Updated Yet!")
+    website_link = models.TextField(default="Not Updated Yet!")
+    linkedin_link = models.TextField(default="Not Updated Yet!")
+    twitter_link = models.TextField(default="Not Updated Yet!")
+    bio = models.TextField(default="Not Updated Yet!")
+    profile_pic = models.ImageField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
@@ -90,7 +98,6 @@ class LeaveReportStudent(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
-
 class LeaveReportStaff(models.Model):
     id = models.AutoField(primary_key=True)
     staff_id = models.ForeignKey(Staffs, on_delete=models.CASCADE)
@@ -103,7 +110,25 @@ class LeaveReportStaff(models.Model):
 
 class Announcements_news(models.Model):
     id = models.AutoField(primary_key=True)
+    sub_an = models.CharField(max_length=100, default="Subject Not Provided!")
     what_an = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
+
+class file_upload(models.Model):
+    id = models.AutoField(primary_key=True)
+    book_id = models.CharField(max_length=100,default="Not ProvidedYet!")
+    book_name = models.CharField(max_length=50,default="Not ProvidedYet!")
+    book_author = models.CharField(max_length=50,default="Not ProvidedYet!")
+    book_pub_date = models.CharField(max_length=20,default="Not ProvidedYet!")
+    book_desc = models.TextField(max_length=255,default="Not ProvidedYet!")
+    book_tag1 = models.CharField(max_length=20,default="Not ProvidedYet!")
+    book_tag2 = models.CharField(max_length=20,default="Not ProvidedYet!")
+    book_tag3 = models.CharField(max_length=20,default="Not ProvidedYet!")
+    book_tag4 = models.CharField(max_length=20,default="Not ProvidedYet!")
+    book_pic = models.ImageField(null=True, blank=True)
+    book_file = models.FileField(upload_to='books/')
+
+    def __str__(self):
+        return self.book_name
