@@ -1,3 +1,5 @@
+from django.db.models import query
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
@@ -10,12 +12,14 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django import template
 import json
+import datetime
 
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.core.mail import BadHeaderError, send_mail
 from django.core import mail
 
+from django.views.generic import TemplateView
 # Imports for Reordering Feature
 from django.views import View
 from django.views.generic.list import ListView
@@ -29,6 +33,7 @@ from django.db import transaction
 
 from .models import *
 from .forms import CreateUserForm, ContactForm, PositionForm, StaffsForm, StudentsForm
+from .forms import CreateUserForm, ContactForm, PositionForm, StaffsForm, StudentsForm, MyfileUploadForm
 from .decorators import unauthenticated_user, allowed_users
 
 # Create your views here.
@@ -693,55 +698,8 @@ def delete_student(request, student_id):
         messages.error(request, "Failed to Delete Student!")
         return redirect('manage_student')
 
-def admin_view_attendance(request):
-    subjects = Subjects.objects.all()
-    semester = Semester.objects.all()
-    context = {
-        "subjects": subjects,
-        "semester": semester
-    }
-    return render(request, "oncl_app/admin_templates/attendance_templates/view_attendance.html", context)
-
-@csrf_exempt
-def admin_get_attendance_dates(request):
-    # Getting Values from Ajax POST 'Fetch Student'
-    subject_id = request.POST.get("subject")
-    semester = request.POST.get("semester_id")
-
-    # Students enroll to Course, Course has Subjects
-    # Getting all data from subject model based on subject_id
-    subject_model = Subjects.objects.get(id=subject_id)
-
-    semester_model = Semester.objects.get(id=semester)
-
-    # students = Students.objects.filter(course_id=subject_model.course_id, session_year_id=session_model)
-    attendance = Attendance.objects.filter(subject_id=subject_model, semester_id=semester_model)
-
-    # Only Passing Student Id and Student Name Only
-    list_data = []
-
-    for attendance_single in attendance:
-        data_small = {"id":attendance_single.id, "attendance_date":str(attendance_single.attendance_date), "semester_id":attendance_single.semester_id.id}
-        list_data.append(data_small)
-
-    return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
-
-@csrf_exempt
-def admin_get_attendance_student(request):
-    # Getting Values from Ajax POST 'Fetch Student'
-    attendance_date = request.POST.get('attendance_date')
-    attendance = Attendance.objects.get(id=attendance_date)
-
-    attendance_data = AttendanceReport.objects.filter(attendance_id=attendance)
-    # Only Passing Student Id and Student Name Only
-    list_data = []
-
-    for student in attendance_data:
-        data_small={"id":student.student_id.admin.id, "name":student.student_id.admin.first_name+" "+student.student_id.admin.last_name, "status":student.status}
-        list_data.append(data_small)
-
-    return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
-
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def student_leave_view(request):
     leaves = LeaveReportStudent.objects.all()
     context = {
@@ -853,3 +811,104 @@ def delete_announcement(request, announcement_id):
     except:
         messages.error(request, "Failed to Delete Announcement!")
         return redirect('manage_announcement')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def admin_profile(request):
+    username = request.user.get_username()
+    context={
+            'username':username
+        }
+    return render(request, 'oncl_app/profile_templates/admin_profile.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Faculty'])
+def faculty_profile(request):
+    username = request.user.get_username()
+    user = User.objects.get(id=request.user.id)
+    staff = Staffs.objects.get(user=user)
+    context={
+            'username':username, 'staff':staff, "user": user
+        }
+    return render(request, 'oncl_app/profile_templates/faculty_profile.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Student'])
+def student_profile(request):
+    username = request.user.get_username()
+    user = User.objects.get(id=request.user.id)
+    student = Students.objects.get(user=user)
+    context = {
+            'username':username, 'student':student, "user": user
+        }
+    return render(request, 'oncl_app/profile_templates/student_profile.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin','Librarian'])
+def upload(request):
+    if request.method == 'POST':
+        form = MyfileUploadForm(request.POST,request.FILES)
+        if form.is_valid():
+            book_id = form.cleaned_data['book_id']
+            book_name = form.cleaned_data['book_name']
+            book_author = form.cleaned_data['book_author']
+            book_desc = form.cleaned_data['book_desc']
+            book_pub_date = form.cleaned_data['book_pub_date']
+            book_pic = form.cleaned_data['book_pic']
+            book_file = form.cleaned_data['book_file']
+            book_tag1 = form.cleaned_data['book_tag1']
+            book_tag2 = form.cleaned_data['book_tag2']
+            book_tag3 = form.cleaned_data['book_tag3']
+            book_tag4 = form.cleaned_data['book_tag4']
+
+            file_upload(book_id = book_id,
+                        book_name = book_name, 
+                        book_author = book_author, 
+                        book_desc = book_desc,
+                        book_pub_date = book_pub_date,
+                        book_pic = book_pic,
+                        book_file = book_file,
+                        book_tag1 = book_tag1,
+                        book_tag2 = book_tag2,
+                        book_tag3 = book_tag3,
+                        book_tag4 = book_tag4).save()
+            return HttpResponse("Book Uploaded")
+        else:
+            return HttpResponse('error')
+    else:
+        context={
+            'form': MyfileUploadForm()
+        }
+        return render(request, "upload.html",context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
+def view_books(request):
+    all_data = file_upload.objects.all()
+    context = {
+        'data':all_data
+    }
+    return render(request,'oncl_app/E-Library/view_books.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
+def search(request):
+    if request.method == 'POST':
+        now = datetime.datetime.now()
+        query = request.POST['search']
+        books = file_upload.objects.filter(
+            Q(book_id__contains=query) | Q(book_name__contains=query) | 
+            Q(book_author__contains=query) | Q(book_desc__contains=query) | 
+            Q(book_pub_date__contains=query) | Q(book_tag1__contains=query) | 
+            Q(book_tag2__contains=query) | Q(book_tag3__contains=query) | 
+            Q(book_tag4__contains=query))
+        now1 = datetime.datetime.now()
+        cal_time = (now1 - now).total_seconds()
+
+        return render(request, 'oncl_app/E-Library/search_books.html', {'books': books, 'cal_time':cal_time})
+    else:
+        all_data = file_upload.objects.all()
+        context = {
+            'data': all_data 
+        }
+        return render(request, 'view.html', context)
