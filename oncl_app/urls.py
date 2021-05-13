@@ -1,3 +1,4 @@
+from os import name
 from django.urls import path, re_path
 from django.contrib.auth import views as auth_views
 from .views import TaskList, TaskCreate, TaskUpdate, DeleteView, TaskReorder, PCS_Cloud_List, PCS_Cloud_Detail, PCS_Cloud_Create, PCS_Cloud_Update, PCS_Cloud_Delete
@@ -106,7 +107,15 @@ urlpatterns = [
     path('edit_announcement/<announcement_id>/', views.edit_announcement, name="edit_announcement"),
     path('edit_announcement_save/', views.edit_announcement_save, name="edit_announcement_save"),
     path('delete_announcement/<announcement_id>/', views.delete_announcement, name="delete_announcement"),
+
+    path('admin_profile/',views.admin_profile,name="admin_profile"),
+    path('faculty_profile/',views.faculty_profile,name="faculty_profile"),
+    path('student_profile/',views.student_profile,name="student_profile"),
+
+    path('upload/',views.upload,name="upload"),
+    path('view/',views.view_books,name="view"),
+    path('search',views.search,name="search"),
     
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
-    re_path(r'^.*\.*', views.pages, name='pages'),
+    # re_path(r'^.*\.*', views.pages, name='pages'),
 ]
