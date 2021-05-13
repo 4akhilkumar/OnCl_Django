@@ -26,4 +26,17 @@ class StaffsForm(forms.ModelForm):
 class StudentsForm(forms.ModelForm):
     class Meta:
         model = Students
-        fields = ('gender','address',)
+        fields = ('branch','gender','address','phone','git_link','website_link','linkedin_link','twitter_link','bio') 
+
+class MyfileUploadForm(forms.Form):
+    book_id = forms.CharField(widget=forms.TextInput())
+    book_name = forms.CharField(widget=forms.TextInput())
+    book_author = forms.CharField(widget=forms.TextInput())
+    book_pub_date = forms.CharField(widget=forms.TextInput())
+    book_desc = forms.CharField(widget=forms.Textarea)
+    book_tag1 = forms.CharField(widget=forms.TextInput())
+    book_tag2 = forms.CharField(widget=forms.TextInput())
+    book_tag3 = forms.CharField(widget=forms.TextInput())
+    book_tag4 = forms.CharField(widget=forms.TextInput())
+    book_pic = forms.FileField(widget=forms.FileInput())
+    book_file = forms.FileField(widget=forms.FileInput())
