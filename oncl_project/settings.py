@@ -141,6 +141,9 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+MEDIA_URL = '/files/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/files')
+
 #SMTP Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -161,8 +164,8 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-# TIME = False
-SESSION_EXPIRE_AT_BROWSER_CLOSE= True
+# TIME = 7200 
+# SESSION_EXPIRE_AT_BROWSER_CLOSE= True
 # SESSION_COOKIE_AGE = TIME
 # SESSION_IDLE_TIMEOUT = TIME
-PASSWORD_RESET_TIMEOUT_DAYS = 0.00694444
+# PASSWORD_RESET_TIMEOUT_DAYS = 0.00694444
