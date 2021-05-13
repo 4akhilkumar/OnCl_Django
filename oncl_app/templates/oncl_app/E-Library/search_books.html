@@ -1,0 +1,91 @@
+{% extends "oncl_app/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<title>E - Library | E - Books | OnCl - Edu. Cloud</title>
+
+<style>
+    a {
+        text-decoration: none;
+        font-weight: bolder;
+    }
+    a:hover {
+        text-decoration: none;
+    }
+    .search_bar_custom {
+        display: flex;
+        justify-content: space-around;
+        padding: 50px 0 50px 0;
+    }
+</style>
+
+<link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
+
+<script src="https://kit.fontawesome.com/f64de7b412.js" crossorigin="anonymous"></script>
+<div class="search_bar_custom">
+  <div class="content">
+    <form method="POST" action="/search">
+      <div class="search">
+        {% csrf_token %}
+        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Books...">
+        <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
+      </div>
+    </form>
+  </div>
+</div>
+<div style="text-align: center; font-weight: bolder;">
+  {% if books.count == 0 %}
+  <p>It looks like there aren't many great matches for your search</p>
+  <p>Tip: Try using words that might appear on the book that you’re looking for. For example, 'Author Name', 'Any related keywords of the book'.</p>
+  {% else %}
+  <p>About {{ books.count}} result{{ books.count|pluralize:"s" }} found in ({{cal_time}}) seconds </p>
+  {% endif %}
+</div>
+
+<div class="main">
+    <ul class="cards">
+    {% for book in books %}
+    <li class="cards_item">
+        <div class="card">
+            <div class="card_icon"><span><img src="{{book.book_pic.url}}" alt="book_cover" style="object-fit: cover; height: 250px;"></span></div>
+            <div class="card_content">
+                   <h2 class="card_title">{{book.book_name}}</h2>
+                   <p class="card_text"></p>
+                   <p class="card_text"><b>Book By</b> <a href="https://www.google.com/search?q={{book.book_author}}" target="_blank">{{book.book_author}}</a></p>
+                   <p class="card_text">{{book.book_desc}}</p>
+                   <p class="card_text">
+                       <div style="display: flex; font-size: 0.7rem; font-weight: bolder; flex-direction: row; flex-wrap: wrap; align-content: space-between; justify-content: space-evenly; align-items: center;">
+                        <div>
+                            <p style="background-color: #F1516C; color: #fff; padding: 5px; text-align: center; border-radius: 15px;"> {{book.book_tag1}} </p>
+                           </div>
+                            <div>
+                                <p style="background-color: #5f95eb; color: #fff; padding: 5px; text-align: center; border-radius: 15px;"> {{book.book_tag2}} </p>
+                            </div>
+                            <div>
+                                <p style="background-color: #76e989; color: #fff; padding: 5px; text-align: center; border-radius: 15px;"> {{book.book_tag3}} </p>
+                            </div>
+                            <div>
+                                <p style="background-color: #fcc834; color: #fff; padding: 5px; text-align: center; border-radius: 15px;"> {{book.book_tag4}} </p>
+                            </div>
+                       </div>
+                   </p>
+                   <p class="card_text">
+                       <div style="display: flex; justify-content: space-between">
+                           <div>
+                            <a href="{{book.book_file.url}}">Download Book</a>
+                           </div>
+                           <div>
+                            <a href="{{book.book_file.url}}">Preview Book</a>
+                           </div>
+                       </div>
+                   </p>
+             </div>
+       </div>
+    </li>
+    {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
