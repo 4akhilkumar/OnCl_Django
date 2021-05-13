@@ -32,7 +32,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 
 from .models import *
-from .forms import CreateUserForm, ContactForm, PositionForm, StaffsForm, StudentsForm
 from .forms import CreateUserForm, ContactForm, PositionForm, StaffsForm, StudentsForm, MyfileUploadForm
 from .decorators import unauthenticated_user, allowed_users
 
@@ -517,6 +516,8 @@ def delete_subject(request, subject_id):
         messages.error(request, "Failed to Delete Subject!")
         return redirect('manage_subject')
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def add_staff(request):
     form = CreateUserForm()
     staff_form = StaffsForm()
@@ -546,6 +547,8 @@ def add_staff(request):
     context = {'form':form, 'staff_form':staff_form}        
     return render(request, "oncl_app/admin_templates/faculty_templates/add_faculty.html", context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def manage_staff(request):
     staffs = Staffs.objects.all()
     context = {
@@ -553,6 +556,8 @@ def manage_staff(request):
     }
     return render(request, "oncl_app/admin_templates/faculty_templates/manage_faculty.html", context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def edit_staff(request, staff_id):
     staff = Staffs.objects.get(user=staff_id)
 
@@ -562,6 +567,8 @@ def edit_staff(request, staff_id):
     }
     return render(request, "oncl_app/admin_templates/faculty_templates/edit_faculty.html", context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def edit_staff_save(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -597,6 +604,8 @@ def edit_staff_save(request):
             messages.error(request, "Failed to Update Faculty!")
             return redirect('/edit_staff/'+staff_id+"/")
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def delete_staff(request, staff_id):
     staff = Staffs.objects.get(user=staff_id)
     try:
@@ -608,6 +617,8 @@ def delete_staff(request, staff_id):
         messages.error(request, "Failed to Delete Faculty!")
         return redirect('manage_staff')
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def add_student(request):
     form = CreateUserForm()
     student_form = StudentsForm()
@@ -637,6 +648,8 @@ def add_student(request):
     context = {'form':form, 'student_form':student_form}        
     return render(request, "oncl_app/admin_templates/student_templates/add_student.html", context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def manage_student(request):
     students = Students.objects.all()
     context = {
@@ -644,6 +657,8 @@ def manage_student(request):
     }
     return render(request, "oncl_app/admin_templates/student_templates/manage_student.html", context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def edit_student(request, student_id):
     student = Students.objects.get(user=student_id)
 
@@ -653,6 +668,8 @@ def edit_student(request, student_id):
     }
     return render(request, "oncl_app/admin_templates/student_templates/edit_student.html", context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def edit_student_save(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -687,6 +704,8 @@ def edit_student_save(request):
             messages.error(request, "Failed to Update Student!")
             return redirect('/edit_student/'+student_id+"/")
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def delete_student(request, student_id):
     student = Students.objects.get(user=student_id)
     try:
@@ -707,18 +726,24 @@ def student_leave_view(request):
     }
     return render(request, 'oncl_app/admin_templates/permission_templates/student_permissions.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def student_leave_approve(request, leave_id):
     leave = LeaveReportStudent.objects.get(id=leave_id)
     leave.leave_status = 1
     leave.save()
     return redirect('student_leave_view')
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def student_leave_reject(request, leave_id):
     leave = LeaveReportStudent.objects.get(id=leave_id)
     leave.leave_status = 2
     leave.save()
     return redirect('student_leave_view')
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def staff_leave_view(request):
     leaves = LeaveReportStaff.objects.all()
     context = {
@@ -726,12 +751,16 @@ def staff_leave_view(request):
     }
     return render(request, 'oncl_app/admin_templates/permission_templates/faculty_permissions.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def staff_leave_approve(request, leave_id):
     leave = LeaveReportStaff.objects.get(id=leave_id)
     leave.leave_status = 1
     leave.save()
     return redirect('staff_leave_view')
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def staff_leave_reject(request, leave_id):
     leave = LeaveReportStaff.objects.get(id=leave_id)
     leave.leave_status = 2
@@ -739,12 +768,12 @@ def staff_leave_reject(request, leave_id):
     return redirect('staff_leave_view')
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin','Faculty'])
 def add_announcement(request):
     return render(request, "oncl_app/admin_templates/announcements_templates/add_announcement.html")
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin','Faculty'])
 def add_announcement_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method!")
@@ -761,7 +790,7 @@ def add_announcement_save(request):
             return redirect('add_announcement')
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin','Faculty','Student'])
 def manage_announcement(request):
     announcements = Announcements_news.objects.all()
     context = {
@@ -770,7 +799,7 @@ def manage_announcement(request):
     return render(request, 'oncl_app/admin_templates/announcements_templates/manage_announcements.html', context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin','Faculty'])
 def edit_announcement(request, announcement_id):
     announcement = Announcements_news.objects.get(id=announcement_id)
     context = {
@@ -780,7 +809,7 @@ def edit_announcement(request, announcement_id):
     return render(request, 'oncl_app/admin_templates/announcements_templates/edit_announcement.html', context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin','Faculty'])
 def edit_announcement_save(request):
     if request.method != "POST":
         HttpResponse("Invalid Method")
@@ -801,7 +830,7 @@ def edit_announcement_save(request):
             return redirect('/edit_announcement/'+announcement_id+'/')
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin','Faculty'])
 def delete_announcement(request, announcement_id):
     announcement = Announcements_news.objects.get(id=announcement_id)
     try:
