@@ -417,7 +417,7 @@ def delete_branch(request, branch_id):
 @allowed_users(allowed_roles=['Admin'])
 def add_subject(request):
     courses = Branches.objects.all()
-    staffs = User.objects.filter(is_staff=True)
+    staffs = User.objects.filter(groups='2')
     context = {
         "courses": courses,
         "staffs": staffs
@@ -462,7 +462,7 @@ def manage_subject(request):
 def edit_subject(request, subject_id):
     subject = Subjects.objects.get(id=subject_id)
     courses = Branches.objects.all()
-    staffs = User.objects.filter(is_staff=True)
+    staffs = User.objects.filter(groups='2')
     context = {
         "subject": subject,
         "courses": courses,
