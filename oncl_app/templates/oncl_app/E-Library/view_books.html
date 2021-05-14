@@ -45,7 +45,17 @@
             <div class="card_content">
                    <h2 class="card_title">{{book.book_name}}</h2>
                    <p class="card_text"></p>
-                   <p class="card_text"><b>Book By</b> <a href="https://www.google.com/search?q={{book.book_author}}" target="_blank">{{book.book_author}}</a></p>
+                   <p class="card_text"><b>Book By</b> <a href="https://www.google.com/search?q={{book.book_author}}" target="_blank">{{book.book_author}}</a><b> 
+                    
+                    {% if book.book_pub_date|length == 4 %}
+                    in
+                    {% else %}
+                    on 
+                    {% endif %}
+                    
+                    {{book.book_pub_date}}
+
+                    </b></p>
                    <p class="card_text">{{book.book_desc}}</p>
                    <p class="card_text">
                        <div style="display: flex; font-size: 0.7rem; font-weight: bolder; flex-direction: row; flex-wrap: wrap; align-content: space-between; justify-content: space-evenly; align-items: center;">
