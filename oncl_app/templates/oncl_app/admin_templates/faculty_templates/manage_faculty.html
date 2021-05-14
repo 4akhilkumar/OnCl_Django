@@ -1,107 +1,230 @@
+{% extends "oncl_app/base.html" %}
+
+{% block content %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Faculty</title>
+<title>Manage Faculty Info.</title>
 
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-            padding: 10px;
-        }
-    </style>
-</head>
-<body>
-    <section class="content">
-        <div class="container-fluid">
+<style>
+a {
+    font-weight: bolder;
+    text-decoration: none;
+}
 
-            <a class="btn btn-primary" href="{% url 'add_staff' %}" role="button">Add Staff</a> <br/>&nbsp;
+a:hover {
+    text-decoration: none;
+}
 
-            {% if messages %}
-                                <div class="form-group">
-                                <div class="col-12">
-                                    {% for message in messages %}
-                                    {% if message.tags == "error" %}
-                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                                        {{ message }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        </div>
-                                    {% elif message.tags == "success" %}
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                                        {{ message }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        </div>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                                </div>
-                                {% endif %}
-                                
+body {
+  line-height: 1.25;
+}
 
-            <div class="row">
+table {
+  border: 2px solid #6c757d87;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
 
-                <div class="col-md-12">
-                    <!-- general form elements -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Faculty Details</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap">
-                            <thead>
-                                <tr>
-                                <th>ID</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Gender</th>
-                                <th>Address</th>
-                                <th>Last Login</th>
-                                <th>Date Joined</th>
-                                <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for staff in staffs %}
-                                <tr>
-                                <td>{{ staff.user.id }}</td>
-                                <td>{{ staff.user.first_name }}</td>
-                                <td>{{ staff.user.last_name }}</td>
-                                <td>{{ staff.user.username }}</td>
-                                <td>{{ staff.user.email }}</td>
-                                <td>{{ staff.gender }}</td>
-                                <td>{{ staff.address }}</td>
-                                <td>{{ staff.user.last_login }}</td>
-                                <td>{{ staff.user.date_joined }}</td>
-                                <td>
-                                    <a href="{% url 'edit_staff' staff.user.id %}" class="btn btn-success">Edit</a> 
-                                    <a href="{% url 'delete_staff' staff.user.id %}" class="btn btn-danger">Delete</a>
-                                </td>
-                                </tr>
-                                {% endfor %}
-                                
-                            </tbody>
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
-                        </div>
-                    <!-- /.card -->
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
 
-                </div>
-            </div>
+table tr {
+  background-color: #FFF;
+  border: 1px solid #6c757d87;
+  padding: .35em;
+}
 
-        </div><!-- /.container-fluid -->
-      </section>
-</body>
-</html>
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background-color: #6c757d87;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+  
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #6c757d87;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #6c757d87;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+.edit_button {
+    color: #fcc834;
+}
+
+.delete_button {
+    color: #F1615C;
+}
+
+@media only screen and (min-width: 601px) {
+    .outlined {
+        border-left: 2px solid var(--gray);
+    }
+}
+
+.search_bar_custom {
+  display: flex;
+  justify-content: space-around;
+  padding: 50px 0 50px 0;
+}
+</style>
+
+<link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
+
+<script src="https://kit.fontawesome.com/f64de7b412.js" crossorigin="anonymous"></script>
+<div class="search_bar_custom">
+    <div class="content">
+    <form method="POST" action="/search_faculty">
+      <div class="search">
+        {% csrf_token %}
+        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Faculty Info...">
+        <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
+      </div>
+    </form>
+    </div>
+</div>
+
+<div style="padding: 30px 10px 10px 10px; display: flex; justify-content: space-between;">
+    <div class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+        <a href="{% url 'add_staff' %}" style="text-decoration: none; font-size: 1rem; color: #000;"><i class="fas fa-chalkboard-teacher"></i> Add Faculty</a>
+    </div>
+    <div onclick="exportTableToCSV('Faculty_Info.csv')" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+      <span style="text-decoration: none; font-size: 1rem; color: #000;"><b>Export <i class="fas fa-file-csv"></i> File</b></span>
+    </div>
+</div>
+
+
+<div style="padding: 10px;">
+    <table>
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Address</th>
+            <th scope="col">Last Login</th>
+            <!-- <th scope="col">Date Joined</th> -->
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for staff in staffs %}
+          <tr>
+            <td data-label="ID">{{ staff.user.id }}</td>
+            <td data-label="First Name">{{staff.user.first_name}}</td>
+            <td data-label="Last Name">{{ staff.user.last_name }}</td>
+            <td data-label="Username">{{ staff.user.username }}</td>
+            <td data-label="Email"><a href="mailto:{{ staff.user.email }}">{{ staff.user.email }}</a></td>
+            <td data-label="Gender">{{ staff.gender }}</td>
+            <td data-label="Address">{{ staff.address }}</td>
+            <td data-label="Last Login">{{ staff.user.last_login }}</td>
+            <!-- <td data-label="Date Joined">{{ staff.user.date_joined }}</td> -->
+            <td data-label="Action" class="outlined">
+                <a class="edit_button" href="{% url 'edit_staff' staff.user.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp; <br>
+                <a class="delete_button" href="{% url 'delete_staff' staff.user.id %}"><i class="fas fa-trash"></i> Delete</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+  function exportTableToCSV(filename) {
+    var csv = [];
+    var rows = document.querySelectorAll("table tr");
+    
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+        
+        for (var j = 0; j < cols.length; j++) 
+            row.push(cols[j].innerText);
+        
+        csv.push(row.join(","));        
+    }
+
+    // Download CSV file
+    downloadCSV(csv.join("\n"), filename);
+}
+
+function downloadCSV(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV file
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+
+    // Click download link
+    downloadLink.click();
+}
+</script>
+
+{% endblock %}

@@ -4,7 +4,7 @@
 
 {% load static %}
 
-<title>Manage Announcements | OnCl - Edu. Cloud</title>
+<title>Search Result - Announcements</title>
 
 <style>
 a {
@@ -134,6 +134,18 @@ table th {
     </div>
 </div>
 
+<div style="text-align: center; font-weight: bolder;">
+  {% if announcements.count == 0 %}
+  <p>It looks like there aren't many great matches for your search</p>
+  <p>Tip: Try using words that might appear on the book that you’re looking for. For example, 'Subject', 'Any related keywords of the Announcement(s)'.</p>
+  {% else %}
+  <p>About {{ announcements.count}} result{{ announcements.count|pluralize:"s" }} found in ({{cal_time}}) seconds </p>
+  {% endif %}
+</div>
+
+{% if announcements.count == 0 %}
+
+{% else %}
 <div style="padding: 30px 0px 10px 10px;">
     <div onclick="add_announcement()" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
         <a href="{% url 'add_announcement' %}" style="text-decoration: none; color: #000;"><i class="fas fa-bullhorn"></i> Make Announcement</a>
@@ -154,10 +166,11 @@ table th {
             {% endif %}
           </tr>
         </thead>
-        <tbody>
+        {% endif %}
         {% for announcement in announcements %}
+        <tbody>
           <tr>
-            <td data-label="ID"><b>{{ announcement.id }}</b></td>
+            <td data-label="ID">{{ announcement.id }}</td>
             <td data-label="Subject"><b>{{announcement.sub_an}}</b></td>
             <td data-label="announcement">{{ announcement.what_an }}</td>
             <td data-label="created_at">{{ announcement.created_at }}</td>
@@ -169,8 +182,8 @@ table th {
             </td>
             {% endif %}
           </tr>
-          {% endfor %}
         </tbody>
+        {% endfor %}
     </table>
 </div>
 
