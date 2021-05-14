@@ -956,3 +956,111 @@ def search(request):
             'data': all_data 
         }
         return render(request, 'view.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def search_announcements(request):
+    if request.method == 'POST':
+        now = datetime.datetime.now()
+        query = request.POST['search']
+        announcements = Announcements_news.objects.filter(
+            Q(sub_an__contains=query) | Q(what_an__contains=query) | 
+            Q(created_at__contains=query) | Q(updated_at__contains=query))
+        now1 = datetime.datetime.now()
+        cal_time = (now1 - now).total_seconds()
+
+        return render(request, 'oncl_app/admin_templates/announcements_templates/search_announcements.html', {'announcements': announcements, 'cal_time':cal_time})
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def search_faculty(request):
+    if request.method == 'POST':
+        now = datetime.datetime.now()
+        query = request.POST['search']
+        staff = Staffs.objects.filter(Q(gender__contains=query) | Q(address__contains=query))
+
+        now1 = datetime.datetime.now()
+        cal_time = (now1 - now).total_seconds()
+
+        return render(request, 'oncl_app/admin_templates/faculty_templates/search_faculty.html', {'staffs': staff, 'cal_time':cal_time})
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def search_student(request):
+    if request.method == 'POST':
+        now = datetime.datetime.now()
+        query = request.POST['search']
+        student = Students.objects.filter(
+            Q(branch__contains=query) | Q(address__contains=query) |
+            Q(gender__contains=query) | Q(phone__contains=query) |
+            Q(linkedin_link__contains=query) | Q(twitter_link__contains=query) |
+            Q(git_link__contains=query) | Q(website_link__contains=query))
+
+        now1 = datetime.datetime.now()
+        cal_time = (now1 - now).total_seconds()
+
+        return render(request, 'oncl_app/admin_templates/student_templates/search_student.html', {'students': student, 'cal_time':cal_time})
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin','Faculty'])
+def upload_session(request):
+    if request.method == 'POST':
+        form = SessionUploadForm(request.POST,request.FILES)
+        if form.is_valid():
+            session_id = form.cleaned_data['session_id']
+            session_name = form.cleaned_data['session_name']
+            session_author = form.cleaned_data['session_author']
+            session_desc = form.cleaned_data['session_desc']
+            session_pub_date = form.cleaned_data['session_pub_date']
+            session_pic = form.cleaned_data['session_pic']
+            session_file = form.cleaned_data['session_file']
+            session_tag1 = form.cleaned_data['session_tag1']
+            session_tag2 = form.cleaned_data['session_tag2']
+            session_tag3 = form.cleaned_data['session_tag3']
+            session_tag4 = form.cleaned_data['session_tag4']
+
+            PCS_Cloud(session_id = session_id,
+                        session_name = session_name, 
+                        session_author = session_author, 
+                        session_desc = session_desc,
+                        session_pub_date = session_pub_date,
+                        session_pic = session_pic,
+                        session_file = session_file,
+                        session_tag1 = session_tag1,
+                        session_tag2 = session_tag2,
+                        session_tag3 = session_tag3,
+                        session_tag4 = session_tag4).save()
+            return HttpResponse("session Uploaded")
+        else:
+            return HttpResponse('error')
+    else:
+        context={
+            'form': SessionUploadForm()
+        }
+        return render(request, "oncl_app/PCS_Cloud/upload_session.html",context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
+def view_session(request):
+    all_data = PCS_Cloud.objects.all()
+    context = {
+        'data':all_data
+    }
+    return render(request,'oncl_app/PCS_Cloud/view_sessions.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
+def search_session(request):
+    if request.method == 'POST':
+        now = datetime.datetime.now()
+        query = request.POST['search']
+        sessions = PCS_Cloud.objects.filter(
+            Q(session_id__contains=query) | Q(session_name__contains=query) | 
+            Q(session_author__contains=query) | Q(session_desc__contains=query) | 
+            Q(session_pub_date__contains=query) | Q(session_tag1__contains=query) | 
+            Q(session_tag2__contains=query) | Q(session_tag3__contains=query) | 
+            Q(session_tag4__contains=query))
+        now1 = datetime.datetime.now()
+        cal_time = (now1 - now).total_seconds()
+
+        return render(request, 'oncl_app/PCS_Cloud/search_sessions.html', {'sessions': sessions, 'cal_time':cal_time})
