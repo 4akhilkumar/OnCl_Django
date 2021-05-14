@@ -4,22 +4,6 @@ from django.contrib.auth.models import User
 # Note: If migrations didn't detected then use this command -> py manage.py makemigrations app_name
 
 # Create your models here.
-class PCS_Cloud(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    course_name = models.CharField(max_length=200)
-    topics = models.TextField(max_length=200, null=True, blank=True)
-    url = models.TextField(max_length=200, null=True, blank=True)
-    time = models.DateTimeField(auto_now_add=True)
-    faculty_name = models.CharField(max_length=200)
-    faculty_email = models.CharField(max_length=200)
-    faculty_phno = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.course_name
-    
-    class Meta:
-        order_with_respect_to = 'user'
-
 class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=200)
@@ -80,7 +64,7 @@ class Students(models.Model):
     linkedin_link = models.TextField(default="Not Updated Yet!")
     twitter_link = models.TextField(default="Not Updated Yet!")
     bio = models.TextField(default="Not Updated Yet!")
-    profile_pic = models.ImageField(null=True, blank=True)
+    profile_pic = models.ImageField(null=True, blank=True, default="avatar.webp")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
@@ -132,3 +116,20 @@ class file_upload(models.Model):
 
     def __str__(self):
         return self.book_name
+
+class PCS_Cloud(models.Model):
+    id = models.AutoField(primary_key=True)
+    session_id = models.CharField(max_length=100,default="Not ProvidedYet!")
+    session_name = models.CharField(max_length=50,default="Not ProvidedYet!")
+    session_author = models.CharField(max_length=50,default="Not ProvidedYet!")
+    session_pub_date = models.CharField(max_length=20,default="Not ProvidedYet!")
+    session_desc = models.TextField(max_length=255,default="Not ProvidedYet!")
+    session_tag1 = models.CharField(max_length=20,default="Not ProvidedYet!")
+    session_tag2 = models.CharField(max_length=20,default="Not ProvidedYet!")
+    session_tag3 = models.CharField(max_length=20,default="Not ProvidedYet!")
+    session_tag4 = models.CharField(max_length=20,default="Not ProvidedYet!")
+    session_pic = models.ImageField(null=True, blank=True, default="session_default.png")
+    session_file = models.FileField(upload_to='sessions/', default="")
+
+    def __str__(self):
+        return self.session_name
