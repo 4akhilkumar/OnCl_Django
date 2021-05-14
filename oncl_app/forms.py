@@ -26,7 +26,7 @@ class StaffsForm(forms.ModelForm):
 class StudentsForm(forms.ModelForm):
     class Meta:
         model = Students
-        fields = ('branch','gender','address','phone','git_link','website_link','linkedin_link','twitter_link','bio') 
+        fields = ('branch','gender','address','phone','git_link','website_link','linkedin_link','bio','profile_pic') 
 
 class MyfileUploadForm(forms.Form):
     book_id = forms.CharField(widget=forms.TextInput())
