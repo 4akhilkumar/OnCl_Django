@@ -32,7 +32,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 
 from .models import *
-from .forms import CreateUserForm, ContactForm, PositionForm, StaffsForm, StudentsForm, MyfileUploadForm
+from .forms import CreateUserForm, ContactForm, PositionForm, StaffsForm, StudentsForm, MyfileUploadForm, SessionUploadForm
 from .decorators import unauthenticated_user, allowed_users
 
 # Create your views here.
@@ -199,11 +199,10 @@ class TaskList(LoginRequiredMixin, ListView):
         context['tasks'] = context['tasks'].filter(user=self.request.user)
         context['count'] = context['tasks'].filter(complete=False).count()
 
-        search_input = self.request.GET.get('search-area') or ''
-        if search_input:
-            context['tasks'] = context['tasks'].filter(title__startswith=search_input)
-
-        context['search_input'] = search_input
+        query = self.request.GET.get('search-area') or ''
+        if query:
+            context['tasks'] = context['tasks'].filter(Q(title__contains=query) | Q(description__contains=query))
+        context['search_input'] = query
 
         return context
 
@@ -831,10 +830,12 @@ def edit_announcement_save(request):
     else:
         announcement_id = request.POST.get('announcement_id')
         what_an = request.POST.get('announcement')
+        sub_an = request.POST.get('sub_an')
 
         try:
             announcement = Announcements_news.objects.get(id=announcement_id)
             announcement.what_an = what_an
+            announcement.sub_an = sub_an
             announcement.save()
 
             messages.success(request, "Announcement Updated Successfully!")
