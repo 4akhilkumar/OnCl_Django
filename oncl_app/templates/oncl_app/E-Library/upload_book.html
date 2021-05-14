@@ -1,0 +1,182 @@
+{% extends "oncl_app/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animate/animate.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/main.css' %}">
+
+<title>Upload Book | OnCl - Edu. Cloud</title>
+
+<style>
+label {
+  background-color: #6c757d1a;
+  color: #555555;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  cursor: pointer;
+  display: inline-block;
+}
+
+#file-chosen, #file-chosen2{
+  margin-left: 0.3rem;
+}
+
+a {
+    text-decoration: none;
+    font-weight: bolder;
+}
+a:hover {
+    text-decoration: none;
+}
+
+/* Styles for Navbar */
+.bg-light {
+	background-color: #ffffff!important;
+	box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+}
+</style>
+
+<div class="limiter">
+  <div class="container-login100" style="background-color: #e3f2fd;">
+    <div class="wrap-login100 p-l-40 p-r-40 p-t-55 p-b-55" style="border-color: #64b5f6;">
+      <form class="login100-form validate-form flex-sb flex-w" method="POST" action="" enctype="multipart/form-data">
+        <span class="login100-form-title p-b-32">
+          <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;Upload Book | OnCl
+        </span>
+        {% csrf_token %}
+        <span class="txt1 p-b-11">
+          <i class="fab fa-ideal"></i>&nbsp;Book ID
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="book_id" required id="id_book_id" placeholder="Book ID">
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-book"></i>&nbsp;Book Name
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="book_name" required id="id_book_name" placeholder="Book Name">
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-feather-alt"></i>&nbsp;Book Author
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="book_author" required id="id_book_author" placeholder="Book Author">
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-calendar-day"></i>&nbsp;Book Publish Date
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="book_pub_date" required id="id_book_pub_date" placeholder="Book Publish Date E.g. 11 April 2004">
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-align-left"></i>&nbsp;Book Description
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <textarea class="input100" name="book_desc" maxlength="200" style="padding: 15px 25px 0 25px; height: 150px;"  placeholder="Book Description" id="id_book_desc" required>{{task.description}}</textarea>
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-tags"></i>&nbsp;Book Tags
+        </span>
+        <div class="wrap-input100 validate-input m-b-20" style="display: flex;">
+          <input class="input100" name="book_tag1" maxlength="20" required id="id_book_tag1" placeholder="Book Tag 1">
+          <span class="focus-input100"></span>
+          <input class="input100" name="book_tag2" maxlength="20" required id="id_book_tag2" placeholder="Book Tag 2">
+          <span class="focus-input100"></span>
+        </div>
+        <div class="wrap-input100 validate-input m-b-20" style="display: flex;">
+          <input class="input100" name="book_tag3" maxlength="20" required id="id_book_tag3" placeholder="Book Tag 3">
+          <span class="focus-input100"></span>
+          <input class="input100" name="book_tag4" maxlength="20" required id="id_book_tag4" placeholder="Book Tag 4">
+          <span class="focus-input100"></span>
+        </div>       
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-image"></i>&nbsp;Upload Book Cover
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input type="file" name="book_pic" id="id_book_pic" hidden/>
+          <label for="id_book_pic">Choose Image</label>
+          <span id="file-chosen"><b>No Image Chosen</b></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-file"></i>&nbsp;Upload Book File
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input type="file" name="book_file" id="id_book_file" hidden/>
+          <label for="id_book_file">Choose File</label>
+          <span id="file-chosen2"><b>No File Chosen</b></span>
+        </div>
+
+        <div class="container-login100-form-btn" style="justify-content: space-between">
+          <button class="login100-form-btn" style="border-radius: 6px; background-color: #ef5350;" type="submit" value="">
+            <i class="fas fa-file-upload"></i>&nbsp;Upload Book
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--===============================================================================================-->
+<script src="{% static 'oncl_app/login_register/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/login_register/vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/login_register/vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/login_register/vendor/daterangepicker/moment.min.js' %}"></script>
+	<script src="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/login_register/vendor/countdowntime/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/login_register/js/main.js' %}"></script>
+
+
+<script>
+    const actualBtn = document.getElementById('id_book_pic');    
+    const fileChosen = document.getElementById('file-chosen');
+    actualBtn.addEventListener('change', function(){
+      fileChosen.textContent = this.files[0].name
+    })
+
+    const actualBtn2 = document.getElementById('id_book_file');    
+    const fileChosen2 = document.getElementById('file-chosen2');
+    actualBtn2.addEventListener('change', function(){
+      fileChosen2.textContent = this.files[0].name
+    })
+</script>
+
+{% endblock %}
