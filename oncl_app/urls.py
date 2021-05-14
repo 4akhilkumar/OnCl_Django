@@ -112,9 +112,9 @@ urlpatterns = [
     path('faculty_profile/',views.faculty_profile,name="faculty_profile"),
     path('student_profile/',views.student_profile,name="student_profile"),
 
-    path('upload/',views.upload,name="upload"),
-    path('view/',views.view_books,name="view"),
-    path('search',views.search,name="search"),
+    path('upload_book/',views.upload,name="upload"),
+    path('view_book/',views.view_books,name="view"),
+    path('search_book',views.search,name="search"),
 
     path('upload_session/',views.upload_session,name="upload_session"),
     path('view_session/',views.view_session,name="view_session"),
