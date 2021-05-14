@@ -1,0 +1,83 @@
+{% extends "oncl_app/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<title>PCS Cloud | OnCl - Edu. Cloud</title>
+
+<style>
+    a {
+        text-decoration: none;
+        font-weight: bolder;
+    }
+    a:hover {
+        text-decoration: none;
+    }
+    .search_bar_custom {
+        display: flex;
+        justify-content: space-around;
+        padding: 50px 0 50px 0;
+    }
+</style>
+
+<link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
+
+<script src="https://kit.fontawesome.com/f64de7b412.js" crossorigin="anonymous"></script>
+<div class="search_bar_custom">
+    <div class="content">
+    <form method="POST" action="/search_session">
+      <div class="search">
+        {% csrf_token %}
+        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Sessions...">
+        <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
+      </div>
+    </form>
+    </div>
+</div>
+
+<div class="main">
+    <ul class="cards">
+    {% for session in data %}
+    <li class="cards_item">
+        <div class="card">
+            <div class="card_icon"><span><img src="{{session.session_pic.url}}" alt="session_cover" style="object-fit: cover; width: 100%; height: 250px;"></span></div>
+            <div class="card_content">
+                   <h2 class="card_title">{{session.session_name}}</h2>
+                   <p class="card_text"></p>
+                   <p class="card_text"><b>Session By</b> <a href="https://www.google.com/search?q={{session.session_author}}" target="_blank">{{session.session_author}}</a> <b>on {{session.session_pub_date}}</b></p>
+                   <p class="card_text">{{session.session_desc}}</p>
+                   <p class="card_text">
+                       <div style="display: flex; font-size: 0.7rem; font-weight: bolder; flex-direction: row; flex-wrap: wrap; align-content: space-between; justify-content: space-evenly; align-items: center;">
+                        <div>
+                            <p style="background-color: #F1516C; color: #fff; padding: 5px; text-align: center; border-radius: 15px;"> {{session.session_tag1}} </p>
+                           </div>
+                            <div>
+                                <p style="background-color: #5f95eb; color: #fff; padding: 5px; text-align: center; border-radius: 15px;"> {{session.session_tag2}} </p>
+                            </div>
+                            <div>
+                                <p style="background-color: #76e989; color: #fff; padding: 5px; text-align: center; border-radius: 15px;"> {{session.session_tag3}} </p>
+                            </div>
+                            <div>
+                                <p style="background-color: #fcc834; color: #fff; padding: 5px; text-align: center; border-radius: 15px;"> {{session.session_tag4}} </p>
+                            </div>
+                       </div>
+                   </p>
+                   <p class="card_text">
+                       <div style="display: flex; justify-content: space-between">
+                           <div>
+                            <a href="{{session.session_file.url}}">Download Session</a>
+                           </div>
+                           <div>
+                            <a href="{{session.session_file.url}}">Preview Session</a>
+                           </div>
+                       </div>
+                   </p>
+             </div>
+       </div>
+    </li>
+    {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
