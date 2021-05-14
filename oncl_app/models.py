@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     complete = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
@@ -25,14 +25,14 @@ class Semester(models.Model):
 
 class Branches(models.Model):
     id = models.AutoField(primary_key=True)
-    branch_name = models.CharField(max_length=255)
+    branch_name = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
 class Subjects(models.Model):
     id =models.AutoField(primary_key=True)
-    subject_name = models.CharField(max_length=255)
+    subject_name = models.CharField(max_length=50)
     course_id = models.ForeignKey(Branches, on_delete=models.CASCADE, default=1)
     staff_id = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -58,11 +58,10 @@ class Students(models.Model):
     branch = models.CharField(max_length=100, default="Not Updated Yet!")
     gender = models.CharField(max_length=50, default="Not Updated Yet!")
     address = models.TextField(default="Not Updated Yet!")
-    phone = models.TextField(default="Not Updated Yet!")
-    git_link = models.TextField(default="Not Updated Yet!")
-    website_link = models.TextField(default="Not Updated Yet!")
-    linkedin_link = models.TextField(default="Not Updated Yet!")
-    twitter_link = models.TextField(default="Not Updated Yet!")
+    phone = models.CharField(max_length=50, default="Not Updated Yet!")
+    git_link = models.CharField(max_length=50, default="Not Updated Yet!")
+    website_link = models.CharField(max_length=50, default="Not Updated Yet!")
+    linkedin_link = models.CharField(max_length=50, default="Not Updated Yet!")
     bio = models.TextField(default="Not Updated Yet!")
     profile_pic = models.ImageField(null=True, blank=True, default="avatar.webp")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -75,7 +74,7 @@ class Students(models.Model):
 class LeaveReportStudent(models.Model):
     id = models.AutoField(primary_key=True)
     student_id = models.ForeignKey(Students, on_delete=models.CASCADE)
-    leave_date = models.CharField(max_length=255)
+    leave_date = models.CharField(max_length=50)
     leave_message = models.TextField()
     leave_status = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -85,7 +84,7 @@ class LeaveReportStudent(models.Model):
 class LeaveReportStaff(models.Model):
     id = models.AutoField(primary_key=True)
     staff_id = models.ForeignKey(Staffs, on_delete=models.CASCADE)
-    leave_date = models.CharField(max_length=255)
+    leave_date = models.CharField(max_length=50)
     leave_message = models.TextField()
     leave_status = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -111,7 +110,7 @@ class file_upload(models.Model):
     book_tag2 = models.CharField(max_length=20,default="Not ProvidedYet!")
     book_tag3 = models.CharField(max_length=20,default="Not ProvidedYet!")
     book_tag4 = models.CharField(max_length=20,default="Not ProvidedYet!")
-    book_pic = models.ImageField(null=True, blank=True)
+    book_pic = models.ImageField(null=True, blank=True, default='book.jpeg')
     book_file = models.FileField(upload_to='books/')
 
     def __str__(self):
@@ -128,7 +127,7 @@ class PCS_Cloud(models.Model):
     session_tag2 = models.CharField(max_length=20,default="Not ProvidedYet!")
     session_tag3 = models.CharField(max_length=20,default="Not ProvidedYet!")
     session_tag4 = models.CharField(max_length=20,default="Not ProvidedYet!")
-    session_pic = models.ImageField(null=True, blank=True, default="session_default.png")
+    session_pic = models.ImageField(null=True, blank=True, default="session.jpeg")
     session_file = models.FileField(upload_to='sessions/', default="")
 
     def __str__(self):
