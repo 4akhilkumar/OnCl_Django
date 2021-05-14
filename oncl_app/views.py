@@ -685,8 +685,8 @@ def edit_student_save(request):
         git_link = request.POST.get('git_link')
         website_link = request.POST.get('website_link')
         linkedin_link = request.POST.get('linkedin_link')
-        twitter_link = request.POST.get('twitter_link')
         bio = request.POST.get('bio')
+        profile_pic = request.POST.get('profile_pic')
 
         try:
             # INSERTING into User Model
@@ -706,8 +706,8 @@ def edit_student_save(request):
             student_model.git_link = git_link
             student_model.website_link = website_link
             student_model.linkedin_link = linkedin_link
-            student_model.twitter_link = twitter_link
             student_model.bio = bio
+            student_model.profile_pic = profile_pic
             student_model.save()
 
             messages.success(request, "Student Updated Successfully.")
@@ -917,14 +917,14 @@ def upload(request):
                         book_tag2 = book_tag2,
                         book_tag3 = book_tag3,
                         book_tag4 = book_tag4).save()
-            return HttpResponse("Book Uploaded")
+            return HttpResponse("Book Uploaded Successfully.")
         else:
-            return HttpResponse('error')
+            return HttpResponse('Failed to Upload Book!')
     else:
         context={
             'form': MyfileUploadForm()
         }
-        return render(request, "upload.html",context)
+        return render(request, "oncl_app/E-Library/upload_book.html",context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
@@ -1031,9 +1031,9 @@ def upload_session(request):
                         session_tag2 = session_tag2,
                         session_tag3 = session_tag3,
                         session_tag4 = session_tag4).save()
-            return HttpResponse("session Uploaded")
+            return HttpResponse("Session Uploaded Successfully.")
         else:
-            return HttpResponse('error')
+            return HttpResponse('Failed to Upload Session!')
     else:
         context={
             'form': SessionUploadForm()
