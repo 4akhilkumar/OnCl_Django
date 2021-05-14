@@ -115,6 +115,16 @@ urlpatterns = [
     path('upload/',views.upload,name="upload"),
     path('view/',views.view_books,name="view"),
     path('search',views.search,name="search"),
+
+    path('upload_session/',views.upload_session,name="upload_session"),
+    path('view_session/',views.view_session,name="view_session"),
+    path('search_session',views.search_session,name="search_session"),
+
+    path('search_announcements',views.search_announcements, name="search_announcements"),
+
+    path('search_faculty',views.search_faculty, name="search_faculty"),
+
+    path('search_student',views.search_student, name="search_student"),
     
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     # re_path(r'^.*\.*', views.pages, name='pages'),
