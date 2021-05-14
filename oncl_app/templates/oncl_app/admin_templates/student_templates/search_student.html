@@ -1,0 +1,239 @@
+{% extends "oncl_app/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<title>Manage Student Info.</title>
+
+<style>
+a {
+    font-weight: bolder;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+body {
+  line-height: 1.25;
+}
+
+table {
+  border: 2px solid #6c757d87;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+  background-color: #FFF;
+  border: 1px solid #6c757d87;
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background-color: #6c757d87;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+  
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #6c757d87;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #6c757d87;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+.edit_button {
+    color: #fcc834;
+}
+
+.delete_button {
+    color: #F1615C;
+}
+
+@media only screen and (min-width: 601px) {
+    .outlined {
+        border-left: 2px solid var(--gray);
+    }
+}
+
+@media only screen and (min-width: 601px) {
+    .inlined {
+        border-right: 2px solid var(--gray);
+    }
+}
+
+.search_bar_custom {
+  display: flex;
+  justify-content: space-around;
+  padding: 50px 0 50px 0;
+}
+
+img {
+    border-radius: 10%;
+}
+
+.a_tags {
+    color: #6c757d!important;
+    text-decoration: none;
+    font-size: 30px;
+}
+
+.a_tags:hover {
+    color: #6c757d!important;
+    text-decoration: none;
+}
+
+.a_tag_address {
+    color: #6c757d!important;
+    text-decoration: none;
+}
+
+.a_tag_address:hover {
+    color: #6c757d!important;
+    text-decoration: none;
+}
+</style>
+
+<link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
+
+<script src="https://kit.fontawesome.com/f64de7b412.js" crossorigin="anonymous"></script>
+<div class="search_bar_custom">
+    <div class="content">
+    <form method="POST" action="/search_student">
+      <div class="search">
+        {% csrf_token %}
+        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Student Info...">
+        <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
+      </div>
+    </form>
+    </div>
+</div>
+
+<div style="text-align: center; font-weight: bolder;">
+    {% if students.count == 0 %}
+    <p>It looks like there aren't many great matches for your search</p>
+    <p>Tip: Try using words that might appear on the book that you’re looking for. For example, 'Student Name', 'Any related keywords of the Student'.</p>
+    {% else %}
+    <p>About {{ students.count}} result{{ students.count|pluralize:"s" }} found in ({{cal_time}}) seconds </p>
+    {% endif %}
+</div>
+
+{% if students.count == 0 %}
+
+{% else %}
+<div style="padding: 30px 0px 10px 10px;">
+    <div class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+        <a href="{% url 'add_student' %}" style="text-decoration: none; font-size: 20px; color: #000;"><i class="fas fa-user-graduate"></i> Add Student</a>
+    </div>
+</div>
+
+<div style="padding: 10px;">
+    <table>
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Username</th>
+            <th scope="col">Branch</th>
+            <th scope="col">Photo</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Address</th>
+            <th scope="col">GitHub</th>
+            <!-- <th scope="col">Portfolio</th> -->
+            <th scope="col">LinkedIn</th>
+            <th scope="col">Last Login</th>
+            <!-- <th scope="col">Date Joined</th> -->
+            {% if request.user.is_staff %}
+            <th scope="col">Action</th>
+            {% endif %}
+          </tr>
+        </thead>
+        {% endif %}
+        {% for student in students %}
+        <tbody>
+          <tr>
+            <td data-label="ID" class="inlined">{{ student.user.id }}</td>
+            <td data-label="Full Name">{{ student.user.first_name }} {{ student.user.last_name }}</td>
+            <td data-label="Username">{{ student.user.username }}</td>
+            <td data-label="Username">{{ student.branch }}</td>
+            <td data-label="Photo"><img src="{{ student.profile_pic.url }}" alt="Student Photo" width="100px" height="100px"></td>
+            <td data-label="Gender">{{ student.gender }}</td>
+            <td data-label="Email"><a class="a_tags" href="mailto:{{ student.user.email }}"><i class="fas fa-envelope"></i></a></td>
+            <td data-label="Phone"><a class="a_tags" href="tel:Mobile : +91{{ student.phone }}"><i class="fas fa-phone-square"></i></a></td>
+            <td data-label="Address"><a class="a_tag_address" href="https://www.google.com/maps/place/{{student.address}}" target="_blank">{{ student.address }}</a></td>
+            <td data-label="GitHub"> <a class="a_tags" href="https://github.com/{{ student.git_link }}"><i class="fab fa-github"></i></a> </td>
+            <!-- <td data-label="Portfolio"> <a class="a_tags" href="https://{{ student.website_link }}"><i class="fas fa-globe"></i></a> </td> -->
+            <td data-label="LinkedIn"> <a class="a_tags" href="https://www.linkedin.com/in/{{ student.linkedin_link }}"><i class="fab fa-linkedin"></i></a> </td>          
+            <td data-label="Last Login">{{ student.user.last_login }}</td>
+            <!-- <td data-label="Date Joined">{{ student.user.date_joined }}</td> -->
+            {% if request.user.is_staff %}
+            <td data-label="Action" class="outlined">
+                <a class="edit_button" href="{% url 'edit_student' student.user.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp; <br>
+                <a class="delete_button" href="{% url 'delete_student' student.user.id %}"><i class="fas fa-trash"></i> Delete</a>
+            </td>
+            {% endif %}
+          </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
