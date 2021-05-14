@@ -40,3 +40,16 @@ class MyfileUploadForm(forms.Form):
     book_tag4 = forms.CharField(widget=forms.TextInput())
     book_pic = forms.FileField(widget=forms.FileInput())
     book_file = forms.FileField(widget=forms.FileInput())
+
+class SessionUploadForm(forms.Form):
+    session_id = forms.CharField(widget=forms.TextInput())
+    session_name = forms.CharField(widget=forms.TextInput())
+    session_author = forms.CharField(widget=forms.TextInput())
+    session_pub_date = forms.CharField(widget=forms.TextInput())
+    session_desc = forms.CharField(widget=forms.Textarea)
+    session_tag1 = forms.CharField(widget=forms.TextInput())
+    session_tag2 = forms.CharField(widget=forms.TextInput())
+    session_tag3 = forms.CharField(widget=forms.TextInput())
+    session_tag4 = forms.CharField(widget=forms.TextInput())
+    session_pic = forms.FileField(widget=forms.FileInput())
+    session_file = forms.FileField(widget=forms.FileInput())
