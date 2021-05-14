@@ -1,0 +1,194 @@
+{% extends "oncl_app/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<title>Search Result - Faculty Info.</title>
+
+<style>
+a {
+    font-weight: bolder;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+body {
+  line-height: 1.25;
+}
+
+table {
+  border: 2px solid #6c757d87;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+  background-color: #FFF;
+  border: 1px solid #6c757d87;
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background-color: #6c757d87;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+  
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #6c757d87;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #6c757d87;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+.edit_button {
+    color: #fcc834;
+}
+
+.delete_button {
+    color: #F1615C;
+}
+
+@media only screen and (min-width: 601px) {
+    .outlined {
+        border-left: 2px solid var(--gray);
+    }
+}
+
+.search_bar_custom {
+  display: flex;
+  justify-content: space-around;
+  padding: 50px 0 50px 0;
+} 
+</style>
+
+<link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
+
+<script src="https://kit.fontawesome.com/f64de7b412.js" crossorigin="anonymous"></script>
+<div class="search_bar_custom">
+    <div class="content">
+    <form method="POST" action="/search_faculty">
+      <div class="search">
+        {% csrf_token %}
+        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Faculty Info...">
+        <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
+      </div>
+    </form>
+    </div>
+</div>
+
+<div style="text-align: center; font-weight: bolder;">
+    {% if staffs.count == 0 %}
+    <p>It looks like there aren't many great matches for your search</p>
+    <p>Tip: Try using words that might appear on the book that you’re looking for. For example, 'Faculty Name', 'Any related keywords of the Faculty'.</p>
+    {% else %}
+    <p>About {{ staffs.count}} result{{ staffs.count|pluralize:"s" }} found in ({{cal_time}}) seconds </p>
+    {% endif %}
+</div>
+
+{% if staffs.count == 0 %}
+
+{% else %}
+<div style="padding: 30px 0px 10px 10px;">
+    <div class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+        <a href="{% url 'add_staff' %}" style="text-decoration: none; color: #000;"><i class="fas fa-chalkboard-teacher"></i> Add Faculty</a>
+    </div>
+</div>
+
+<div style="padding: 10px;">
+    <table>
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Address</th>
+            <th scope="col">Last Login</th>
+            <th scope="col">Date Joined</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        {% endif %}
+        {% for staff in staffs %}
+        <tbody>
+          <tr>
+            <td data-label="ID">{{ staff.user.id }}</td>
+            <td data-label="First Name">{{staff.user.first_name}}</td>
+            <td data-label="Last Name">{{ staff.user.last_name }}</td>
+            <td data-label="Username">{{ staff.user.username }}</td>
+            <td data-label="Email"><a href="mailto:{{ staff.user.email }}">{{ staff.user.email }}</a></td>
+            <td data-label="Gender">{{ staff.gender }}</td>
+            <td data-label="Address">{{ staff.address }}</td>
+            <td data-label="Last Login">{{ staff.user.last_login }}</td>
+            <td data-label="Date Joined">{{ staff.user.date_joined }}</td>
+            <td data-label="Action" class="outlined">
+                <a class="edit_button" href="{% url 'edit_staff' staff.user.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp; <br>
+                <a class="delete_button" href="{% url 'delete_staff' staff.user.id %}"><i class="fas fa-trash"></i> Delete</a>
+            </td>
+          </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
