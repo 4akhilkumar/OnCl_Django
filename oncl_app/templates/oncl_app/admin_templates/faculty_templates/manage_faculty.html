@@ -173,6 +173,7 @@ table th {
             <td data-label="Last Login">{{ staff.user.last_login }}</td>
             <!-- <td data-label="Date Joined">{{ staff.user.date_joined }}</td> -->
             <td data-label="Action" class="outlined">
+              <a href="{% url 'view_staff' staff.user.id %}" target="_blank"><i class="fas fa-eye"></i> View</a> &nbsp; <br>
                 <a class="edit_button" href="{% url 'edit_staff' staff.user.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp; <br>
                 <a class="delete_button" href="{% url 'delete_staff' staff.user.id %}"><i class="fas fa-trash"></i> Delete</a>
             </td>
