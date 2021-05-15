@@ -828,7 +828,7 @@ def add_announcement_save(request):
             return redirect('add_announcement')
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin','Faculty','Student'])
+@allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
 def manage_announcement(request):
     announcements = Announcements_news.objects.all()
     context = {
@@ -980,10 +980,10 @@ def search(request):
         context = {
             'data': all_data 
         }
-        return render(request, 'view.html', context)
+        return render(request, 'oncl_app/E-Library/view_books.html', context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
 def search_announcements(request):
     if request.method == 'POST':
         now = datetime.datetime.now()
