@@ -58,7 +58,7 @@ a:hover {
 <div class="limiter">
   <div class="container-login100" style="background-color: #e3f2fd;">
     <div class="wrap-login100 p-l-40 p-r-40 p-t-55 p-b-55" style="border-color: #64b5f6;">
-      <form class="login100-form validate-form flex-sb flex-w" method="POST" action="{% url 'edit_staff_save' %}">
+      <form class="login100-form validate-form flex-sb flex-w" method="POST" action="" enctype="multipart/form-data">
         <span class="login100-form-title p-b-32">
           <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;Add Faculty Info.
         </span>
@@ -230,7 +230,7 @@ a:hover {
           <i class="fas fa-image"></i>&nbsp;Upload Faculty Photo
         </span>
         <div class="wrap-input100 validate-input m-b-20">
-          <input type="file" name="profile_pic" value="{{ staff.profile_pic.url }}" id="id_profile_pic" hidden/>
+          <input type="file" name="profile_pic" accept="image/*" id="id_profile_pic" hidden/>
           <label for="id_profile_pic">Choose Image</label>
           <span id="file-chosen"><b>No Image Chosen</b></span>
         </div>
