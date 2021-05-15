@@ -144,3 +144,8 @@ class PCS_Cloud(models.Model):
 
     def __str__(self):
         return self.session_name
+
+class Gender_model(models.Model):
+    id = models.AutoField(primary_key=True)
+    gender = models.CharField(max_length=11,default="")
+    objects = models.Manager()
