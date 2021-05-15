@@ -21,12 +21,12 @@ class ContactForm(forms.Form):
 class StaffsForm(forms.ModelForm):
     class Meta:
         model = Staffs
-        fields = ('gender','address',)
+        fields = ('gender','phone','address','branch','qualification','designation','git_link','website_link','linkedin_link','orcid_link','researcher_link','gscholar_link','microsoft_academic_link','bio','profile_pic')
 
 class StudentsForm(forms.ModelForm):
     class Meta:
         model = Students
-        fields = ('branch','gender','address','phone','git_link','website_link','linkedin_link','bio','profile_pic') 
+        fields = ('gender','phone','address','branch','git_link','website_link','linkedin_link','bio','profile_pic') 
 
 class MyfileUploadForm(forms.Form):
     book_id = forms.CharField(widget=forms.TextInput())
