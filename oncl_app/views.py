@@ -568,6 +568,17 @@ def edit_staff(request, staff_id):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
+def view_staff(request, staff_id):
+    staff = Staffs.objects.get(user=staff_id)
+
+    context = {
+        "staff": staff,
+        "id": staff_id
+    }
+    return render(request, "oncl_app/profile_templates/admin_faculty_view_profile.html", context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def edit_staff_save(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -577,8 +588,21 @@ def edit_staff_save(request):
         email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        address = request.POST.get('address')
         gender = request.POST.get('gender')
+        phone = request.POST.get('phone')
+        qualification = request.POST.get('qualification')
+        branch = request.POST.get('branch')
+        desgination = request.POST.get('desgination')
+        address = request.POST.get('address')
+        git_link = request.POST.get('git_link')
+        website_link = request.POST.get('website_link')
+        linkedin_link = request.POST.get('linkedin_link')
+        orcid_link = request.POST.get('orcid_link')
+        researcher_link = request.POST.get('researcher_link')
+        gscholar_link = request.POST.get('gscholar_link')
+        microsoft_academic_link = request.POST.get('microsoft_academic_link')
+        bio = request.POST.get('bio')
+        profile_pic = request.POST.get('profile_pic')
 
         try:
             # INSERTING into User Model
@@ -591,8 +615,21 @@ def edit_staff_save(request):
             
             # INSERTING into Staff Model
             staff_model = Staffs.objects.get(user=staff_id)
-            staff_model.address = address
             staff_model.gender = gender
+            staff_model.phone = phone
+            staff_model.bio = bio
+            staff_model.branch = branch
+            staff_model.desgination = desgination
+            staff_model.address = address
+            staff_model.qualification = qualification
+            staff_model.profile_pic = profile_pic
+            staff_model.git_link = git_link
+            staff_model.website_link = website_link
+            staff_model.linkedin_link = linkedin_link
+            staff_model.orcid_link = orcid_link
+            staff_model.researcher_link = researcher_link
+            staff_model.gscholar_link = gscholar_link
+            staff_model.microsoft_academic_link = microsoft_academic_link
             staff_model.save()
 
             messages.success(request, "Faculty Updated Successfully.")
@@ -666,6 +703,17 @@ def edit_student(request, student_id):
         "id": student_id
     }
     return render(request, "oncl_app/admin_templates/student_templates/edit_student.html", context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def view_student(request, student_id):
+    student = Students.objects.get(user=student_id)
+
+    context = {
+        "student": student,
+        "id": student_id
+    }
+    return render(request, "oncl_app/profile_templates/admin_student_view_profile.html", context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
