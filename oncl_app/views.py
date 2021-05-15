@@ -121,7 +121,7 @@ def login_page(request):
         if user is not None:
             login(request, user)
             template = render_to_string('oncl_app/login_register/login_mail.html', {'email':request.user.email})
-            send_mail('OnCl Account Login Alert', template, settings.EMAIL_HOST_USER, [request.user.email], html_message=template)
+            # send_mail('OnCl Account Login Alert', template, settings.EMAIL_HOST_USER, [request.user.email], html_message=template)
             
             group = None
             if request.user.groups.exists():
