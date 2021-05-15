@@ -85,11 +85,13 @@ urlpatterns = [
     path('add_staff/', views.add_staff, name="add_staff"),
     path('manage_staff/', views.manage_staff, name="manage_staff"),
     path('edit_staff/<staff_id>/', views.edit_staff, name="edit_staff"),
+    path('view_staff/<staff_id>/', views.view_staff, name="view_staff"),
     path('edit_staff_save/', views.edit_staff_save, name="edit_staff_save"),
     path('delete_staff/<staff_id>/', views.delete_staff, name="delete_staff"),
 
     path('add_student/', views.add_student, name="add_student"),
     path('edit_student/<student_id>/', views.edit_student, name="edit_student"),
+    path('view_student/<student_id>/', views.view_student, name="view_student"),
     path('edit_student_save/', views.edit_student_save, name="edit_student_save"),
     path('manage_student/', views.manage_student, name="manage_student"),
     path('delete_student/<student_id>/', views.delete_student, name="delete_student"),
