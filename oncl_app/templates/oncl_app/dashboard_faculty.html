@@ -406,7 +406,7 @@ h1 {
 
 	<div class="main">
 		<ul class="cards">
-		  <li class="cards_item">
+		  <li class="cards_item" onclick="view_session()">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #4285f4; margin-top: 10%;" class="material-icons"> video_library </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #bbdefb 40%, #FFFFFF 100%);">
@@ -452,7 +452,7 @@ h1 {
 			</div>
 		  </li>
 		  <li class="cards_item">
-			<div class="card" onload="view_elibrary()">
+			<div class="card" onclick="view_elibrary()">
 			  <div class="card_icon"><span style="font-size: 100px; color: #757575; margin-top: 10%;" class="material-icons"> library_books </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #bdbdbd 40%, #FFFFFF 100%);">
 				<h2 class="card_title">E - Library</h2>
@@ -489,6 +489,9 @@ h1 {
 	  }
 	  function view_elibrary() {
 		  window.open("{% url 'view' %}");
+	  }
+	  function view_session() {
+		  window.open("{% url 'view_session' %}");
 	  }
   </script>
 
