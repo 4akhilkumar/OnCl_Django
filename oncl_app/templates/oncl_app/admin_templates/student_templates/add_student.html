@@ -67,7 +67,7 @@ a:hover {
           <i class="fas fa-id-badge"></i>&nbsp;Username
         </span>
         <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="username" value="{{ student.user.username }}" required id="id_username" placeholder="Username">
+          <input class="input100" name="username" required id="id_username" placeholder="Username">
           <span class="focus-input100"></span>
         </div>
 
@@ -75,7 +75,7 @@ a:hover {
           <i class="fas fa-envelope"></i>&nbsp;Email
         </span>
         <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="email" value="{{ student.user.email }}" required id="id_email" placeholder="E - Mail">
+          <input class="input100" name="email" required id="id_email" placeholder="E - Mail">
           <span class="focus-input100"></span>
         </div>
 
@@ -116,7 +116,12 @@ a:hover {
           <i class="fas fa-venus-mars"></i>&nbsp;Gender
         </span>
         <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="gender" value="{{ student.gender }}" required id="id_gender" placeholder="Gender">
+          <select class="input100" name="gender" id="id_gender" required>
+            <option value="">Select Gender</option>
+            {% for gen in gender_model %}
+            <option value="{{ gen.gender }}">{{ gen.gender }}</option>
+            {% endfor %}
+          </select>
           <span class="focus-input100"></span>
         </div>
 
@@ -132,7 +137,12 @@ a:hover {
           <i class="fas fa-code-branch"></i>&nbsp;Branch
         </span>
         <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="branch" value="{{ student.branch }}" required id="id_branch" placeholder="Branch">
+          <select class="input100" name="branch" required id="id_branch">
+            <option value="">Select Branch</option>
+            {% for b in branch %}
+            <option value="{{ b.branch }}">{{ b.branch }}</option>
+            {% endfor %}
+          </select>
           <span class="focus-input100"></span>
         </div>
 
