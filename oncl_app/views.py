@@ -166,30 +166,6 @@ def dashboard_admin_page(request):
 	username = request.user.get_username()
 	return render(request, 'oncl_app/dashboard_admin.html', {'username':username})
 
-class PCS_Cloud_List(ListView):
-    model = PCS_Cloud
-    context_object_name = 'sessions'
-
-class PCS_Cloud_Detail(DetailView):
-    model = PCS_Cloud
-    context_object_name = 'session'
-    template_name = 'oncl_app/PCS_cloud/session.html'
-
-class PCS_Cloud_Create(CreateView):
-    model = PCS_Cloud
-    fields = '__all__'
-    success_url = reverse_lazy('pcs_cloud')
-
-class PCS_Cloud_Update(UpdateView):
-    model = PCS_Cloud
-    fields = '__all__'
-    success_url = reverse_lazy('pcs_cloud')
-
-class PCS_Cloud_Delete(DeleteView):
-    model = PCS_Cloud
-    context_object_name = 'session'
-    success_url = reverse_lazy('pcs_cloud')
-
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = 'tasks'
