@@ -25,7 +25,7 @@ class Semester(models.Model):
 
 class Branches(models.Model):
     id = models.AutoField(primary_key=True)
-    branch_name = models.CharField(max_length=50)
+    branch = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
