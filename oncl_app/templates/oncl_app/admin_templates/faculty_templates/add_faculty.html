@@ -1,107 +1,274 @@
+{% extends "oncl_app/base.html" %}
+
+{% block content %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Faculty</title>
-</head>
-<body>
-    <section class="content">
-        <div class="container-fluid">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animate/animate.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/main.css' %}">
 
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- general form elements -->
-                    <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Add Staff</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <!-- form start -->
-                    <form role="form" method="POST" action="">
-                        {% csrf_token %}
+<title>Add Faculty Info. | OnCl - Edu. Cloud</title>
 
-                        
-                                {% comment %} Display Messages {% endcomment %}
-                                {% if messages %}
-                                <div class="form-group">
-                                <div class="col-12">
-                                    {% for message in messages %}
-                                    {% if message.tags == "error" %}
-                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                                        {{ message }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        </div>
-                                    {% elif message.tags == "success" %}
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                                        {{ message }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        </div>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                                </div>
-                                {% endif %}
-                            
+<style>
+label {
+  background-color: #6c757d1a;
+  color: #555555;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  cursor: pointer;
+  display: inline-block;
+}
 
-                        <!-- <div class="card-body">
-                            <div class="form-group">
-                                <label>Email address</label>
-                                <input type="email" class="form-control" name="email" value="surya@gmail.com" placeholder="Enter email" id="id_email">
-                            </div>
+#file-chosen {
+  margin-left: 0.3rem;
+}
 
-                            <div class="form-group">
-                                <label>Username</label>
-                                <input type="text" class="form-control" name="username" value="surya" placeholder="Username" id="id_username">
-                            </div>
+a {
+    text-decoration: none;
+    font-weight: bolder;
+}
+a:hover {
+    text-decoration: none;
+}
 
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input type="password" class="form-control" name="password" value="ONCLaccount@21" placeholder="Password">
-                            </div>
+/* Styles for Navbar */
+.bg-light {
+	background-color: #ffffff!important;
+	box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+}
+</style>
 
-                            <div class="form-group">
-                                <label>First Name</label>
-                                <input type="text" class="form-control" name="first_name" value="surya kiran" placeholder="First Name">
-                            </div>
+<div class="limiter">
+  <div class="container-login100" style="background-color: #e3f2fd;">
+    <div class="wrap-login100 p-l-40 p-r-40 p-t-55 p-b-55" style="border-color: #64b5f6;">
+      <form class="login100-form validate-form flex-sb flex-w" method="POST" action="{% url 'edit_staff_save' %}">
+        <span class="login100-form-title p-b-32">
+          <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;Add Faculty Info.
+        </span>
+        {% csrf_token %}
+        <span class="txt1 p-b-11">
+          <i class="fas fa-id-badge"></i>&nbsp;Username
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="username" value="{{ staff.user.username }}" required id="id_username" placeholder="Username">
+          <span class="focus-input100"></span>
+        </div>
 
-                            <div class="form-group">
-                                <label>Last Name</label>
-                                <input type="text" class="form-control" name="last_name" value="j" placeholder="Last Name">
-                            </div>
+        <span class="txt1 p-b-11">
+          <i class="fas fa-envelope"></i>&nbsp;Email
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="email" value="{{ staff.user.email }}" required id="id_email" placeholder="E - Mail">
+          <span class="focus-input100"></span>
+        </div>
 
-                            <div class="form-group">
-                                <label>Address</label>
-                                <textarea class="form-control" name="address" placeholder="Address">India</textarea>
-                            </div> -->
+        <span class="txt1 p-b-11">
+          <i class="fas fa-user"></i>&nbsp;First Name
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="first_name" value="{{ staff.user.first_name }}" required id="id_first_name" placeholder="First Name">
+          <span class="focus-input100"></span>
+        </div>
 
-                            {{form.as_p}}
-                            {{staff_form.as_p}}
+        <span class="txt1 p-b-11">
+          <i class="fas fa-user"></i>&nbsp;Last Name
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="last_name" value="{{ staff.user.last_name }}" required id="id_last_name" placeholder="Last Name">
+          <input type="hidden" name="staff_id" value="{{ staff.user.id }}" />
+          <span class="focus-input100"></span>
+        </div>
 
-                            
+        <span class="txt1 p-b-11">
+          <i class="fas fa-user"></i>&nbsp;Password
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="password1" value="{{ staff.user.password1 }}" required id="id_password1" placeholder="Password">
+          <input type="hidden" name="staff_id" value="{{ staff.user.id }}" />
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-user"></i>&nbsp;Confirm Password
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="password2" value="{{ staff.user.password2 }}" required id="id_password2" placeholder="Confirm Password">
+          <input type="hidden" name="staff_id" value="{{ staff.user.id }}" />
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-venus-mars"></i>&nbsp;Gender
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="gender" value="{{ staff.gender }}" required id="id_gender" placeholder="Gender">
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+            <i class="fas fa-phone-square"></i>&nbsp;Phone
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+            <input class="input100" name="phone" value="{{ staff.phone }}" required id="id_phone" placeholder="Phone">
+            <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-map-marked-alt"></i>&nbsp;Address
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <textarea class="input100" name="address" maxlength="200" style="padding: 15px 25px 0 25px; height: 150px;"  placeholder="Address" id="id_address" required>{{ staff.address }}</textarea>
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-code-branch"></i>&nbsp;Branch
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="branch" value="{{ staff.branch }}" required id="id_branch" placeholder="Branch">
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+            <i class="fas fa-certificate"></i>&nbsp;Qualification
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+            <input class="input100" name="qualification" value="{{ staff.qualification }}" required id="id_qualification" placeholder="Qualification">
+            <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-stream"></i>&nbsp;Designation
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="designation" value="{{ staff.designation }}" required id="id_designation" placeholder="Designation">
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fab fa-github"></i>&nbsp;GitHub
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="git_link" value="{{ staff.git_link }}" required id="id_git_link" placeholder="GitHub">
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fab fa-linkedin"></i>&nbsp;LinkedIn
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="linkedin_link" value="{{ staff.linkedin_link }}" required id="id_linkedin_link" placeholder="LinkedIn">
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+            <i class="fab fa-orcid"></i>&nbsp;Orcid ID
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+            <input class="input100" name="orcid_link" value="{{ staff.orcid_link }}" required id="id_orcid_link" placeholder="Orcid ID">
+            <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+            <i class="fab fa-researchgate"></i>&nbsp;Researcher ID
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+            <input class="input100" name="researcher_link" value="{{ staff.researcher_link }}" required id="id_researcher_link" placeholder="Researcher ID">
+            <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+            <i class="fab fa-google"></i>&nbsp;Google Scholar ID
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+            <input class="input100" name="gscholar_link" value="{{ staff.gscholar_link }}" required id="id_gscholar_link" placeholder="Google Scholar ID">
+            <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+            <i class="fab fa-microsoft"></i>&nbsp;Microsoft Academic Search ID
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+            <input class="input100" name="microsoft_academic_link" value="{{ staff.microsoft_academic_link }}" required id="id_microsoft_academic_link" placeholder="Microsoft Academic Search ID">
+            <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-globe"></i>&nbsp;Portfolio
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input class="input100" name="website_link" value="{{ staff.website_link }}" required id="id_website_link" placeholder="Portfolio">
+          <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-align-left"></i>&nbsp;Bio (About)
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <textarea class="input100" name="bio" maxlength="200" style="padding: 15px 25px 0 25px; height: 150px;"  placeholder="Write about yourself...!" id="id_bio" required>{{ staff.bio }}</textarea>
+          <span class="focus-input100"></span>
+        </div>      
+
+        <span class="txt1 p-b-11">
+          <i class="fas fa-image"></i>&nbsp;Upload Faculty Photo
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+          <input type="file" name="profile_pic" value="{{ staff.profile_pic.url }}" id="id_profile_pic" hidden/>
+          <label for="id_profile_pic">Choose Image</label>
+          <span id="file-chosen"><b>No Image Chosen</b></span>
+        </div>
+
+        <div class="container-login100-form-btn" style="justify-content: space-between">
+          <button class="login100-form-btn" style="border-radius: 6px; background-color: #ef5350;" type="submit" value="">
+            <i class="fas fa-user-plus"></i>&nbsp;Add Faculty Info.
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--===============================================================================================-->
+<script src="{% static 'oncl_app/login_register/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/login_register/vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/login_register/vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/login_register/vendor/daterangepicker/moment.min.js' %}"></script>
+	<script src="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/login_register/vendor/countdowntime/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'oncl_app/login_register/js/main.js' %}"></script>
 
 
-                        </div>
-                        <!-- /.card-body -->
+<script>
+    const actualBtn = document.getElementById('id_profile_pic');    
+    const fileChosen = document.getElementById('file-chosen');
+    actualBtn.addEventListener('change', function(){
+      fileChosen.textContent = this.files[0].name
+    })
+</script>
 
-                        <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Add Staff</button>
-                        </div>
-                    </form>
-                    </div>
-                    <!-- /.card -->
-
-                </div>
-            </div>
-
-        </div><!-- /.container-fluid -->
-      </section>
-</body>
-</html>
+{% endblock %}
