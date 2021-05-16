@@ -634,6 +634,8 @@ def delete_staff(request, staff_id):
 def add_student(request):
     form = CreateUserForm()
     student_form = StudentsForm()
+    gender_model = Gender_model.objects.all()
+    branch = Branches.objects.all()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         student_form = StudentsForm(request.POST)
@@ -657,7 +659,7 @@ def add_student(request):
             form = CreateUserForm()
             student_form = StudentsForm()
 
-    context = {'form':form, 'student_form':student_form}        
+    context = {'form':form, 'student_form':student_form, 'gender_model':gender_model, 'branch':branch}        
     return render(request, "oncl_app/admin_templates/student_templates/add_student.html", context)
 
 @login_required(login_url='login')
