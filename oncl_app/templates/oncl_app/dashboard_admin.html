@@ -388,11 +388,12 @@ h1 {
 				 </li>
 		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="{% url 'admin_profile' %}">My Profile</a></li>
 				 <div role="none" class="dropdown-divider"></div>
+				 <li><span><i class="fas fa-chart-bar"></i> </span> <a href="{% url 'aca_stats' %}" target="_blank">Acadmic Stats</a></li>
 				 <li><span><i class="fas fa-school"></i></span> <a href="{% url 'manage_semester' %}" target="_blank">Sem. Mgmt.</a></li>
 				 <li><span><i class="fas fa-code-branch"></i></span> <a href="{% url 'manage_branch' %}" target="_blank">Branch Mgmt.</a></li>
 				 <li><span><i class="fas fa-book"></i> </span> <a href="{% url 'manage_subject' %}" target="_blank">subjects Mgmt.</a></li>
-				 <li><span><i class="fas fa-hand-paper"></i> </span> <a href="#" target="_blank">Attendance</a></li>
-				 <li><span><i class="fas fa-fist-raised"></i> </span> <a href="#" target="_blank">Leave Info.</a></li>
+				 <li><span><i class="fas fa-fist-raised"></i> <i class="fas fa-user-graduate"></i> </span> <a href="{% url 'student_leave_view' %}" target="_blank">Leave Info.</a></li>
+				 <li><span><i class="fas fa-fist-raised"></i> <i class="fas fa-chalkboard-teacher"></i> </span> <a href="{% url 'staff_leave_view' %}" target="_blank">Leave Info.</a></li>
 				 <div role="none" class="dropdown-divider"></div>
 				 <li><span><i class="far fa-list-alt"></i> </span> <a href="{% url 'tasks' %}" target="_blank">To Do List</a></li>
 				 <li><span><i class="fas fa-music"></i> </span> <a href="{% url 'audio' %}" target="_blank">FAR Space</a></li>
