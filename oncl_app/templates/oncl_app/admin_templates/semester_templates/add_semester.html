@@ -1,53 +1,106 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Semester Session</title>
-</head>
-<body>
-    <h3 class="card-title">Add Semester Session</h3>
-    <form role="form" method="POST" action="{% url 'add_semester_save' %}">
-        {% csrf_token %}        
-                {% comment %} Display Messages {% endcomment %}
-                {% if messages %}
-                <div class="form-group">
-                <div class="col-12">
-                    {% for message in messages %}
-                    {% if message.tags == "error" %}
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                        {{ message }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        </div>
-                    {% elif message.tags == "success" %}
-                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                        {{ message }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        </div>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-                </div>
-                {% endif %}
-        <div class="card-body">
-            <div class="form-group">
-                <label>Semester Start Year </label>
-                <input type="date" class="form-control" name="semester_start_year" required>
-            </div>
+{% extends "oncl_app/base.html" %}
 
-            <div class="form-group">
-                <label>Semester End Year </label>
-                <input type="date" class="form-control" name="semester_end_year" required>
-            </div>
+{% block content %}
+
+{% load static %}
+
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animate/animate.css' %}">
+<!--===============================================================================================-->	
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->	
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/main.css' %}">
+
+<title>Create Semester | OnCl - Edu. Cloud</title>
+
+<style>
+label {
+    background-color: #6c757d1a;
+    color: #555555;
+    padding: 0.5rem;
+    font-family: sans-serif;
+    cursor: pointer;
+    display: inline-block;
+}
+
+a {
+    text-decoration: none;
+    font-weight: bolder;
+}
+a:hover {
+    text-decoration: none;
+}
+
+/* Styles for Navbar */
+.bg-light {
+    background-color: #ffffff!important;
+    box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+}
+</style>
+
+<div class="limiter">
+    <div class="container-login100" style="background-color: #e3f2fd;">
+    <div class="wrap-login100 p-l-40 p-r-40 p-t-55 p-b-55" style="border-color: #64b5f6;">
+        <form class="login100-form validate-form flex-sb flex-w" method="POST" action="{% url 'add_semester_save' %}">
+        <span class="login100-form-title p-b-32">
+            <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;Semester | OnCl
+        </span>
+        {% csrf_token %}
+
+        <span class="txt1 p-b-11">
+            <i class="fas fa-hourglass-start"></i>&nbsp;Semester Start Year
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+            <input class="input100" type="date" name="semester_start_year" required id="id_semester_start_year" placeholder="Semester Start Year">
+            <span class="focus-input100"></span>
         </div>
-        <div class="card-footer">
-        <button type="submit" class="btn btn-primary">Add Semester</button>
+
+        <span class="txt1 p-b-11">
+            <i class="fas fa-hourglass-end"></i>&nbsp;Semester End Year
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+            <input class="input100" type="date" name="semester_end_year" required id="id_semester_end_year" placeholder="Semester End Year">
+            <span class="focus-input100"></span>
         </div>
-    </form>
-</body>
-</html>
+
+        <div class="container-login100-form-btn" style="justify-content: space-between">
+            <button class="login100-form-btn" style="border-radius: 6px; background-color: #ef5350;" type="submit" value="">
+            <i class="fas fa-plus-square"></i>&nbsp; Create Semester
+            </button>
+        </div>
+        </form>
+    </div>
+    </div>
+</div>
+
+<!--===============================================================================================-->
+<script src="{% static 'oncl_app/login_register/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/popper.js' %}"></script>
+    <script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/daterangepicker/moment.min.js' %}"></script>
+    <script src="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/countdowntime/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/js/main.js' %}"></script>
+
+{% endblock %}

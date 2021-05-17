@@ -164,7 +164,8 @@ a:hover {
           <i class="fas fa-image"></i>&nbsp;Upload Student Photo
         </span>
         <div class="wrap-input100 validate-input m-b-20">
-          <input type="file" name="profile_pic" value="{{ student.profile_pic.url }}" id="id_profile_pic" hidden/>
+          <input type="file" name="profile_pic" id="id_profile_pic" hidden/>
+          <!-- <input type="file" name="profile_pic" accept="image/*" id="id_profile_pic"> -->
           <label for="id_profile_pic">Choose Image</label>
           <span id="file-chosen"><b>No Image Chosen</b></span>
         </div>
