@@ -90,13 +90,6 @@ urlpatterns = [
     path('manage_student/', views.manage_student, name="manage_student"),
     path('delete_student/<student_id>/', views.delete_student, name="delete_student"),
 
-    path('student_leave_view/', views.student_leave_view, name="student_leave_view"),
-    path('student_leave_approve/<leave_id>/', views.student_leave_approve, name="student_leave_approve"),
-    path('student_leave_reject/<leave_id>/', views.student_leave_reject, name="student_leave_reject"),
-    path('staff_leave_view/', views.staff_leave_view, name="staff_leave_view"),
-    path('staff_leave_approve/<leave_id>/', views.staff_leave_approve, name="staff_leave_approve"),
-    path('staff_leave_reject/<leave_id>/', views.staff_leave_reject, name="staff_leave_reject"),
-
     path('add_announcement/', views.add_announcement, name="add_announcement"),
     path('add_announcement_save/', views.add_announcement_save, name="add_announcement_save"),
     path('manage_announcement/', views.manage_announcement, name="manage_announcement"),
@@ -121,6 +114,22 @@ urlpatterns = [
     path('search_faculty',views.search_faculty, name="search_faculty"),
 
     path('search_student',views.search_student, name="search_student"),
+
+    path('aca_stats/',views.aca_stats,name="aca_stats"),
+
+    path('student_leave_view/', views.student_leave_view, name="student_leave_view"),
+    path('student_leave_approve/<leave_id>/', views.student_leave_approve, name="student_leave_approve"),
+    path('student_leave_reject/<leave_id>/', views.student_leave_reject, name="student_leave_reject"),
+
+    path('student_apply_leave/', views.student_apply_leave, name="student_apply_leave"),
+    path('student_apply_leave_save/', views.student_apply_leave_save, name="student_apply_leave_save"),
+
+    path('staff_leave_view/', views.staff_leave_view, name="staff_leave_view"),
+    path('staff_leave_approve/<leave_id>/', views.staff_leave_approve, name="staff_leave_approve"),
+    path('staff_leave_reject/<leave_id>/', views.staff_leave_reject, name="staff_leave_reject"),
+
+    path('staff_apply_leave/', views.staff_apply_leave, name="staff_apply_leave"),
+    path('staff_apply_leave_save/', views.staff_apply_leave_save, name="staff_apply_leave_save"),
     
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     # re_path(r'^.*\.*', views.pages, name='pages'),
