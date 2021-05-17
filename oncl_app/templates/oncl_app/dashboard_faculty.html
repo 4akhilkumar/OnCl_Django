@@ -386,15 +386,16 @@ h1 {
 					<div style="padding-top: 1px; padding: 0px;"> Signed in as </div>
 					<div>{{username}}</div>
 				 </li>
-		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="{% url 'faculty_profile' %}">My Profile</a></li>
+		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="{% url 'faculty_profile' %}" target="_blank">My Profile</a></li>
 				 <div role="none" class="dropdown-divider"></div>
-				 <li><span><i class="fas fa-photo-video"></i> </span> <a href="{% url 'view_session' %}">PCS Cloud</a></li>
+				 <li><span><i class="fas fa-photo-video"></i> </span> <a href="{% url 'view_session' %}" target="_blank">PCS Cloud</a></li>
 				 <li><span><i class="far fa-edit"></i> </span> <a href="#">Exams</a></li>
 				 <li><span><i class="far fa-calendar-alt"></i> </span> <a href="#">Schedule</a></li>
-				 <li><span><i class="fas fa-book"></i> </span> <a href="#">E - Library</a></li>
+				 <li><span><i class="fas fa-book"></i> </span> <a href="{% url 'view' %}" target="_blank">E - Library</a></li>
+				 <li><span><i class="fas fa-fist-raised"></i> <i class="fas fa-chalkboard-teacher"></i> </span> <a href="{% url 'staff_apply_leave' %}" target="_blank">Leave Info.</a></li>
 				 <div role="none" class="dropdown-divider"></div>
-				 <li><span><i class="far fa-list-alt"></i> </span> <a href="{% url 'tasks' %}">To Do List</a></li>
-				 <li><span><i class="fas fa-music"></i> </span> <a href="{% url 'audio' %}">FAR Space</a></li>
+				 <li><span><i class="far fa-list-alt"></i> </span> <a href="{% url 'tasks' %}" target="_blank">To Do List</a></li>
+				 <li><span><i class="fas fa-music"></i> </span> <a href="{% url 'audio' %}" target="_blank">FAR Space</a></li>
 				 <div role="none" class="dropdown-divider"></div>
 		         <li><span><i class="fas fa-sign-out-alt"></i></span> <a href="{% url 'logout' %}">Logout</a></li>
 		      </ul>
