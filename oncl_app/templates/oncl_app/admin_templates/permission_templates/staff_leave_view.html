@@ -1,0 +1,154 @@
+{% extends "oncl_app/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<title>Faculty Permission(s) Request(s) | OnCl - Edu. Cloud</title>
+
+<style>
+a {
+    font-weight: bolder;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+body {
+  line-height: 1.25;
+}
+
+table {
+  border: 2px solid #6c757d87;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+  background-color: #FFF;
+  border: 1px solid #6c757d87;
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background-color: #6c757d87;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+  
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #6c757d87;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #6c757d87;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+.edit_button {
+    color: #fcc834;
+}
+
+.delete_button {
+    color: #F1615C;
+}
+
+@media only screen and (min-width: 601px) {
+    .outlined {
+        border-left: 2px solid var(--gray);
+    }
+}
+</style>
+
+<div style="padding: 40px 80px 10px 80px;">
+    <table>
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Faculty ID</th>
+            <th scope="col">Faculty Name</th>
+            <th scope="col">Leave Date</th>
+            <th scope="col">Leave Message</th>
+            <th scope="col">Applied On</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        {% for leave in leaves %}
+        <tbody>
+          <tr>
+            <td data-label="">{{ leave.id }}</td>
+            <td data-label="">{{ leave.staff_id.user.id }}</td>
+            <td data-label="">{{ leave.staff_id.user.first_name }} {{ feedback.staff_id.user.last_name }}</td> 
+            <td data-label="">{{ leave.leave_date }}</td>
+            <td data-label="">{{ leave.leave_message }}</td>
+            <td data-label="">{{ leave.created_at }}</td>
+            <td data-label="Action" class="outlined">
+                {% if leave.leave_status == 0 %}
+                <a href="{% url 'staff_leave_approve' leave_id=leave.id %}" class="btn btn-success">Approve</a>
+                <a href="{% url 'staff_leave_reject' leave_id=leave.id %}" class="btn btn-danger">Reject</a>
+                {% elif leave.leave_status == 1 %}
+                    <button class="btn btn-success" disabled="disabled">Approved</button>
+                {% else %}
+                    <button class="btn btn-danger" disabled="disabled">Rejected</button>
+                {% endif %}
+            </td>
+          </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
