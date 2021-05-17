@@ -36,6 +36,11 @@ a {
         font-size: 3rem;
     }
   }
+
+  .text_bold {
+      font-weight: 500;
+      font-family: 'Fredoka One', cursive;
+  }
 </style>
 
 <!-- <div style="font-weight: bolder; color: #FFF; background-color: #4fc3f7; margin: 20px; padding: 10px; border-radius: 5px; display: flex; flex-direction: row; flex-wrap: wrap; align-content: space-between; justify-content: space-evenly; align-items: center;">
@@ -62,18 +67,41 @@ a {
 </body>
 
 <div style="margin-top: 5%; display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-around; align-items: center;">
-    <div style="height:20rem; width:20rem; padding: 20px;">
-        <canvas id="staff_student_count" ></canvas>
-        <div class="dv_class"><label for="staff_student_count"><b>Faculty - Student Ratio</b></label></div>
+    <div style="padding: 20px;">
+        <canvas id="staff_student_count" width="400" height="400"></canvas>
+        <div class="dv_class"><p for="staff_student_count"><b>Faculty - Student Ratio</b></p></div>
     </div>
-    <div style="height:20rem; width:20rem; padding: 20px;"">
-        <canvas id="gender_student_count" ></canvas>
-        <div class="dv_class"><label for="gender_student_count"><b>Student - Gender Ratio</b></label></div>
+    <div style="padding: 20px;">
+        <canvas id="gender_student_count" width="400" height="400"></canvas>
+        <div class="dv_class"><p for="gender_student_count"><b>Student - Gender Ratio</b></p></div>
     </div>
-    <div style="height:22rem; width:22rem; padding: 20px;"">
-        <canvas id="total_counts" ></canvas>
-        <div class="dv_class"><label for="total_counts"><b>Coures in Branch Info.</b></label></div>
+    <div style="padding: 20px;">
+        <canvas id="total_counts" width="400" height="400"></canvas>
+        <div class="dv_class"><p for="total_counts"><b>Coures in Branch Info.</b></p></div>
     </div>
+</div>
+
+<div style="margin-top: 5%; display: flex; flex-direction: row; flex-wrap: wrap; align-content: center; justify-content: space-around; align-items: center;">
+    <div style="padding: 20px;">
+        <canvas id="branch_student_count" width="400" height="400"></canvas>
+        <div class="dv_class"><p for="branch_student_count"><b>Students in each Branch</b></p></div>
+    </div>
+    <div style="padding: 20px;">
+        <canvas id="branch_faculty_count" width="400" height="400"></canvas>
+        <div class="dv_class"><p for="branch_faculty_count"><b>Faculty in each Branch</b></p></div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<div id="Check_Issues" style="text-align: center;">
+<h1>Institute Analtics Reports | OnCl - Edu. Cloud</h1>
+{% if staff_count_15 >= student_count %}
+<h2>No issues found. Everything is Fine!</h2>
+{% else %}
+<h2>Student - Faculty Ratio is Not Good. So, Increse Faculty Strength!</h2>
+{% endif %}
 </div>
 
 <script>
@@ -150,7 +178,12 @@ a {
       '<div class="starter-template">'+
       '<h1 class="display-1"> ' + greet + '!</h1>'+
       '<div id="alertMessage2">'+
-      '<h3 style="color:#76e989;"><b>Everything Sounds Good!</b></h3>'+
+        '<h5><b>Welcome to <span class="text_bold" style="color: tomato;">O</span><span class="text_bold" style="color: #5f95eb;">n</span><span class="text_bold" style="color: #76e989;">C</span><span class="text_bold" style="color: #fcc834">l</span> <span class="text_bold">- Edu. Cloud</span></b> </h5>'+
+        {% if staff_count_15 >= student_count %}
+        '<h3 style="color:#76e989;"><b>Everything Sounds Good!</b><a href="#Check_Issues" style="text-decoration:none;"> <i class="fas fa-info-circle"></i></a></h3>'+    
+        {% else %}
+        '<h3 style="color:#ec407a;"><b>Something Not Right!</b><a href="#Check_Issues" style="text-decoration:none;"> <i class="fas fa-info-circle"></i></a></h3>'+
+        {% endif %}
       '</div>'+
       '</div>'+
       '</main>';
@@ -202,6 +235,9 @@ var total_counts = new Chart(ctx, {
             ],
         }]
     },
+    options: {
+        responsive: true,
+     },
 });
 
 var ctx = document.getElementById('staff_student_count').getContext('2d');
@@ -222,6 +258,9 @@ var staff_student_count = new Chart(ctx, {
             borderWidth: 1
         }]
     },
+    options: {
+        responsive: true,
+     },
 });
 
 var ctx = document.getElementById('gender_student_count').getContext('2d');
@@ -242,6 +281,87 @@ var gender_student_count = new Chart(ctx, {
             borderWidth: 1
         }]
     },
+    options: {
+        responsive: true,
+     },
+});
+
+var ctx = document.getElementById('branch_student_count').getContext('2d');
+var branch_student_count = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: branch_list,
+        datasets: [{
+            label: '#Students in each Branch',
+            data: {{values}},
+            backgroundColor: [
+            'rgb(255, 99, 132, 0.2)',
+            'rgb(54, 162, 235, 0.2)',
+            'rgb(32, 201, 151, 0.2)',
+            'rgb(255, 205, 86, 0.2)',
+            'rgb(39, 39, 39, 0.2)',
+            'rgb(149, 117, 205, 0.2)',
+            'rgb(248, 249, 250, 0.2)'
+            ],
+            borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(32, 201, 151)',
+            'rgb(255, 205, 86)',
+            'rgb(39, 39, 39)',
+            'rgb(149, 117, 205)',
+            'rgb(248, 249, 250)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+var ctx = document.getElementById('branch_faculty_count').getContext('2d');
+var branch_faculty_count = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: branch_list,
+        datasets: [{
+            label: '#Faculty in each Branch',
+            data: {{values2}},
+            backgroundColor: [
+            'rgb(255, 99, 132, 0.2)',
+            'rgb(54, 162, 235, 0.2)',
+            'rgb(32, 201, 151, 0.2)',
+            'rgb(255, 205, 86, 0.2)',
+            'rgb(39, 39, 39, 0.2)',
+            'rgb(149, 117, 205, 0.2)',
+            'rgb(248, 249, 250, 0.2)'
+            ],
+            borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(32, 201, 151)',
+            'rgb(255, 205, 86)',
+            'rgb(39, 39, 39)',
+            'rgb(149, 117, 205)',
+            'rgb(248, 249, 250)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
 });
 </script>
 
