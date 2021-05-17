@@ -133,13 +133,13 @@ table th {
     </form>
     </div>
 </div>
-{% if request.user.is_staff %}
+<!-- {% if request.user.is_staff %} -->
 <div style="padding: 30px 0px 10px 10px;">
     <div onclick="add_announcement()" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
         <a href="{% url 'add_announcement' %}" style="text-decoration: none; color: #000;"><i class="fas fa-bullhorn"></i> Make Announcement</a>
     </div>
 </div>
-{% endif %}
+<!-- {% endif %} -->
 <div style="padding: 10px;">
     <table>
         <thead>

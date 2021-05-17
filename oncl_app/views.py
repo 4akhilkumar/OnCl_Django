@@ -391,10 +391,10 @@ def delete_branch(request, branch_id):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def add_subject(request):
-    courses = Branches.objects.all()
+    branches = Branches.objects.all()
     staffs = User.objects.filter(groups='2')
     context = {
-        "courses": courses,
+        "branches": branches,
         "staffs": staffs
     }
     return render(request, 'oncl_app/admin_templates/subject_templates/add_subject.html', context)
@@ -408,14 +408,14 @@ def add_subject_save(request):
     else:
         subject_name = request.POST.get('subject')
 
-        course_id = request.POST.get('course')
-        course = Branches.objects.get(id=course_id)
+        branch_id = request.POST.get('branch')
+        branch = Branches.objects.get(id=branch_id)
         
         staff_id = request.POST.get('staff')
         staff = User.objects.get(id=staff_id)
 
         try:
-            subject = Subjects(subject_name=subject_name, course_id=course, staff_id=staff)
+            subject = Subjects(subject_name=subject_name, branch_id=branch, staff_id=staff)
             subject.save()
             messages.success(request, "Subject Added Successfully.")
             return redirect('manage_subject')
@@ -436,11 +436,11 @@ def manage_subject(request):
 @allowed_users(allowed_roles=['Admin'])
 def edit_subject(request, subject_id):
     subject = Subjects.objects.get(id=subject_id)
-    courses = Branches.objects.all()
+    branches = Branches.objects.all()
     staffs = User.objects.filter(groups='2')
     context = {
         "subject": subject,
-        "courses": courses,
+        "branches": branches,
         "staffs": staffs,
         "id": subject_id
     }
@@ -454,15 +454,15 @@ def edit_subject_save(request):
     else:
         subject_id = request.POST.get('subject_id')
         subject_name = request.POST.get('subject')
-        course_id = request.POST.get('course')
+        branch_id = request.POST.get('branch')
         staff_id = request.POST.get('staff')
 
         try:
             subject = Subjects.objects.get(id=subject_id)
             subject.subject_name = subject_name
 
-            course = Branches.objects.get(id=course_id)
-            subject.course_id = course
+            branch = Branches.objects.get(id=branch_id)
+            subject.branch_id = branch
 
             staff = User.objects.get(id=staff_id)
             subject.staff_id = staff
@@ -684,17 +684,6 @@ def edit_student(request, student_id):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
-def view_student(request, student_id):
-    student = Students.objects.get(user=student_id)
-
-    context = {
-        "student": student,
-        "id": student_id
-    }
-    return render(request, "oncl_app/profile_templates/admin_student_view_profile.html", context)
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
 def edit_student_save(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -745,6 +734,17 @@ def edit_student_save(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
+def view_student(request, student_id):
+    student = Students.objects.get(user=student_id)
+
+    context = {
+        "student": student,
+        "id": student_id
+    }
+    return render(request, "oncl_app/profile_templates/admin_student_view_profile.html", context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def delete_student(request, student_id):
     student = Students.objects.get(user=student_id)
     try:
@@ -755,56 +755,6 @@ def delete_student(request, student_id):
     except:
         messages.error(request, "Failed to Delete Student!")
         return redirect('manage_student')
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
-def student_leave_view(request):
-    leaves = LeaveReportStudent.objects.all()
-    context = {
-        "leaves": leaves
-    }
-    return render(request, 'oncl_app/admin_templates/permission_templates/student_permissions.html', context)
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
-def student_leave_approve(request, leave_id):
-    leave = LeaveReportStudent.objects.get(id=leave_id)
-    leave.leave_status = 1
-    leave.save()
-    return redirect('student_leave_view')
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
-def student_leave_reject(request, leave_id):
-    leave = LeaveReportStudent.objects.get(id=leave_id)
-    leave.leave_status = 2
-    leave.save()
-    return redirect('student_leave_view')
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
-def staff_leave_view(request):
-    leaves = LeaveReportStaff.objects.all()
-    context = {
-        "leaves": leaves
-    }
-    return render(request, 'oncl_app/admin_templates/permission_templates/faculty_permissions.html', context)
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
-def staff_leave_approve(request, leave_id):
-    leave = LeaveReportStaff.objects.get(id=leave_id)
-    leave.leave_status = 1
-    leave.save()
-    return redirect('staff_leave_view')
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
-def staff_leave_reject(request, leave_id):
-    leave = LeaveReportStaff.objects.get(id=leave_id)
-    leave.leave_status = 2
-    leave.save()
-    return redirect('staff_leave_view')
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
@@ -1091,3 +1041,142 @@ def search_session(request):
         cal_time = (now1 - now).total_seconds()
 
         return render(request, 'oncl_app/PCS_Cloud/search_sessions.html', {'sessions': sessions, 'cal_time':cal_time})
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def aca_stats(request):
+    staff_count = Staffs.objects.all().count()
+    student_count = Students.objects.all().count()
+    branch_count = Branches.objects.all().count()
+    subject_count = Subjects.objects.all().count()
+    branch_all = Branches.objects.all()
+    branch_list = []
+    subject_count_list = []
+    male_count = Students.objects.filter(gender="Male").count()
+    female_count = Students.objects.filter(gender="Female").count()
+
+    for branch in branch_all:
+        subjects = Subjects.objects.filter(branch_id=branch.id).count()
+        branch_list.append(branch.branch)
+        subject_count_list.append(subjects)
+
+
+    context = {
+        "staff_count":staff_count,
+        "student_count":student_count,
+        "branch_list":branch_list,
+        "subject_count_list":subject_count_list,
+        "male_count":male_count,
+        "female_count":female_count
+    }
+    return render(request, 'oncl_app/admin_templates/aca_stats.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Student'])
+def student_apply_leave(request):
+    student_obj = Students.objects.get(user=request.user.id) 
+    leave_data = LeaveReportStudent.objects.filter(student_id=student_obj)
+    context = {
+        "leave_data": leave_data
+    }
+    return render(request, 'oncl_app/student_templates/student_apply_leave.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Student'])
+def student_apply_leave_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect('student_apply_leave')
+    else:
+        leave_date = request.POST.get('leave_date')
+        leave_message = request.POST.get('leave_message')
+
+        student_obj = Students.objects.get(user=request.user.id)
+        try:
+            leave_report = LeaveReportStudent(student_id=student_obj, leave_date=leave_date, leave_message=leave_message, leave_status=0)
+            leave_report.save()
+            messages.success(request, "Applied for Leave.")
+            return redirect('student_apply_leave')
+        except:
+            messages.error(request, "Failed to Apply Leave")
+            return redirect('student_apply_leave')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def student_leave_view(request):
+    leaves = LeaveReportStudent.objects.all()
+    context = {
+        "leaves": leaves
+    }
+    return render(request, 'oncl_app/admin_templates/permission_templates/student_leave_view.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def student_leave_approve(request, leave_id):
+    leave = LeaveReportStudent.objects.get(id=leave_id)
+    leave.leave_status = 1
+    leave.save()
+    return redirect('student_leave_view')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def student_leave_reject(request, leave_id):
+    leave = LeaveReportStudent.objects.get(id=leave_id)
+    leave.leave_status = 2
+    leave.save()
+    return redirect('student_leave_view')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def staff_leave_view(request):
+    leaves = LeaveReportStaff.objects.all()
+    context = {
+        "leaves": leaves
+    }
+    return render(request, 'oncl_app/admin_templates/permission_templates/staff_leave_view.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def staff_leave_approve(request, leave_id):
+    leave = LeaveReportStaff.objects.get(id=leave_id)
+    leave.leave_status = 1
+    leave.save()
+    return redirect('staff_leave_view')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def staff_leave_reject(request, leave_id):
+    leave = LeaveReportStaff.objects.get(id=leave_id)
+    leave.leave_status = 2
+    leave.save()
+    return redirect('staff_leave_view')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Faculty'])
+def staff_apply_leave(request):
+    staff_obj = Staffs.objects.get(user=request.user.id)
+    leave_data = LeaveReportStaff.objects.filter(staff_id=staff_obj)
+    context = {
+        "leave_data": leave_data
+    }
+    return render(request, "oncl_app/faculty_templates/staff_apply_leave_template.html", context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Faculty'])
+def staff_apply_leave_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect('staff_apply_leave')
+    else:
+        leave_date = request.POST.get('leave_date')
+        leave_message = request.POST.get('leave_message')
+
+        staff_obj = Staffs.objects.get(user=request.user.id)
+        try:
+            leave_report = LeaveReportStaff(staff_id=staff_obj, leave_date=leave_date, leave_message=leave_message, leave_status=0)
+            leave_report.save()
+            messages.success(request, "Applied for Leave.")
+            return redirect('staff_apply_leave')
+        except:
+            messages.error(request, "Failed to Apply Leave")
+            return redirect('staff_apply_leave')
