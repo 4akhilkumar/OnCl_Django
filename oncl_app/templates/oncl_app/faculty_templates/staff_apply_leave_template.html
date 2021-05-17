@@ -1,0 +1,247 @@
+{% extends "oncl_app/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animate/animate.css' %}">
+<!--===============================================================================================-->	
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->	
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/main.css' %}">
+
+<title>Apply Leave | OnCl - Edu. Cloud</title>
+
+<style>
+label {
+    background-color: #6c757d1a;
+    color: #555555;
+    padding: 0.5rem;
+    font-family: sans-serif;
+    cursor: pointer;
+    display: inline-block;
+}
+
+#file-chosen, #file-chosen2{
+    margin-left: 0.3rem;
+}
+
+a {
+    text-decoration: none;
+    font-weight: bolder;
+}
+a:hover {
+    text-decoration: none;
+}
+
+/* Styles for Navbar */
+.bg-light {
+    background-color: #ffffff!important;
+    box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+}
+
+a {
+    font-weight: bolder;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+body {
+  line-height: 1.25;
+}
+
+table {
+  border: 2px solid #6c757d87;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+  background-color: #FFF;
+  border: 1px solid #6c757d87;
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background-color: #6c757d87;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+  
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #6c757d87;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #6c757d87;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+.edit_button {
+    color: #fcc834;
+}
+
+.delete_button {
+    color: #F1615C;
+}
+
+@media only screen and (min-width: 601px) {
+    .outlined {
+        border-left: 2px solid var(--gray);
+    }
+}
+</style>
+
+<div class="limiter">
+    <div class="container-login100" style="background-color: #e3f2fd;">
+    <div class="wrap-login100 p-l-40 p-r-40 p-t-55 p-b-55" style="border-color: #64b5f6;">
+        <form class="login100-form validate-form flex-sb flex-w" method="POST" action="{% url 'staff_apply_leave_save' %}">
+        <span class="login100-form-title p-b-32">
+            <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;Apply Leave | OnCl
+        </span>
+        {% csrf_token %}
+
+        <span class="txt1 p-b-11">
+            <i class="fas fa-calendar-alt"></i>&nbsp;Leave Date
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+            <input class="input100" type="date" name="leave_date" required id="id_leave_date" placeholder="Leave Date">
+            <span class="focus-input100"></span>
+        </div>
+
+        <span class="txt1 p-b-11">
+            <i class="fas fa-align-left"></i>&nbsp;Leave Reason
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+            <textarea class="input100" name="leave_message" maxlength="500" style="padding: 15px 25px 0 25px; height: 150px;"  placeholder="Mention the reason for the leave" id="id_leave_message" required></textarea>
+            <span class="focus-input100"></span>
+        </div>
+
+        <div class="container-login100-form-btn" style="justify-content: space-between">
+            <button class="login100-form-btn" style="border-radius: 6px; background-color: #ef5350;" type="submit" value="">
+            <i class="fas fa-bullhorn"></i>&nbsp;Apply for Leave
+            </button>
+        </div>
+        </form>
+    </div>
+    </div>
+</div>
+
+<div style="padding: 40px 80px 50px 80px;">
+    <div style="text-align: center; padding: 20px;"><h1>Leave Apply History</h1></div>
+    <table>
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Leave Date</th>
+            <th scope="col">Leave Message</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        {% for leave in leave_data %}
+        <tbody>
+          <tr>
+            <td data-label="">{{ leave.id }}</td>
+            <td data-label="">{{ leave.leave_date }}</td>
+            <td data-label="">{{ leave.leave_message }}</td>
+            <td data-label="Action" class="outlined" style="padding: 20px;">
+                {% if leave.leave_status == 1 %}
+                <span class="alert alert-success">Approved</span>
+                {% elif leave.leave_status == 2 %}
+                    <span class="alert alert-danger">Rejected</span>
+                {% else %}
+                    <span class="alert alert-warning">Pending</span>
+                {% endif %}
+            </td>
+          </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+</div>
+
+<!--===============================================================================================-->
+<script src="{% static 'oncl_app/login_register/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/popper.js' %}"></script>
+    <script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/daterangepicker/moment.min.js' %}"></script>
+    <script src="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/countdowntime/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/js/main.js' %}"></script>
+
+{% endblock %}
