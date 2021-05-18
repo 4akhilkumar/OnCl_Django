@@ -1,0 +1,303 @@
+{% extends "oncl_app/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<title>Manage Announcements | OnCl - Edu. Cloud</title>
+
+<style>
+a {
+    font-weight: bolder;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* body {
+  line-height: 1.25;
+}
+
+table {
+  border: 2px solid #6c757d87;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+  background-color: #FFF;
+  border: 1px solid #6c757d87;
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background-color: #6c757d87;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+  
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #6c757d87;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #6c757d87;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+.edit_button {
+    color: #fcc834;
+}
+
+.delete_button {
+    color: #F1615C;
+}
+
+@media only screen and (min-width: 601px) {
+    .outlined {
+        border-left: 2px solid var(--gray);
+    }
+} */
+
+.search_bar_custom {
+  display: flex;
+  justify-content: space-around;
+  padding: 50px 0 50px 0;
+}
+
+/* ========================================================================
+ * MESSAGES
+ * ======================================================================== */
+.message form {
+  padding: 6px 15px;
+  background-color: #FAFAFA;
+  border-bottom: 1px solid #E6EBED;
+}
+.message form .has-icon .form-control-icon {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  right: 0;
+  width: 34px;
+  line-height: 33px;
+  text-align: center;
+  color: #777;
+}
+.message > a {
+  position: relative;
+}
+.message .indicator {
+  text-align: center;
+}
+
+.message-wrapper {
+  position: relative;
+  padding: 0px;
+  /* background-color: rgb(255, 0, 0); */
+  margin: 0px;
+  border-radius: 25px;
+}
+.message-sideright {
+  border-radius: 15px;
+}
+.message-wrapper .message-sideright[class*="col-"] {
+  padding: 30px;
+  border: 2px solid #bdbdbd;
+  margin-bottom: 20px;
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid #bdbdbd;
+}
+
+.message-wrapper .message-sideright .panel:first-child {
+  border-top: none;
+  padding-top: 0px;
+}
+.message-wrapper .message-sideright .panel .panel-heading {
+  border-bottom: none;
+}
+.message-wrapper .panel {
+  background-color: transparent !important;
+  -moz-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.message-wrapper .panel .panel-heading, .message-wrapper .panel .panel-body {
+  background-color: transparent !important;
+}
+.message-wrapper .media .media-body {
+  font-weight: 300;
+}
+.message-wrapper .media .media-heading {
+  margin-bottom: 0px;
+}
+.message-wrapper .media small {
+  color: #343a40;
+  font-weight: 900;
+}
+
+.list-message .list-group-item.active:hover, .list-message .list-group-item.active:focus, .list-message .list-group-item.active:active {
+  background-color: #EEEEEE;
+}
+.list-message .list-group-item small {
+  font-size: 12px;
+}
+.list-message .list-group-item .list-group-item-heading {
+  color: #999999 !important;
+}
+.list-message .list-group-item .list-group-item-text {
+  margin-bottom: 10px;
+}
+.list-message .list-group-item:last-child {
+  -moz-border-radius: 0px;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  border-bottom: 1px solid #DDD !important;
+}
+.avatar{
+    width:50px;
+    height:50px;
+    border-radius: 25px;
+}
+</style>
+
+<link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
+
+<script src="https://kit.fontawesome.com/f64de7b412.js" crossorigin="anonymous"></script>
+<div class="search_bar_custom">
+    <div class="content">
+    <form method="POST" action="/search_announcements">
+      <div class="search">
+        {% csrf_token %}
+        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Announcements...">
+        <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
+      </div>
+    </form>
+    </div>
+</div>
+
+<!--  -->
+<div class="container">
+  {% for announcement in announcements %}
+  <div class="row message-wrapper rounded shadow mb-20">
+    <div class="col-md-12 message-sideright">
+        <div class="panel">
+            <div class="panel-heading">
+                <div class="media" style="gap: 10px;">
+                    <a class="pull-left" href="#">
+                        <img src="{% static 'oncl_app/images/avatar.webp' %}" alt="profile_pic" class="img-circle avatar">
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading">{{ announcement.an_by }}</h4>
+                        <small>{{ announcement.created_at }}</small>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <p class="lead" style="margin-top: 10px;">
+                  {{announcement.sub_an}}
+                </p>
+                <hr>
+                <p>
+                  {{announcement.what_an}}
+                </p>
+            </div>
+        </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<!--  -->
+
+<!-- <div style="padding: 10px;">
+    <table>
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Announcement</th>
+            <th scope="col">Created At</th>
+            <th scope="col">Updated At</th>
+            {% if request.user.is_staff %}
+            <th scope="col">Action</th>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+        {% for announcement in announcements %}
+          <tr>
+            <td data-label="ID"><b>{{ announcement.id }}</b></td>
+            <td data-label="Subject"><b>{{announcement.sub_an}}</b></td>
+            <td data-label="announcement">{{ announcement.what_an }}</td>
+            <td data-label="created_at">{{ announcement.created_at }}</td>
+            <td data-label="updated_at">{{ announcement.updated_at }}</td>
+            {% if request.user.is_staff %}
+            <td data-label="Action" class="outlined">
+                <a class="edit_button" href="{% url 'edit_announcement' announcement.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp;
+                <a class="delete_button" href="{% url 'delete_announcement' announcement.id %}"><i class="fas fa-trash"></i> Delete</a>
+            </td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+</div> -->
+
+{% endblock %}
