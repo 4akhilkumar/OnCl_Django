@@ -111,9 +111,7 @@ urlpatterns = [
     path('search_session',views.search_session,name="search_session"),
 
     path('search_announcements',views.search_announcements, name="search_announcements"),
-
     path('search_faculty',views.search_faculty, name="search_faculty"),
-
     path('search_student',views.search_student, name="search_student"),
 
     path('aca_stats/',views.aca_stats,name="aca_stats"),
@@ -132,15 +130,21 @@ urlpatterns = [
     path('staff_apply_leave/', views.staff_apply_leave, name="staff_apply_leave"),
     path('staff_apply_leave_save/', views.staff_apply_leave_save, name="staff_apply_leave_save"),
 
-    path('get_students/', views.get_students, name="get_students"),
-    path('staff_add_result/', views.staff_add_result, name="staff_add_result"),
-    path('staff_add_result_save/', views.staff_add_result_save, name="staff_add_result_save"),
-
     path('timetable/', views.timetable, name='timetable'),
 
     path('index/', views.index, name='index'), 
 	path('index/run/', views.runCode, name='run'),
-    
+
+    path('exam_student/', views.exam_student, name='exam_student'),
+    path('show_que/', views.show_que, name='show_que'),
+    path('upload_answers/', views.upload_answers, name='upload_answers'),
+    path('exam_evaluation/',views.exam_evaluation, name='exam_evaluation'),
+    path('view_student_exam/',views.view_student_exam, name='view_student_exam'),
+    path('assign_marks/<student_id>/',views.assign_marks, name='assign_marks'),
+    path('assign_marks_save/',views.assign_marks_save, name='assign_marks_save'),
+    path('view_my_marks/',views.view_my_marks, name='view_my_marks'),
+    path('view_marks_admin/',views.view_marks_admin, name='view_marks_admin'),
+
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     # re_path(r'^.*\.*', views.pages, name='pages'),
 ]
