@@ -93,6 +93,7 @@ urlpatterns = [
     path('add_announcement/', views.add_announcement, name="add_announcement"),
     path('add_announcement_save/', views.add_announcement_save, name="add_announcement_save"),
     path('manage_announcement/', views.manage_announcement, name="manage_announcement"),
+    path('view_announcement/', views.view_announcement, name="view_announcement"),
     path('edit_announcement/<announcement_id>/', views.edit_announcement, name="edit_announcement"),
     path('edit_announcement_save/', views.edit_announcement_save, name="edit_announcement_save"),
     path('delete_announcement/<announcement_id>/', views.delete_announcement, name="delete_announcement"),
@@ -130,6 +131,15 @@ urlpatterns = [
 
     path('staff_apply_leave/', views.staff_apply_leave, name="staff_apply_leave"),
     path('staff_apply_leave_save/', views.staff_apply_leave_save, name="staff_apply_leave_save"),
+
+    path('get_students/', views.get_students, name="get_students"),
+    path('staff_add_result/', views.staff_add_result, name="staff_add_result"),
+    path('staff_add_result_save/', views.staff_add_result_save, name="staff_add_result_save"),
+
+    path('timetable/', views.timetable, name='timetable'),
+
+    path('index/', views.index, name='index'), 
+	path('index/run/', views.runCode, name='run'),
     
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     # re_path(r'^.*\.*', views.pages, name='pages'),
