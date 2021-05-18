@@ -1,7 +1,8 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en" oncontextmenu="return false" onkeydown="return false;" onmousedown="return false;">
+<!-- <html lang="en" oncontextmenu="return false" onkeydown="return false;" onmousedown="return false;"> -->
+	<html>
 <head>
     <meta charset="UTF-8">
     <meta name="Description" content="OnCl - Edu. Cloud is a Educational Cloud Application which helps students, faculty and others who are in the learning world.">
@@ -389,7 +390,7 @@ h1 {
 		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="{% url 'student_profile' %}">My Profile</a></li>
 				 <div role="none" class="dropdown-divider"></div>
 				 <li><span><i class="fas fa-photo-video"></i> </span> <a href="{% url 'view_session' %}">PCS Cloud</a></li>
-				 <li><span><i class="far fa-edit"></i> </span> <a href="#">Exams</a></li>
+				 <li><span><i class="far fa-edit"></i> </span> <a href="{% url 'view_my_marks' %}">Exam Marks</a></li>
 				 <li><span><i class="far fa-calendar-alt"></i> </span> <a href="{% url 'timetable' %}">Schedule</a></li>
 				 <li><span><i class="fas fa-book"></i> </span> <a href="{% url 'view' %}">E - Library</a></li>
 				 <li><span><i class="fas fa-fist-raised"></i> <i class="fas fa-user-graduate"></i> </span> <a href="{% url 'student_apply_leave' %}" target="_blank">Leave Info.</a></li>
@@ -425,7 +426,7 @@ h1 {
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item">
+		  <li class="cards_item" onclick="exam_student()">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #fcc834; margin-top: 10%;" class="material-icons"> assignment </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #f8e096 40%, #FFFFFF 100%);">
@@ -443,7 +444,7 @@ h1 {
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item" onclick="coed()">
+		  <li class="cards_item" onclick="code()">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #ba68c8; margin-top: 10%;" class="material-icons"> code </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #e1bee7 40%, #FFFFFF 100%);">
@@ -452,8 +453,8 @@ h1 {
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item">
-			<div class="card" onclick="view_elibrary()">
+		  <li class="cards_item" onclick="view_elibrary()">
+			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #757575; margin-top: 10%;" class="material-icons"> library_books </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #bdbdbd 40%, #FFFFFF 100%);">
 				<h2 class="card_title">E - Library</h2>
@@ -499,6 +500,9 @@ h1 {
 	  }
 	  function code() {
 		  window.open("{% url 'index' %}");
+	  }
+	  function exam_student() {
+		  window.open("{% url 'exam_student' %}");
 	  }
   </script>
 

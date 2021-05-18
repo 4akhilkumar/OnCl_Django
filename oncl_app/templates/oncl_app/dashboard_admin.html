@@ -1,7 +1,8 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en" oncontextmenu="return false" onkeydown="return false;" onmousedown="return false;">
+<!-- <html lang="en" oncontextmenu="return false" onkeydown="return false;" onmousedown="return false;"> -->
+	<html>
 <head>
     <meta charset="UTF-8">
     <meta name="Description" content="OnCl - Edu. Cloud is a Educational Cloud Application which helps students, faculty and others who are in the learning world.">
@@ -435,7 +436,7 @@ h1 {
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item">
+		  <li class="cards_item" onclick="view_marks_admin()">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #fcc834; margin-top: 10%;" class="material-icons"> assignment </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #f8e096 40%, #FFFFFF 100%);">
@@ -471,8 +472,8 @@ h1 {
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item">
-			<div class="card" onclick="view_elibrary()">
+		  <li class="cards_item" onclick="view_elibrary()">
+			<div class="card">
 			  <div class="card_icon"><span style="font-size: 95px; color: #607d8b; margin: 10% 0 12.5px 0;" class="fas fa-swatchbook"></span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #bdbdbd 40%, #FFFFFF 100%);">
 				<h2 class="card_title">E - Library</h2>
@@ -524,6 +525,9 @@ h1 {
 	  }
 	  function code() {
 		  window.open("{% url 'index' %}");
+	  }
+	  function view_marks_admin() {
+		  window.open("{% url 'view_marks_admin' %}");
 	  }
   </script>
 
