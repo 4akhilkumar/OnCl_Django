@@ -1,0 +1,234 @@
+{% extends "oncl_app/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<title>Exam Info.  OnCl - Edu. Cloud</title>
+
+<style>
+a {
+    font-weight: bolder;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+body {
+  line-height: 1.25;
+}
+
+table {
+  border: 2px solid #6c757d87;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+  background-color: #FFF;
+  border: 1px solid #6c757d87;
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background-color: #6c757d87;
+}
+
+@media screen and (max-width: 768px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+  
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #6c757d87;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #6c757d87;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+    .outlined {
+        border-left: 2px solid var(--gray);
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .inlined {
+        border-right: 2px solid var(--gray);
+    }
+}
+
+.search_bar_custom {
+  display: flex;
+  justify-content: space-around;
+  padding: 50px 0 50px 0;
+}
+
+img {
+    border-radius: 10%;
+}
+
+.a_tags {
+    color: #6c757d!important;
+    text-decoration: none;
+    /* font-size: 30px; */
+}
+
+.a_tags:hover {
+    color: #6c757d!important;
+    text-decoration: none;
+}
+
+.a_tag_address {
+    color: #6c757d!important;
+    text-decoration: none;
+}
+
+.a_tag_address:hover {
+    color: #6c757d!important;
+    text-decoration: none;
+}
+</style>
+
+<link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
+
+<script src="https://kit.fontawesome.com/f64de7b412.js" crossorigin="anonymous"></script>
+<div class="search_bar_custom">
+    <div class="content">
+    <form method="POST" action="/search_student">
+      <div class="search">
+        {% csrf_token %}
+        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Student Info...">
+        <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
+      </div>
+    </form>
+    </div>
+</div>
+
+<div style="padding: 50px 50px 10px 50px; display: flex; justify-content: space-between;">
+    <div onclick="exportTableToCSV('Student_Info.csv')" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+      <span style="text-decoration: none; font-size: 1rem; color: #000;"><b>Export <i class="fas fa-file-csv"></i> File</b></span>
+    </div>
+</div>
+
+<div style="padding: 10px 50px 100px 50px;">
+    <table>
+        <thead>
+          <tr>
+            <th scope="col">Subject Name</th>            
+            <th scope="col">Student Name</th>
+            <th scope="col">Answer File (.PDF)</th>
+            <th scope="col">Exam Marks</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for i in exam_info %}
+          <tr>
+            <td data-label="Subject Name">{{i.exam_sub}}</td>
+            <td data-label="Student Name">{{i.student_id}}</td>
+            <td data-label="Answer File"><a href="{{i.ans_file.url}}"><i class="fas fa-download"></i> Answer File</a></td>
+            <td data-label="Exam Marks"><b>{{i.exam_marks}}</b></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+  function exportTableToCSV(filename) {
+    var csv = [];
+    var rows = document.querySelectorAll("table tr");
+    
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+        
+        for (var j = 0; j < cols.length; j++) 
+            row.push(cols[j].innerText);
+        
+        csv.push(row.join(","));        
+    }
+
+    // Download CSV file
+    downloadCSV(csv.join("\n"), filename);
+}
+
+function downloadCSV(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV file
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+
+    // Click download link
+    downloadLink.click();
+}
+</script>
+
+{% endblock %}
