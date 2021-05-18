@@ -390,7 +390,7 @@ h1 {
 				 <div role="none" class="dropdown-divider"></div>
 				 <li><span><i class="fas fa-photo-video"></i> </span> <a href="{% url 'view_session' %}" target="_blank">PCS Cloud</a></li>
 				 <li><span><i class="far fa-edit"></i> </span> <a href="#">Exams</a></li>
-				 <li><span><i class="far fa-calendar-alt"></i> </span> <a href="#">Schedule</a></li>
+				 <li><span><i class="far fa-calendar-alt"></i> </span> <a href="{% url 'timetable' %}">Schedule</a></li>
 				 <li><span><i class="fas fa-book"></i> </span> <a href="{% url 'view' %}" target="_blank">E - Library</a></li>
 				 <li><span><i class="fas fa-fist-raised"></i> <i class="fas fa-chalkboard-teacher"></i> </span> <a href="{% url 'staff_apply_leave' %}" target="_blank">Leave Info.</a></li>
 				 <div role="none" class="dropdown-divider"></div>
@@ -434,7 +434,7 @@ h1 {
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item">
+		  <li class="cards_item" onclick="timetable()">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #76e989; margin-top: 10%;" class="material-icons"> today </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #c8e6c9 40%, #FFFFFF 100%);">
@@ -443,7 +443,7 @@ h1 {
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item">
+		  <li class="cards_item" onclick="code()">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #ba68c8; margin-top: 10%;" class="material-icons"> code </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #e1bee7 40%, #FFFFFF 100%);">
@@ -486,13 +486,19 @@ h1 {
 		  window.location.replace("{% url 'faculty_dashboard' %}");
 	  }
 	  function manage_announcements() {
-		  window.open("{% url 'manage_announcement' %}");
+		  window.open("{% url 'view_announcement' %}");
 	  }
 	  function view_elibrary() {
 		  window.open("{% url 'view' %}");
 	  }
 	  function view_session() {
 		  window.open("{% url 'view_session' %}");
+	  }
+	  function timetable() {
+		  window.open("{% url 'timetable' %}");
+	  }
+	  function code() {
+		  window.open("{% url 'index' %}");
 	  }
   </script>
 

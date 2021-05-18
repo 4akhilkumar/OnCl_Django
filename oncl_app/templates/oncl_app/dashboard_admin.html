@@ -444,7 +444,7 @@ h1 {
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item">
+		  <li class="cards_item" onclick="timetable()">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #76e989; margin-top: 10%;" class="material-icons"> today </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #c8e6c9 40%, #FFFFFF 100%);">
@@ -453,7 +453,7 @@ h1 {
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item">
+		  <li class="cards_item" onclick="code()">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #ba68c8; margin-top: 10%;" class="material-icons"> code </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #e1bee7 40%, #FFFFFF 100%);">
@@ -518,6 +518,12 @@ h1 {
 	  }
 	  function view_session() {
 		  window.open("{% url 'view_session' %}");
+	  }
+	  function timetable() {
+		  window.open("{% url 'timetable' %}");
+	  }
+	  function code() {
+		  window.open("{% url 'index' %}");
 	  }
   </script>
 
