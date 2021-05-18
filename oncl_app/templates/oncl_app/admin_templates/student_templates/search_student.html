@@ -131,7 +131,7 @@ img {
 .a_tags {
     color: #6c757d!important;
     text-decoration: none;
-    font-size: 30px;
+    /* font-size: 30px; */
 }
 
 .a_tags:hover {
@@ -177,63 +177,63 @@ img {
 {% if students.count == 0 %}
 
 {% else %}
+
 <div style="padding: 30px 0px 10px 10px;">
     <div class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
         <a href="{% url 'add_student' %}" style="text-decoration: none; font-size: 20px; color: #000;"><i class="fas fa-user-graduate"></i> Add Student</a>
     </div>
 </div>
 
-<div style="padding: 10px;">
-    <table>
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Full Name</th>
-            <th scope="col">Username</th>
-            <th scope="col">Branch</th>
-            <th scope="col">Photo</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Email</th>
-            <th scope="col">Phone</th>
-            <th scope="col">Address</th>
-            <th scope="col">GitHub</th>
-            <!-- <th scope="col">Portfolio</th> -->
-            <th scope="col">LinkedIn</th>
-            <th scope="col">Last Login</th>
-            <!-- <th scope="col">Date Joined</th> -->
-            {% if request.user.is_staff %}
-            <th scope="col">Action</th>
-            {% endif %}
-          </tr>
-        </thead>
+<div style="padding: 10px 10px 100px 10px;">
+  <table>
+      <thead>
+        <tr>
+          <!-- <th scope="col">ID</th> -->
+          <!-- <th scope="col">Photo</th> -->
+          <th scope="col">Full Name</th>            
+          <th scope="col">Gender</th>
+          <th scope="col">Branch</th>
+          <!-- <th scope="col">Username</th> -->
+          <th scope="col">Email</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Address</th>
+          <!-- <th scope="col">GitHub</th> -->
+          <!-- <th scope="col">Portfolio</th> -->
+          <!-- <th scope="col">LinkedIn</th> -->
+          <!-- <th scope="col">Last Login</th> -->
+          <!-- <th scope="col">Date Joined</th> -->
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
         {% endif %}
-        {% for student in students %}
-        <tbody>
-          <tr>
-            <td data-label="ID" class="inlined">{{ student.user.id }}</td>
-            <td data-label="Full Name">{{ student.user.first_name }} {{ student.user.last_name }}</td>
-            <td data-label="Username">{{ student.user.username }}</td>
-            <td data-label="Username">{{ student.branch }}</td>
-            <td data-label="Photo"><img src="{{ student.profile_pic.url }}" alt="Student Photo" width="100px" height="100px"></td>
-            <td data-label="Gender">{{ student.gender }}</td>
-            <td data-label="Email"><a class="a_tags" href="mailto:{{ student.user.email }}"><i class="fas fa-envelope"></i></a></td>
-            <td data-label="Phone"><a class="a_tags" href="tel:Mobile : +91{{ student.phone }}"><i class="fas fa-phone-square"></i></a></td>
-            <td data-label="Address"><a class="a_tag_address" href="https://www.google.com/maps/place/{{student.address}}" target="_blank">{{ student.address }}</a></td>
-            <td data-label="GitHub"> <a class="a_tags" href="https://github.com/{{ student.git_link }}"><i class="fab fa-github"></i></a> </td>
-            <!-- <td data-label="Portfolio"> <a class="a_tags" href="https://{{ student.website_link }}"><i class="fas fa-globe"></i></a> </td> -->
-            <td data-label="LinkedIn"> <a class="a_tags" href="https://www.linkedin.com/in/{{ student.linkedin_link }}"><i class="fab fa-linkedin"></i></a> </td>          
-            <td data-label="Last Login">{{ student.user.last_login }}</td>
-            <!-- <td data-label="Date Joined">{{ student.user.date_joined }}</td> -->
-            {% if request.user.is_staff %}
-            <td data-label="Action" class="outlined">
-                <a class="edit_button" href="{% url 'edit_student' student.user.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp; <br>
-                <a class="delete_button" href="{% url 'delete_student' student.user.id %}"><i class="fas fa-trash"></i> Delete</a>
-            </td>
-            {% endif %}
-          </tr>
-        </tbody>
+      {% for student in students %}
+        <tr>
+          <!-- <td data-label="ID" class="inlined">{{ student.user.id }}</td> -->
+          <!-- <td data-label="Photo"><img src="{{ student.profile_pic.url }}" alt="Student Photo" width="100px" height="100px"></td> -->
+          <td data-label="Full Name">{{ student.user.first_name }} {{ student.user.last_name }}</td>
+          <td data-label="Gender">{{ student.gender }}</td>
+          <td data-label="Branch">{{ student.branch }}</td>
+          <!-- <td data-label="Username">{{ student.user.username }}</td> -->
+          <!-- <td data-label="Email"><a class="a_tags" href="mailto:{{ student.user.email }}"><i class="fas fa-envelope"></i></a></td> -->
+          <td data-label="Email"><a class="a_tags" href="mailto:{{ student.user.email }}">{{ student.user.email }}</a></td>
+          <!-- <td data-label="Phone"><a class="a_tags" href="tel:Mobile : +91{{ student.phone }}"><i class="fas fa-phone-square"></i></a></td> -->
+          <td data-label="Phone"><a class="a_tags" href="tel:Mobile : +91{{ student.phone }}">{{ student.phone }}</a></td>
+          <td data-label="Address"><a class="a_tag_address" href="https://www.google.com/maps/place/{{student.address}}" target="_blank">{{ student.address }}</a></td>
+          <!-- <td data-label="GitHub"> <a class="a_tags" href="https://github.com/{{ student.git_link }}"><i class="fab fa-github"></i></a> </td> -->
+          <!-- <td data-label="Portfolio"> <a class="a_tags" href="https://{{ student.website_link }}"><i class="fas fa-globe"></i></a> </td> -->
+          <!-- <td data-label="LinkedIn"> <a class="a_tags" href="https://www.linkedin.com/in/{{ student.linkedin_link }}"><i class="fab fa-linkedin"></i></a> </td>           -->
+          <!-- <td data-label="Last Login">{{ student.user.last_login }}</td> -->
+          <!-- <td data-label="Date Joined">{{ student.user.date_joined }}</td> -->
+          <td data-label="Action" class="outlined">
+              <a href="{% url 'view_student' student.user.id %}" target="_blank"><i class="fas fa-eye"></i> View</a> &nbsp; <br>
+              <a class="edit_button" href="{% url 'edit_student' student.user.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp; <br>
+              <a class="delete_button" href="{% url 'delete_student' student.user.id %}"><i class="fas fa-trash"></i> Delete</a>
+          </td>
+        </tr>
         {% endfor %}
-    </table>
+      </tbody>
+  </table>
 </div>
 
 {% endblock %}
