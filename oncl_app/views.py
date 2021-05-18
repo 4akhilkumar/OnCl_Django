@@ -1223,71 +1223,6 @@ def staff_apply_leave_save(request):
             messages.error(request, "Failed to Apply Leave")
             return redirect('staff_apply_leave')
 
-
-@csrf_exempt
-def get_students(request):
-    # Getting Values from Ajax POST 'Fetch Student'
-    branch_id = request.POST.get("branch")
-    # semester = request.POST.get("semester")
-
-    # Students enroll to Course, Course has Subjects
-    # Getting all data from subject model based on subject_id
-    branch_model = Branches.objects.get(id=branch_id)
-
-    # semester_model = Branch.objects.get(id=semester)
-
-    students = Students.objects.filter(branch=branch_model.branch)
-
-    # Only Passing Student Id and Student Name Only
-    list_data = []
-
-    for student in students:
-        data_small={"id":student.user.id, "name":student.user.first_name+" "+student.user.last_name}
-        list_data.append(data_small)
-
-    return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
-
-def staff_add_result(request):
-    branches = Branches.objects.all()
-    semester = Semester.objects.all()
-    context = {
-        "branches": branches,
-        "semester": semester, 
-    }
-    return render(request, "oncl_app/add_result_template.html", context)
-
-def staff_add_result_save(request):
-    if request.method != "POST":
-        messages.error(request, "Invalid Method")
-        return redirect('staff_add_result')
-    else:
-        student_admin_id = request.POST.get('student_list')
-        assignment_marks = request.POST.get('assignment_marks')
-        exam_marks = request.POST.get('exam_marks')
-        subject_id = request.POST.get('branch')
-
-        student_obj = Students.objects.get(user=student_admin_id)
-        subject_obj = Branches.objects.get(id=subject_id)
-
-        try:
-            # Check if Students Result Already Exists or not
-            check_exist = StudentResult.objects.filter(subject_id=subject_obj, student_id=student_obj).exists()
-            if check_exist:
-                result = StudentResult.objects.get(subject_id=subject_obj, student_id=student_obj)
-                result.subject_assignment_marks = assignment_marks
-                result.subject_exam_marks = exam_marks
-                result.save()
-                messages.success(request, "Result Updated Successfully!")
-                return HttpResponse('Okay!')
-            else:
-                result = StudentResult(student_id=student_obj, subject_id=subject_obj, subject_exam_marks=exam_marks, subject_assignment_marks=assignment_marks)
-                result.save()
-                messages.success(request, "Result Added Successfully!")
-                return HttpResponse('Okay!')
-        except:
-            messages.error(request, "Failed to Add Result!")
-            return HttpResponse('Okay! Not')
-
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
 def timetable(request):
@@ -1320,3 +1255,117 @@ def runCode(request):
 		return JsonResponse(r.json(), safe=False)
 	else:
 		return HttpResponseForbidden()
+
+def exam_student(request):
+    user = User.objects.get(id=request.user.id)
+    student = Students.objects.get(user=user)
+    branch = student.branch
+    branch_id = Branches.objects.get(branch=branch)
+    branch_id_ = branch_id.id
+    subject_list = Subjects.objects.filter(branch_id=branch_id_)
+
+    context = {
+        "subject_list":subject_list,
+        "student":student,
+        "user":user
+    }
+    return render(request, 'oncl_app/exam_module/take_exam_subject.html', context)
+
+def show_que(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect('exam_student')
+    else:
+        subject_name = request.POST.get('subject_name')
+        student_obj = Students.objects.get(user=request.user.id)
+        e = Exam.objects.filter(student_id=student_obj).filter(exam_sub=subject_name)
+        if e:
+            return render(request, 'oncl_app/exam_module/already_submitted.html')
+        else:
+            subject = Subjects.objects.get(subject_name=subject_name)
+            subject_id = subject.id
+            que = Exam_ques.objects.filter(subject_id=subject_id)
+            context = {
+                "que":que,
+                "subject_name":subject_name,
+            }
+            return render(request, 'oncl_app/exam_module/get_question.html', context)
+        return redirect('dashboard')
+
+def upload_answers(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect('exam_student')
+    else:
+        student_obj = Students.objects.get(user=request.user.id)
+        subject_name = request.POST.get('exam_sub')
+        ans_file = request.FILES['ans_file']
+        exam = Exam(student_id=student_obj,exam_sub=subject_name,ans_file=ans_file)
+        exam.save()
+        messages.success(request, "Your Submission is Taken.")
+        return render(request, 'oncl_app/exam_module/submit_message.html')
+
+def exam_evaluation(request):
+    user = User.objects.get(id=request.user.id)
+    staff = Staffs.objects.get(user=user)
+    staff_id = staff.user.id
+    subject_list = Subjects.objects.filter(staff_id=staff_id)
+
+    context = {
+        "subject_list":subject_list,
+        "staff":staff
+    }
+    return render(request, 'oncl_app/exam_module/faculty_subject.html', context)
+
+def view_student_exam(request):
+    subject = request.POST.get("subject_name")
+    student = Exam.objects.filter(exam_sub=subject)
+
+    context = {
+        "student":student,
+    }
+    return render(request, 'oncl_app/exam_module/view_exam.html', context)
+
+def assign_marks(request, student_id):
+    exam = Exam.objects.get(id=student_id)
+    student = exam.student_id
+    context = {
+        "exam": exam,
+        "id": student_id,
+        "student":student
+    }
+    return render(request, 'oncl_app/exam_module/update_marks.html', context)  
+
+def assign_marks_save(request):
+    if request.method != "POST":
+        HttpResponse("Invalid Method")
+    else:
+        exam_id = request.POST.get('exam_id')
+        marks = request.POST.get('marks')
+
+        try:
+            exam_model = Exam.objects.get(id=exam_id)
+            exam_model.exam_marks = marks
+            exam_model.save()
+
+            messages.success(request, "Marks Assigned Successfully!")
+            return redirect('exam_evaluation')
+
+        except:
+            messages.error(request, "Failed to Assign Marks!")
+            return redirect('assign_marks')
+
+def view_my_marks(request):
+    student_obj = Students.objects.get(user=request.user.id) 
+    exam = Exam.objects.filter(student_id=student_obj)
+    context = {
+            'exam':exam
+    }
+    return render(request, 'oncl_app/exam_module/view_my_marks.html', context)
+
+def view_marks_admin(request):
+    exam_info = Exam.objects.all()
+    context = {
+            'exam_info':exam_info
+    }
+    return render(request, 'oncl_app/exam_module/view_marks_admin.html', context)
