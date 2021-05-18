@@ -1,0 +1,161 @@
+{% extends "oncl_app/base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Cluster Timetable | OnCl - Edu. Cloud</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" href="{% static 'oncl_app/table/css/style.css' %}"> 
+
+  <link rel="icon" type="image/png" href="{% static 'oncl_app/images/whin.webp' %}"/>
+
+	</head>
+	<body>
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h4 class="text-center mb-4">Cluster Timetable</h4>
+					<div class="table-wrap">
+						<table class="table table-bordered text-center">
+              <thead>
+                <tr>
+                  <th>Monday</th>
+                  <th>Tuesday</th>
+                  <th>Wednesday</th>
+                  <th>Thursday</th>
+                  <th>Friday</th>
+                  <th>Saturday</th>
+                  <th>Sunday</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>Enterprise Programming</strong> <br>
+                    8:00 AM - 9:40 AM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>Data Science</strong> <br>
+                    8:00 AM - 9:40 AM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>PFSD - TS</strong> <br>
+                    8:00 AM - 9:40 AM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                </tr>
+                <tr>
+                  <td class="text-center">
+                    <a href="#"><strong>PFSD - TS</strong> <br>
+                    9:00 AM - 10:40 AM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>No Session</strong> <br>
+                    9:00 AM - 10:40 AM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>Artificial Intelligence</strong> <br>
+                    9:00 AM - 10:40 AM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>No Session</strong> <br>
+                    9:00 AM - 10:40 AM</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>Computer Networks & Security</strong> <br>
+                    11:00 AM - 12:40 AM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>Computer Networks & Security</strong> <br>
+                    11:00 AM - 12:40 AM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>Design Tool Workshop</strong> <br>
+                    11:00 AM - 12:40 AM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                </tr>
+                <tr>
+                  <td class="text-center">
+                    <a href="#"><strong>DTI - 2 (Innovative)</strong> <br>
+                    1:30 PM - 2:50 PM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>DTI - 2 (Innovative)</strong> <br>
+                    1:30 PM - 2:50 PM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>Mathematical Programming - 2</strong> <br>
+                    1:30 PM - 2:50 PM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>Mathematical Programming - 2</strong> <br>
+                    1:30 PM - 2:50 PM</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-center">
+                    <a href="#"><strong>Design Tool Workshop</strong> <br>
+                    3:00 PM - 4:40 PM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>Computer Networks & Security</strong> <br>
+                    3:00 PM - 4:40 PM</a>
+                  </td>
+                  <td class="text-center">
+                    <a href="#"><strong>Computer Networks & Security</strong> <br>
+                    3:00 PM - 4:40 PM</a>
+                  </td>
+                  <td><i class="fa fa-close"></i></td>
+                  <td class="text-center">
+                    <a href="#"><strong>Mathematical Programming - 2</strong> <br>
+                    3:00 PM - 4:40 PM</a>
+                  </td>
+                  <td class="text-center">
+                    <a href="#"><strong>Design Tool Workshop</strong> <br>
+                    3:00 PM - 4:40 PM</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="{% static 'oncl_app/table/js/jquery.min.js' %}"></script>
+  <script src="{% static 'oncl_app/table/js/popper.js' %}"></script>
+  <script src="{% static 'oncl_app/table/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'oncl_app/table/js/main.js' %}"></script>
+
+	</body>
+</html>
+
+{% endblock %}
