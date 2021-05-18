@@ -9,10 +9,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
 from django.contrib import messages
 from django.template import loader
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseForbidden
 from django import template
 import json
 import datetime
+import requests
 
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -759,7 +760,11 @@ def delete_student(request, student_id):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
 def add_announcement(request):
-    return render(request, "oncl_app/admin_templates/announcements_templates/add_announcement.html")
+    username = request.user.get_username()
+    context={
+            'username':username
+        }
+    return render(request, "oncl_app/admin_templates/announcements_templates/add_announcement.html", context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
@@ -770,8 +775,9 @@ def add_announcement_save(request):
     else:
         announcement = request.POST.get('announcement')
         sub_an = request.POST.get('sub_an')
+        an_by = request.POST.get('an_by')
         try:
-            announcement_model = Announcements_news(what_an=announcement,sub_an=sub_an)
+            announcement_model = Announcements_news(what_an=announcement,sub_an=sub_an,an_by=an_by)
             announcement_model.save()
             messages.success(request, "Announcement Added Successfully.")
             return redirect('manage_announcement')
@@ -787,6 +793,16 @@ def manage_announcement(request):
         "announcements": announcements
     }
     return render(request, 'oncl_app/admin_templates/announcements_templates/manage_announcements.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
+def view_announcement(request):
+    username = request.user.get_username()
+    announcements = Announcements_news.objects.all()
+    context = {
+        "announcements": announcements, 'username':username
+    }
+    return render(request, 'oncl_app/admin_templates/announcements_templates/view_announcement.html', context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
@@ -970,7 +986,7 @@ def search_student(request):
         student = Students.objects.filter(
             Q(branch__contains=query) | Q(address__contains=query) |
             Q(gender__contains=query) | Q(phone__contains=query) |
-            Q(linkedin_link__contains=query) | Q(twitter_link__contains=query) |
+            Q(linkedin_link__contains=query) |
             Q(git_link__contains=query) | Q(website_link__contains=query))
 
         now1 = datetime.datetime.now()
@@ -1049,6 +1065,8 @@ def aca_stats(request):
     student_count = Students.objects.all().count()
     branch_count = Branches.objects.all().count()
     subject_count = Subjects.objects.all().count()
+    student_leave_count = LeaveReportStudent.objects.all().count()
+    staff_leave_count = LeaveReportStaff.objects.all().count()
     branch_all = Branches.objects.all()
     branch_list = []
     subject_count_list = []
@@ -1060,6 +1078,25 @@ def aca_stats(request):
         branch_list.append(branch.branch)
         subject_count_list.append(subjects)
 
+    staff_count_15 = staff_count*15
+
+    staffs = Staffs.objects.all()
+    values2=[]
+    for i in branch_list:
+        cc=0
+        for j in staffs:
+            if(i==j.branch):
+                cc+=1
+        values2.append(cc)
+
+    students=Students.objects.all()
+    values=[]
+    for i in branch_list:
+        c=0
+        for j in students:
+            if(i==j.branch):
+                c+=1
+        values.append(c)
 
     context = {
         "staff_count":staff_count,
@@ -1067,7 +1104,12 @@ def aca_stats(request):
         "branch_list":branch_list,
         "subject_count_list":subject_count_list,
         "male_count":male_count,
-        "female_count":female_count
+        "female_count":female_count,
+        "staff_count_15":staff_count_15,
+        "values":values,
+        "values2":values2,
+        "student_leave_count":student_leave_count,
+        "staff_leave_count":staff_leave_count
     }
     return render(request, 'oncl_app/admin_templates/aca_stats.html', context)
 
@@ -1180,3 +1222,101 @@ def staff_apply_leave_save(request):
         except:
             messages.error(request, "Failed to Apply Leave")
             return redirect('staff_apply_leave')
+
+
+@csrf_exempt
+def get_students(request):
+    # Getting Values from Ajax POST 'Fetch Student'
+    branch_id = request.POST.get("branch")
+    # semester = request.POST.get("semester")
+
+    # Students enroll to Course, Course has Subjects
+    # Getting all data from subject model based on subject_id
+    branch_model = Branches.objects.get(id=branch_id)
+
+    # semester_model = Branch.objects.get(id=semester)
+
+    students = Students.objects.filter(branch=branch_model.branch)
+
+    # Only Passing Student Id and Student Name Only
+    list_data = []
+
+    for student in students:
+        data_small={"id":student.user.id, "name":student.user.first_name+" "+student.user.last_name}
+        list_data.append(data_small)
+
+    return JsonResponse(json.dumps(list_data), content_type="application/json", safe=False)
+
+def staff_add_result(request):
+    branches = Branches.objects.all()
+    semester = Semester.objects.all()
+    context = {
+        "branches": branches,
+        "semester": semester, 
+    }
+    return render(request, "oncl_app/add_result_template.html", context)
+
+def staff_add_result_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect('staff_add_result')
+    else:
+        student_admin_id = request.POST.get('student_list')
+        assignment_marks = request.POST.get('assignment_marks')
+        exam_marks = request.POST.get('exam_marks')
+        subject_id = request.POST.get('branch')
+
+        student_obj = Students.objects.get(user=student_admin_id)
+        subject_obj = Branches.objects.get(id=subject_id)
+
+        try:
+            # Check if Students Result Already Exists or not
+            check_exist = StudentResult.objects.filter(subject_id=subject_obj, student_id=student_obj).exists()
+            if check_exist:
+                result = StudentResult.objects.get(subject_id=subject_obj, student_id=student_obj)
+                result.subject_assignment_marks = assignment_marks
+                result.subject_exam_marks = exam_marks
+                result.save()
+                messages.success(request, "Result Updated Successfully!")
+                return HttpResponse('Okay!')
+            else:
+                result = StudentResult(student_id=student_obj, subject_id=subject_obj, subject_exam_marks=exam_marks, subject_assignment_marks=assignment_marks)
+                result.save()
+                messages.success(request, "Result Added Successfully!")
+                return HttpResponse('Okay!')
+        except:
+            messages.error(request, "Failed to Add Result!")
+            return HttpResponse('Okay! Not')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
+def timetable(request):
+    return render(request, 'oncl_app/timetable.html')
+
+
+RUN_URL = "https://api.hackerearth.com/v3/code/run/"
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
+def index(request):
+	return render(request, 'oncl_app/index.html', {})
+
+#From HackerEarth API
+def runCode(request):
+	if request.is_ajax():
+		source = request.POST['source']
+		lang = request.POST['lang']
+		data = {
+			'client_secret': '7bd75915143fdc69b470c84d9fd3d40a3fb40342' ,
+			'async': 0,
+			'source': source,
+			'lang': lang,
+			'time_limit': 5,
+			'memory_limit': 262144,
+		}
+		if 'input' in request.POST:
+			data['input'] = request.POST['input']
+		r = requests.post(RUN_URL, data=data)
+		return JsonResponse(r.json(), safe=False)
+	else:
+		return HttpResponseForbidden()
