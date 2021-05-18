@@ -32,7 +32,7 @@ class Branches(models.Model):
     objects = models.Manager()
 
 class Subjects(models.Model):
-    id =models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     subject_name = models.CharField(max_length=50)
     branch_id = models.ForeignKey(Branches, on_delete=models.CASCADE, default=1)
     staff_id = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -152,12 +152,17 @@ class Gender_model(models.Model):
     gender = models.CharField(max_length=11, default="")
     objects = models.Manager()
 
-class StudentResult(models.Model):
+class Exam(models.Model):
     id = models.AutoField(primary_key=True)
     student_id = models.ForeignKey(Students, on_delete=models.CASCADE)
-    subject_id = models.ForeignKey(Subjects, on_delete=models.CASCADE)
-    subject_exam_marks = models.FloatField(default=0)
-    subject_assignment_marks = models.FloatField(default=0)
+    exam_sub = models.CharField(max_length=50)
+    ans_file = models.FileField(upload_to='answers/')
+    exam_marks = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    objects = models.Manager()
+
+class Exam_ques(models.Model):
+    id = models.AutoField(primary_key=True)
+    subject_id = models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
+    exam_file = models.FileField(upload_to='question/')
     objects = models.Manager()
