@@ -8,6 +8,8 @@
 	<title>Sign in - OnCl Account</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Google Recaptcha -->
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <!--===============================================================================================-->	
 	<link rel="icon" type="image/png" href="{% static 'oncl_app/images/whin.webp' %}"/>
 <!--===============================================================================================-->
@@ -99,6 +101,11 @@
 		margin-bottom: 5px;
 	}
 }
+
+.g-recaptcha {
+    transform:scale(0.90);
+    transform-origin:0 0;
+}
 </style>
 </head>
 <body>
@@ -145,6 +152,9 @@
 						<input class="input100" type="password" name="password" maxlength="40" id="id_password" placeholder="Password">
 						<span class="focus-input100"></span>
 					</div>
+
+					<div class="g-recaptcha" data-sitekey="6LeJoakaAAAAAHW56XdgC_7vPMVG38ZtGaJr-AnQ"></div>
+
 					
 					<div class="flex-sb-m w-full p-b-48">
 						<!-- <div class="contact100-form-checkbox">

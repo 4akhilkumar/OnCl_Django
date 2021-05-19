@@ -119,6 +119,19 @@ def login_page(request):
 
         user = authenticate(request, username=username, password=password)
 
+        captcha_token=request.POST.get("g-recaptcha-response")
+        cap_url="https://www.google.com/recaptcha/api/siteverify"
+        cap_secret="6LeJoakaAAAAACuq-D-kikqlQezY0ct5bs-OG6_b"
+        cap_data={"secret":cap_secret,"response":captcha_token}
+        cap_server_response=requests.post(url=cap_url,data=cap_data)
+        cap_json=json.loads(cap_server_response.text)
+
+        if cap_json['success']==False:
+            messages.error(request,"Invalid Captcha Try Again")
+            return render(request,"oncl_app/login_register/recaptcha_message.html")
+        else:
+            messages.success(request, "Recaptcha Verified.")
+
         if user is not None:
             login(request, user)
             template = render_to_string('oncl_app/login_register/login_mail.html', {'email':request.user.email})
