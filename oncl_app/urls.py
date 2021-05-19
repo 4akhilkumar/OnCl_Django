@@ -145,6 +145,12 @@ urlpatterns = [
     path('view_my_marks/',views.view_my_marks, name='view_my_marks'),
     path('view_marks_admin/',views.view_marks_admin, name='view_marks_admin'),
 
+    path('start_live_classroom',views.start_live_classroom, name="start_live_classroom"),
+    path('start_live_classroom_process',views.start_live_classroom_process, name="start_live_classroom_process"),
+
+    path('join_class_room/<int:subject_id>',views.join_class_room,name="join_class_room"),
+    path('node_modules/canvas-designer/widget.html',views.returnHtmlWidget,name="returnHtmlWidget"),
+
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     # re_path(r'^.*\.*', views.pages, name='pages'),
 ]
