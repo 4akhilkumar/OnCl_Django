@@ -166,3 +166,13 @@ class Exam_ques(models.Model):
     subject_id = models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
     exam_file = models.FileField(upload_to='question/')
     objects = models.Manager()
+
+class OnlineClassRoom(models.Model):
+    id=models.AutoField(primary_key=True)
+    room_name=models.CharField(max_length=255)
+    room_pwd=models.CharField(max_length=255)
+    subject=models.ForeignKey(Subjects,on_delete=models.CASCADE)
+    started_by=models.ForeignKey(Staffs,on_delete=models.CASCADE)
+    is_active=models.BooleanField(default=True)
+    created_on=models.DateTimeField(auto_now_add=True)
+    objects=models.Manager()
