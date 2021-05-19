@@ -154,31 +154,31 @@ def login_page(request):
     return render(request, 'oncl_app/login_register/login.html', context)
 
 def logoutUser(request):
-	logout(request)
-	return redirect('login')
+    logout(request)
+    return redirect('login')
 
 @unauthenticated_user
 def dashboard_page(request):
-	username = request.user.get_username()
-	return #
+    username = request.user.get_username()
+    return #
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Student'])
 def dashboard_student_page(request):
-	username = request.user.get_username()
-	return render(request, 'oncl_app/dashboard_student.html', {'username':username})
+    username = request.user.get_username()
+    return render(request, 'oncl_app/dashboard_student.html', {'username':username})
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Faculty'])
 def dashboard_faculty_page(request):
-	username = request.user.get_username()
-	return render(request, 'oncl_app/dashboard_faculty.html', {'username':username})
+    username = request.user.get_username()
+    return render(request, 'oncl_app/dashboard_faculty.html', {'username':username})
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def dashboard_admin_page(request):
-	username = request.user.get_username()
-	return render(request, 'oncl_app/dashboard_admin.html', {'username':username})
+    username = request.user.get_username()
+    return render(request, 'oncl_app/dashboard_admin.html', {'username':username})
 
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
@@ -1247,27 +1247,27 @@ RUN_URL = "https://api.hackerearth.com/v3/code/run/"
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
 def index(request):
-	return render(request, 'oncl_app/index.html', {})
+    return render(request, 'oncl_app/index.html', {})
 
 #From HackerEarth API
 def runCode(request):
-	if request.is_ajax():
-		source = request.POST['source']
-		lang = request.POST['lang']
-		data = {
-			'client_secret': '7bd75915143fdc69b470c84d9fd3d40a3fb40342' ,
-			'async': 0,
-			'source': source,
-			'lang': lang,
-			'time_limit': 5,
-			'memory_limit': 262144,
-		}
-		if 'input' in request.POST:
-			data['input'] = request.POST['input']
-		r = requests.post(RUN_URL, data=data)
-		return JsonResponse(r.json(), safe=False)
-	else:
-		return HttpResponseForbidden()
+    if request.is_ajax():
+        source = request.POST['source']
+        lang = request.POST['lang']
+        data = {
+            'client_secret': '7bd75915143fdc69b470c84d9fd3d40a3fb40342' ,
+            'async': 0,
+            'source': source,
+            'lang': lang,
+            'time_limit': 5,
+            'memory_limit': 262144,
+        }
+        if 'input' in request.POST:
+            data['input'] = request.POST['input']
+        r = requests.post(RUN_URL, data=data)
+        return JsonResponse(r.json(), safe=False)
+    else:
+        return HttpResponseForbidden()
 
 def exam_student(request):
     user = User.objects.get(id=request.user.id)
@@ -1382,3 +1382,39 @@ def view_marks_admin(request):
             'exam_info':exam_info
     }
     return render(request, 'oncl_app/exam_module/view_marks_admin.html', context)
+
+def start_live_classroom(request):
+    subjects=Subjects.objects.filter(staff_id=request.user.id)
+    return render(request,"oncl_app/faculty_templates/start_live_classroom.html", {"subjects":subjects})
+
+from datetime import datetime
+from uuid import uuid4
+def start_live_classroom_process(request):
+    subject=request.POST.get("subject")
+
+    subject_obj=Subjects.objects.get(id=subject)
+    checks=OnlineClassRoom.objects.filter(subject=subject_obj,is_active=True).exists()
+    if checks:
+        data=OnlineClassRoom.objects.get(subject=subject_obj,is_active=True)
+        room_pwd=data.room_pwd
+        roomname=data.room_name
+    else:
+        room_pwd=datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
+        roomname=datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
+        staff_obj=Staffs.objects.get(user=request.user.id)
+        onlineClass=OnlineClassRoom(room_name=roomname,room_pwd=room_pwd,subject=subject_obj,started_by=staff_obj,is_active=True)
+        onlineClass.save()
+
+    return render(request,"oncl_app/faculty_templates/live_class_room_start.html",{"username":request.user.username,"password":room_pwd,"roomid":roomname,"subject":subject_obj.subject_name})
+
+def join_class_room(request,subject_id):
+    subjects=Subjects.objects.filter(id=subject_id)
+    if subjects.exists():
+        subject_obj=Subjects.objects.get(id=subject_id)
+        onlineclass=OnlineClassRoom.objects.get(subject=subject_id)
+        return render(request,"oncl_app/student_templates/join_class_room_start.html",{"username":request.user.username,"password":onlineclass.room_pwd,"roomid":onlineclass.room_name})
+    else:
+        return HttpResponse("Subject Not Found")
+        
+def returnHtmlWidget(request):
+    return render(request,"oncl_app/faculty_templates/widget.html")
