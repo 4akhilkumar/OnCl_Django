@@ -176,3 +176,13 @@ class OnlineClassRoom(models.Model):
     is_active=models.BooleanField(default=True)
     created_on=models.DateTimeField(auto_now_add=True)
     objects=models.Manager()
+
+class AttendanceReportStudent(models.Model):
+    id = models.AutoField(primary_key=True)
+    student_id = models.IntegerField(default=0)
+    branch_id = models.CharField(max_length=50)
+    subject = models.CharField(max_length=50)
+    attend_status = models.IntegerField(default=0)
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = models.Manager()
