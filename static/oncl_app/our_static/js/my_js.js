@@ -104,7 +104,7 @@ $(document).ready(function(){
 
 		// AJAX request to Django for running code
 		$.ajax({
-			url: "index/run/",
+			url: "index/index/run/",
 			type: "POST",
 			data: run_data,
 			dataType: "json",
