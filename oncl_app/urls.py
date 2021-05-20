@@ -133,7 +133,7 @@ urlpatterns = [
     path('timetable/', views.timetable, name='timetable'),
 
     path('index/', views.index, name='index'), 
-	path('index/index/run/', views.runCode, name='run'),
+	path('index/run/', views.runCode, name='run'),
 
     path('exam_student/', views.exam_student, name='exam_student'),
     path('show_que/', views.show_que, name='show_que'),
