@@ -1,0 +1,42 @@
+{{branch}}
+
+
+
+
+
+<table>
+    <tr>
+        <th>
+            Student Name
+        </th>
+        <th>
+            Attedance Status
+        </th>
+        <th>
+            Action
+        </th>
+    </tr>
+    {% for i in students%}
+    {% if attedance.student_id != i.user.id or date != attendance.created_at %}
+    <tr>
+        <td>
+            {{i.user.username}}
+        </td>
+        <form action="{% url 'save_attendance' %}" method="POST">
+            {% csrf_token %}
+            <td>
+                <select name="attend_status" id="id_attend_status">
+                    <option value="1">Present</option>
+                    <option value="2">Absent</option>
+                </select>
+            </td>
+            <td>
+                <input type="text" name="subject" value="{{subject}}" id="id_subject" hidden/>
+                <input type="text" name="branch" value="{{branch}}" hidden/>
+                <input type="text" name="student_id" value="{{i.user.id}}" hidden/>
+                <input type="submit" name="submit">
+            </td>
+        </form>
+    </tr>
+    {% endfor%}
+</table>
