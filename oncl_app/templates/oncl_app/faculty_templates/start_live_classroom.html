@@ -1,53 +1,102 @@
+{% extends "oncl_app/base.html" %}
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-          <div class="row">
-              <div class="col-md-12">
-            <!-- general form elements -->
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Start Live Class Room</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <form role="form" action="{% url 'start_live_classroom_process' %}" method="post">
-                  {% csrf_token %}
-                <div class="card-body">
-                   <div class="form-group">
-                    <label>Subject </label>
-                    <select class="form-control" name="subject" id="subject">
-                        {% for subject in subjects %}
-                          <option value="{{ subject.id }}">{{ subject.subject_name }}</option>
-                        {% endfor %}
-                    </select>
-                  </div>
-                   <div class="form-group">
-                      {% if messages %}
-                        {% for message in messages %}
-                        {% if message.tags == 'error' %}
-                        <div class="alert alert-danger" style="margin-top:10px">{{ message }}</div>
-                        {% endif %}
-                        {% if message.tags == 'success' %}
-                        <div class="alert alert-success" style="margin-top:10px">{{ message }}</div>
-                        {% endif %}
-                        {% endfor %}
-                      {% endif %}
-                    </div>
+{% block content %}
 
-                </div>
-                <!-- /.card-body -->
+{% load static %}
 
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary btn-block">Start Class</button>
-                </div>
-              </form>
-            </div>
-            <!-- /.card -->
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animate/animate.css' %}">
+<!--===============================================================================================-->	
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->	
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.css' %}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/main.css' %}">
 
+<title>Start Online VC | OnCl - Edu. Cloud</title>
 
+<style>
+label {
+    background-color: #6c757d1a;
+    color: #555555;
+    padding: 0.5rem;
+    font-family: sans-serif;
+    cursor: pointer;
+    display: inline-block;
+}
 
-          </div>
-          </div>
-      </div>
-    </section>
+a {
+    text-decoration: none;
+    font-weight: bolder;
+}
+a:hover {
+    text-decoration: none;
+}
+
+/* Styles for Navbar */
+.bg-light {
+    background-color: #ffffff!important;
+    box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+}
+</style>
+
+<div class="limiter">
+    <div class="container-login100" style="background-color: #e3f2fd;">
+    <div class="wrap-login100 p-l-40 p-r-40 p-t-55 p-b-55" style="border-color: #64b5f6;">
+        <form class="login100-form validate-form flex-sb flex-w" method="POST" action="{% url 'start_live_classroom_process' %}">
+        <span class="login100-form-title p-b-32">
+            <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;Online VC | OnCl
+        </span>
+        {% csrf_token %}
+
+        <span class="txt1 p-b-11">
+            <i class="fas fa-chalkboard-teacher"></i>&nbsp;Subject Name
+        </span>
+        <div class="wrap-input100 validate-input m-b-20">
+            <select class="input100" name="subject" id="subject">
+              {% for subject in subjects %}
+                <option value="{{ subject.id }}">{{ subject.subject_name }}</option>
+              {% endfor %}
+          </select>
+            <span class="focus-input100"></span>
+        </div>
+
+        <div class="container-login100-form-btn" style="justify-content: space-between">
+            <button class="login100-form-btn" style="border-radius: 6px; background-color: #ef5350;" type="submit" value="">
+            <i class="fas fa-video"></i>&nbsp;Start Online VC 
+            </button>
+        </div>
+        </form>
+    </div>
+    </div>
+</div>
+
+<!--===============================================================================================-->
+<script src="{% static 'oncl_app/login_register/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/popper.js' %}"></script>
+    <script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/daterangepicker/moment.min.js' %}"></script>
+    <script src="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/vendor/countdowntime/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+    <script src="{% static 'oncl_app/login_register/js/main.js' %}"></script>
+
+{% endblock %}
