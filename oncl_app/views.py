@@ -12,7 +12,7 @@ from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseForbidden
 from django import template
 import json
-import datetime
+import datetime as pydt
 import requests
 
 from django.template.loader import render_to_string
@@ -342,7 +342,7 @@ def add_branch_save(request):
     else:
         branch = request.POST.get('branch')
         try:
-            branch_model = Branches(branch_name=branch)
+            branch_model = Branches(branch=branch)
             branch_model.save()
             messages.success(request, "Branch Added Successfully.")
             return redirect('manage_branch')
@@ -944,7 +944,7 @@ def view_books(request):
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
 def search(request):
     if request.method == 'POST':
-        now = datetime.datetime.now()
+        now = pydt.datetime.now()
         query = request.POST['search']
         books = file_upload.objects.filter(
             Q(book_id__contains=query) | Q(book_name__contains=query) | 
@@ -952,7 +952,7 @@ def search(request):
             Q(book_pub_date__contains=query) | Q(book_tag1__contains=query) | 
             Q(book_tag2__contains=query) | Q(book_tag3__contains=query) | 
             Q(book_tag4__contains=query))
-        now1 = datetime.datetime.now()
+        now1 = pydt.datetime.now()
         cal_time = (now1 - now).total_seconds()
 
         return render(request, 'oncl_app/E-Library/search_books.html', {'books': books, 'cal_time':cal_time})
@@ -967,12 +967,12 @@ def search(request):
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
 def search_announcements(request):
     if request.method == 'POST':
-        now = datetime.datetime.now()
+        now = pydt.datetime.now()
         query = request.POST['search']
         announcements = Announcements_news.objects.filter(
             Q(sub_an__contains=query) | Q(what_an__contains=query) | 
             Q(created_at__contains=query) | Q(updated_at__contains=query))
-        now1 = datetime.datetime.now()
+        now1 = pydt.datetime.now()
         cal_time = (now1 - now).total_seconds()
 
         return render(request, 'oncl_app/admin_templates/announcements_templates/search_announcements.html', {'announcements': announcements, 'cal_time':cal_time})
@@ -981,11 +981,11 @@ def search_announcements(request):
 @allowed_users(allowed_roles=['Admin'])
 def search_faculty(request):
     if request.method == 'POST':
-        now = datetime.datetime.now()
+        now = pydt.datetime.now()
         query = request.POST['search']
         staff = Staffs.objects.filter(Q(gender__contains=query) | Q(address__contains=query))
 
-        now1 = datetime.datetime.now()
+        now1 = pydt.datetime.now()
         cal_time = (now1 - now).total_seconds()
 
         return render(request, 'oncl_app/admin_templates/faculty_templates/search_faculty.html', {'staffs': staff, 'cal_time':cal_time})
@@ -994,7 +994,7 @@ def search_faculty(request):
 @allowed_users(allowed_roles=['Admin'])
 def search_student(request):
     if request.method == 'POST':
-        now = datetime.datetime.now()
+        now = pydt.datetime.now()
         query = request.POST['search']
         student = Students.objects.filter(
             Q(branch__contains=query) | Q(address__contains=query) |
@@ -1002,7 +1002,7 @@ def search_student(request):
             Q(linkedin_link__contains=query) |
             Q(git_link__contains=query) | Q(website_link__contains=query))
 
-        now1 = datetime.datetime.now()
+        now1 = pydt.datetime.now()
         cal_time = (now1 - now).total_seconds()
 
         return render(request, 'oncl_app/admin_templates/student_templates/search_student.html', {'students': student, 'cal_time':cal_time})
@@ -1058,7 +1058,7 @@ def view_session(request):
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
 def search_session(request):
     if request.method == 'POST':
-        now = datetime.datetime.now()
+        now = pydt.datetime.now()
         query = request.POST['search']
         sessions = PCS_Cloud.objects.filter(
             Q(session_id__contains=query) | Q(session_name__contains=query) | 
@@ -1066,7 +1066,7 @@ def search_session(request):
             Q(session_pub_date__contains=query) | Q(session_tag1__contains=query) | 
             Q(session_tag2__contains=query) | Q(session_tag3__contains=query) | 
             Q(session_tag4__contains=query))
-        now1 = datetime.datetime.now()
+        now1 = pydt.datetime.now()
         cal_time = (now1 - now).total_seconds()
 
         return render(request, 'oncl_app/PCS_Cloud/search_sessions.html', {'sessions': sessions, 'cal_time':cal_time})
@@ -1418,3 +1418,46 @@ def join_class_room(request,subject_id):
         
 def returnHtmlWidget(request):
     return render(request,"oncl_app/faculty_templates/widget.html")
+
+def show_subject(request):
+    user = User.objects.get(id=request.user.id)
+    staff = Staffs.objects.get(user=user)
+    staff_id = staff.user.id
+    subject_list = Subjects.objects.filter(staff_id=staff_id)
+
+    context = {
+        "subject_list":subject_list,
+        "staff":staff
+    }
+    return render(request, 'oncl_app/admin_templates/attendance_templates/fetch_student_subject.html', context)
+
+def branch_students(request):
+    user = User.objects.get(id=request.user.id)
+    staff = Staffs.objects.get(user=user)
+    branch = staff.branch
+    students=Students.objects.filter(branch=branch)
+    subject = request.POST.get('subject_name')
+    attendance = AttendanceReportStudent.objects.filter(branch_id=branch)
+    # date = date.today()
+    context={
+        'branch':branch,
+        'students':students,
+        'subject':subject,
+        'attendance':attendance,
+        # 'date':date
+    }
+    return render(request,"oncl_app/attendance/view_students.html",context)
+
+def save_attendance(request):
+    if request.method != "POST":
+        HttpResponse("Invalid Method")
+    else:
+        attend_status = request.POST.get('attend_status')
+        branch = request.POST.get('branch')
+        student_id = request.POST.get('student_id')
+        subject = request.POST.get('subject')
+
+        ars = AttendanceReportStudent(student_id=student_id,branch_id=branch,subject=subject,attend_status=attend_status)
+        ars.save()
+        messages.success(request, "Announcement Added Successfully.")
+        return redirect('branch_students')
