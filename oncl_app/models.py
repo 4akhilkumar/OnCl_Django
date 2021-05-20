@@ -124,7 +124,7 @@ class file_upload(models.Model):
     book_tag2 = models.CharField(max_length=20, default="NA")
     book_tag3 = models.CharField(max_length=20, default="NA")
     book_tag4 = models.CharField(max_length=20, default="NA")
-    book_pic = models.ImageField(null=True, blank=True, default='book.jpg')
+    book_pic = models.ImageField(null=True, blank=True, default='book.jpg',upload_to='books/')
     book_file = models.FileField(upload_to='books/')
 
     def __str__(self):
@@ -141,7 +141,7 @@ class PCS_Cloud(models.Model):
     session_tag2 = models.CharField(max_length=20, default="NA")
     session_tag3 = models.CharField(max_length=20, default="NA")
     session_tag4 = models.CharField(max_length=20, default="NA")
-    session_pic = models.ImageField(null=True, blank=True, default="session.jpg")
+    session_pic = models.ImageField(upload_to='sessions/', null=True, blank=True, default="session.jpg")
     session_file = models.FileField(upload_to='sessions/', default="")
 
     def __str__(self):
