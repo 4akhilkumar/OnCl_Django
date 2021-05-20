@@ -133,7 +133,7 @@ urlpatterns = [
     path('timetable/', views.timetable, name='timetable'),
 
     path('index/', views.index, name='index'), 
-	path('index/run/', views.runCode, name='run'),
+	path('index/index/run/', views.runCode, name='run'),
 
     path('exam_student/', views.exam_student, name='exam_student'),
     path('show_que/', views.show_que, name='show_que'),
@@ -150,6 +150,10 @@ urlpatterns = [
 
     path('join_class_room/<int:subject_id>',views.join_class_room,name="join_class_room"),
     path('node_modules/canvas-designer/widget.html',views.returnHtmlWidget,name="returnHtmlWidget"),
+
+    path('branch_students/',views.branch_students,name="branch_students"),
+    path('save_attendance/',views.save_attendance,name="save_attendance"),
+    path('show_subject/',views.show_subject,name="show_subject"),
 
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     # re_path(r'^.*\.*', views.pages, name='pages'),
