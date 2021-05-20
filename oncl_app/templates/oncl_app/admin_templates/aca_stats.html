@@ -103,9 +103,14 @@ a {
 <div id="Check_Issues" style="text-align: center; margin-bottom: 50px;">
 <h1> <span style="font-family: 'Oswald', sans-serif;">Institute Analtics Reports</span> | <b><span class="text_bold" style="color: tomato;">O</span><span class="text_bold" style="color: #5f95eb;">n</span><span class="text_bold" style="color: #76e989;">C</span><span class="text_bold" style="color: #fcc834">l</span> <span class="text_bold">- Edu. Cloud</span></b></h1>
 {% if staff_count_15 >= student_count %}
-<h4 style="margin-top: 20px;">No issues found. Everything is Fine!</h4>
+<h5 style="margin-top: 20px;">No issues found in Faculty - Student Ratio. Everything is Fine!</h5>
 {% else %}
-<h5 style="margin-top: 20px;">Student - Faculty Ratio is Not Good. So, Increase Faculty Strength!</h5>
+<h4 style="margin-top: 20px;">Student - Faculty Ratio is Not Good. So, Increase Faculty Strength!</h4>
+{% endif %}
+{% if staff_leave_count > student_leave_count %}
+<h4 style="margin-top: 20px;">Faculty are taking more leaves which effects on students education.</h4>
+{% else %}
+<h5 style="margin-top: 20px;"> No issues found in Faculty Leaves. Everything is Fine!</h5>
 {% endif %}
 </div>
 
