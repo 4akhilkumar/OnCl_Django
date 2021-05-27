@@ -118,7 +118,11 @@ a:hover {
           <i class="fas fa-venus-mars"></i>&nbsp;Gender
         </span>
         <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="gender" value="{{ staff.gender }}" required id="id_gender" placeholder="Gender">
+          <select class="input100" name="gender" id="id_gender" required>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
           <span class="focus-input100"></span>
         </div>
 

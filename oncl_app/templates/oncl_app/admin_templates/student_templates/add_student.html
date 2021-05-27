@@ -118,9 +118,8 @@ a:hover {
         <div class="wrap-input100 validate-input m-b-20">
           <select class="input100" name="gender" id="id_gender" required>
             <option value="">Select Gender</option>
-            {% for gen in gender_model %}
-            <option value="{{ gen.gender }}">{{ gen.gender }}</option>
-            {% endfor %}
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
           </select>
           <span class="focus-input100"></span>
         </div>
