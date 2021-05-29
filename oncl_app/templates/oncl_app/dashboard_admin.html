@@ -31,8 +31,8 @@
     <!-- Cache Controller -->
     <meta http-equiv="Cache-Control: max-age=31536000" content="public">
 
-    <link rel="apple-touch-icon" href="{% static 'oncl_app/whin.webp' %}" type="image/icon type">
-    <link rel="icon" href="{% static 'oncl_app/whin.webp' %}" type="image/icon type">
+    <link rel="apple-touch-icon" href="{% static 'oncl_app/OnCl Logo [Background Removed].png' %}" type="image/icon type">
+    <link rel="icon" href="{% static 'oncl_app/OnCl Logo [Background Removed].png' %}" type="image/icon type">
     <title>Admin Dashboard | OnCl - Edu. Cloud</title>
 	
 	<!-- Google Tag Manager -->
@@ -368,7 +368,7 @@ h1 {
 
     <nav class="navbar sticky-top navbar-light bg-light" style="padding: 18px;">
         <a href="/" class="navbar-brand">
-            <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" alt="OnCl Logo">
+            <img class="header_img" src="{% static 'oncl_app/OnCl Logo.gif' %}" alt="OnCl Logo">
 			<span style="font-weight: 500; font-family: 'Fredoka One', cursive; color: #3c4043;" id="headername">
 				<span class="hidden_text" style="color: tomato;">O</span><span class="hidden_text" style="color: #5f95eb;">n</span><span class="hidden_text" style="color: #76e989;">C</span><span class="hidden_text" style="color: #fcc834">l</span> <span class="hidden_text">- Edu. Cloud</span>
 			</span>
@@ -376,7 +376,7 @@ h1 {
         <div style="justify-content: flex-end;" class="row">
 	        <div class="User-area">
 			  <div class="User-avtar">
-				  <img alt="avatar" src="{% static 'oncl_app/images/avatar.webp' %}" style="width:40px; height:40px; border-radius: 50%;">
+				  <img alt="avatar" letters="{{user.first_name|first}}" style="width:40px; height:40px; border-radius: 50%;">
 				  {% if username %}
 				  <a title="{{username}}" href="#" style="color: #000;"><span class="_username"> <img src="{% static 'oncl_app/images/waving_hand.gif' %}" alt="waving hand" width="40px" height="40px"> Hello, {{username}} !</span></a>
 				  {% endif %}
@@ -529,6 +529,60 @@ h1 {
 		  window.open("{% url 'view_marks_admin' %}");
 	  }
   </script>
+
+<script>
+	(function (w, d) {
+	
+	function AvatarImage(letters, size) {
+	  var canvas = d.createElement('canvas');
+	  var context = canvas.getContext("2d");
+	  var size = size || 60;
+	
+	  // Generate a random color every time function is called
+	  var color =  "#" + (Math.random() * 0xFFFFFF << 0).toString(16);
+	
+	  // Set canvas with & height
+	  canvas.width = size;
+	  canvas.height = size;
+	
+	  // Select a font family to support different language characters
+	  // like Arial
+	  context.font = Math.round(canvas.width / 2) + "px Arial";
+	  context.textAlign = "center";
+	
+	  // Setup background and front color
+	  context.fillStyle = color;
+	  context.fillRect(0, 0, canvas.width, canvas.height);
+	  context.fillStyle = "#FFF";
+	  context.fillText(letters, size / 2, size / 1.5);
+	
+	  // Set image representation in default format (png)
+	  dataURI = canvas.toDataURL();
+	
+	  // Dispose canvas element
+	  canvas = null;
+	
+	  return dataURI;
+	}
+	
+	w.AvatarImage = AvatarImage;
+	
+	})(window, document);
+	
+	(function(w, d) {
+	  function generateAvatars() {
+		var images = d.querySelectorAll('img[letters]');
+		for (var i = 0, len = images.length; i < len; i++) {
+		  var img = images[i];
+		  img.src = AvatarImage(img.getAttribute('letters'), img.getAttribute('width'));
+		  img.removeAttribute('letters');
+		}
+	  }
+	  d.addEventListener('DOMContentLoaded', function (event) {
+		  generateAvatars();
+	  });
+	})(window, document);
+	</script>
 
 </body>
 </html>
