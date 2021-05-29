@@ -556,8 +556,7 @@ h1 {
 	  context.fillStyle = "#FFF";
 	  context.fillText(letters, size / 2, size / 1.5);
 	
-	  // Set image representation in default format (png)
-	  dataURI = canvas.toDataURL();
+	  dataURI = canvas.toDataURL('image/webp', 1.0);
 	
 	  // Dispose canvas element
 	  canvas = null;
