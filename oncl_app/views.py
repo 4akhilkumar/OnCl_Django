@@ -652,7 +652,7 @@ def add_student(request):
     branch = Branches.objects.all()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
-        student_form = StudentsForm(request.POST)
+        student_form = StudentsForm(request.POST,request.FILES)
 
         if form.is_valid() and student_form.is_valid():
             user = form.save()
