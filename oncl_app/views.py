@@ -512,7 +512,7 @@ def add_staff(request):
     staff_form = StaffsForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
-        staff_form = StaffsForm(request.POST)
+        staff_form = StaffsForm(request.POST,request.FILES)
 
         if form.is_valid() and staff_form.is_valid():
             user = form.save()
