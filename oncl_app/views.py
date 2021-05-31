@@ -648,7 +648,6 @@ def delete_staff(request, staff_id):
 def add_student(request):
     form = CreateUserForm()
     student_form = StudentsForm()
-    gender_model = Gender_model.objects.all()
     branch = Branches.objects.all()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -673,7 +672,7 @@ def add_student(request):
             form = CreateUserForm()
             student_form = StudentsForm()
 
-    context = {'form':form, 'student_form':student_form, 'gender_model':gender_model, 'branch':branch}        
+    context = {'form':form, 'student_form':student_form, 'branch':branch}        
     return render(request, "oncl_app/admin_templates/student_templates/add_student.html", context)
 
 @login_required(login_url='login')
@@ -707,10 +706,14 @@ def edit_student_save(request):
         email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        country_name = request.POST.get('country_name')
+        address = request.POST.get('address')
         gender = request.POST.get('gender')
         branch = request.POST.get('branch')
         phone = request.POST.get('phone')
+        website_link = request.POST.get('website_link')
+        linkedin_link = request.POST.get('linkedin_link')
+        git_link = request.POST.get('git_link')
+        bio = request.POST.get('bio')
         profile_pic = request.POST.get('profile_pic')
 
         try:
@@ -724,10 +727,14 @@ def edit_student_save(request):
             
             # INSERTING into Students Model
             student_model = Students.objects.get(user=student_id)
-            student_model.country_name = country_name
+            student_model.address = address
             student_model.gender = gender
             student_model.branch = branch
             student_model.phone = phone
+            student_model.website_link = website_link
+            student_model.linkedin_link = linkedin_link
+            student_model.git_link = git_link
+            student_model.bio = bio
             student_model.profile_pic = profile_pic
             student_model.save()
 
@@ -994,7 +1001,7 @@ def search_student(request):
         student = Students.objects.filter(
             Q(user__first_name__contains=query) | Q(user__last_name__contains=query) |
             Q(user__email__contains=query) | Q(user__username__contains=query) |
-            Q(branch__branch__contains=query) | Q(country_name__contains=query) |
+            Q(branch__branch__contains=query) | Q(address__contains=query) |
             Q(gender__contains=query) | Q(phone__contains=query) |
             Q(linkedin_link__contains=query) |
             Q(git_link__contains=query) | Q(website_link__contains=query))
