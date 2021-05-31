@@ -1,4 +1,4 @@
-{% extends "oncl_app/base.html" %}
+{% extends "oncl_app/admin_base.html" %}
 
 {% block content %}
 
@@ -15,102 +15,6 @@ a {
 a:hover {
     text-decoration: none;
 }
-
-/* body {
-  line-height: 1.25;
-}
-
-table {
-  border: 2px solid #6c757d87;
-  border-collapse: collapse;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  table-layout: fixed;
-}
-
-table caption {
-  font-size: 1.5em;
-  margin: .5em 0 .75em;
-}
-
-table tr {
-  background-color: #FFF;
-  border: 1px solid #6c757d87;
-  padding: .35em;
-}
-
-table th,
-table td {
-  padding: .625em;
-  text-align: center;
-}
-
-table th {
-  font-size: .85em;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  background-color: #6c757d87;
-}
-
-@media screen and (max-width: 600px) {
-  table {
-    border: 0;
-  }
-
-  table caption {
-    font-size: 1.3em;
-  }
-  
-  table thead {
-    border: none;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-  }
-  
-  table tr {
-    border-bottom: 3px solid #6c757d87;
-    display: block;
-    margin-bottom: .625em;
-  }
-  
-  table td {
-    border-bottom: 1px solid #6c757d87;
-    display: block;
-    font-size: .8em;
-    text-align: right;
-  }
-  
-  table td::before {
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  
-  table td:last-child {
-    border-bottom: 0;
-  }
-}
-
-.edit_button {
-    color: #fcc834;
-}
-
-.delete_button {
-    color: #F1615C;
-}
-
-@media only screen and (min-width: 601px) {
-    .outlined {
-        border-left: 2px solid var(--gray);
-    }
-} */
 
 .search_bar_custom {
   display: flex;
@@ -146,7 +50,6 @@ table th {
 .message-wrapper {
   position: relative;
   padding: 0px;
-  /* background-color: rgb(255, 0, 0); */
   margin: 0px;
   border-radius: 25px;
 }
@@ -256,7 +159,11 @@ hr {
                 </p>
                 <hr>
                 <p>
-                  {{announcement.what_an}}
+                  {% if announcement.an_image.url == '/files/no_media_files_default.webp' %}
+                  <i class="fas fa-paperclip"></i> No media files attached.
+                  {% else %}
+                  <a href="{{announcement.an_image.url}}"><i class="fas fa-paperclip"></i> Download Media File(s)</a>
+                  {% endif %}
                 </p>
             </div>
         </div>

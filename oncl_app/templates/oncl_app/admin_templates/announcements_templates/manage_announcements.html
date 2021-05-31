@@ -1,4 +1,4 @@
-{% extends "oncl_app/base.html" %}
+{% extends "oncl_app/admin_base.html" %}
 
 {% block content %}
 
@@ -32,7 +32,9 @@ a:hover {
   padding: 50px 0 50px 0;
 }
 
-/*  */
+/* ========================================================================
+ * MESSAGES
+ * ======================================================================== */
 .message form {
   padding: 6px 15px;
   background-color: #FAFAFA;
@@ -181,6 +183,13 @@ hr {
                 <hr>
                 <p>
                   {{announcement.what_an}}
+                </p>
+                <p>
+                  {% if announcement.an_image.url == '/files/no_media_files_default.webp' %}
+                  <i class="fas fa-paperclip"></i> No media files attached.
+                  {% else %}
+                  <a href="{{announcement.an_image.url}}"><i class="fas fa-paperclip"></i> Download Media File(s)</a>
+                  {% endif %}
                 </p>
             </div>
         </div>
