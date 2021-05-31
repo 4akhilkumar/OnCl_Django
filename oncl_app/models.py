@@ -106,9 +106,10 @@ class LeaveReportStaff(models.Model):
 
 class Announcements_news(models.Model):
     id = models.AutoField(primary_key=True)
-    sub_an = models.CharField(max_length=100, default="NA")
+    sub_an = models.CharField(max_length=100, default="")
     what_an = models.TextField()
-    an_by = models.CharField(max_length=100, default="")
+    an_image = models.ImageField(null=True, blank=True, default='no_media_files_default.webp',upload_to='announcements/')
+    an_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
