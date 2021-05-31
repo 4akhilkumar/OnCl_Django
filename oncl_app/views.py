@@ -707,14 +707,10 @@ def edit_student_save(request):
         email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        address = request.POST.get('address')
+        country_name = request.POST.get('country_name')
         gender = request.POST.get('gender')
         branch = request.POST.get('branch')
         phone = request.POST.get('phone')
-        git_link = request.POST.get('git_link')
-        website_link = request.POST.get('website_link')
-        linkedin_link = request.POST.get('linkedin_link')
-        bio = request.POST.get('bio')
         profile_pic = request.POST.get('profile_pic')
 
         try:
@@ -728,14 +724,10 @@ def edit_student_save(request):
             
             # INSERTING into Students Model
             student_model = Students.objects.get(user=student_id)
-            student_model.address = address
+            student_model.country_name = country_name
             student_model.gender = gender
             student_model.branch = branch
             student_model.phone = phone
-            student_model.git_link = git_link
-            student_model.website_link = website_link
-            student_model.linkedin_link = linkedin_link
-            student_model.bio = bio
             student_model.profile_pic = profile_pic
             student_model.save()
 
@@ -983,12 +975,15 @@ def search_faculty(request):
     if request.method == 'POST':
         now = pydt.datetime.now()
         query = request.POST['search']
-        staff = Staffs.objects.filter(Q(gender__contains=query) | Q(address__contains=query))
+        staff = Staffs.objects.filter(
+             Q(user__first_name__contains=query) | Q(user__last_name__contains=query) |
+            Q(user__email__contains=query) | Q(user__username__contains=query) |
+            Q(gender__contains=query) | Q(address__contains=query))
 
         now1 = pydt.datetime.now()
         cal_time = (now1 - now).total_seconds()
 
-        return render(request, 'oncl_app/admin_templates/faculty_templates/search_faculty.html', {'staffs': staff, 'cal_time':cal_time})
+        return render(request, 'oncl_app/admin_templates/faculty_templates/search_faculty.html', {'staffs': staff, 'cal_time':cal_time, 'query':query})
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
@@ -997,7 +992,9 @@ def search_student(request):
         now = pydt.datetime.now()
         query = request.POST['search']
         student = Students.objects.filter(
-            Q(branch__contains=query) | Q(address__contains=query) |
+            Q(user__first_name__contains=query) | Q(user__last_name__contains=query) |
+            Q(user__email__contains=query) | Q(user__username__contains=query) |
+            Q(branch__branch__contains=query) | Q(country_name__contains=query) |
             Q(gender__contains=query) | Q(phone__contains=query) |
             Q(linkedin_link__contains=query) |
             Q(git_link__contains=query) | Q(website_link__contains=query))
@@ -1005,7 +1002,7 @@ def search_student(request):
         now1 = pydt.datetime.now()
         cal_time = (now1 - now).total_seconds()
 
-        return render(request, 'oncl_app/admin_templates/student_templates/search_student.html', {'students': student, 'cal_time':cal_time})
+        return render(request, 'oncl_app/admin_templates/student_templates/search_student.html', {'students': student, 'cal_time':cal_time, 'query':query})
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
