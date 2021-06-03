@@ -7,7 +7,7 @@
 
 	<div class="main">
 		<ul class="cards">
-		<li class="cards_item" onclick="manage_student()">
+		<li class="cards_item" onclick="document.location='{% url 'manage_student' %}'">
 			<div class="card">
 				<div class="card_icon"><span style="font-size: 95px; color: #607d8b; margin: 10% 0 12.5px 0;" class="fas fa-user-graduate"></span></div>
 				<div class="card_content" style="background: linear-gradient(to bottom left, #b0bec5 40%, #FFFFFF 100%);">
@@ -16,7 +16,7 @@
 			 	</div>
 		   </div>
 		</li>
-		<li class="cards_item" onclick="manage_faculty()">
+		<li class="cards_item" onclick="document.location='{% url 'manage_staff' %}'">
 			<div class="card">
 				<div class="card_icon"><span style="font-size: 95px; color: #ec407a; margin: 10% 0 12.5px 0;" class="fas fa-chalkboard-teacher"></span></div>
 				<div class="card_content" style="background: linear-gradient(to bottom left, #f8bbd0 40%, #FFFFFF 100%);">
@@ -25,7 +25,7 @@
 			 	</div>
 		   </div>
 		</li>
-		  <li class="cards_item" onclick="view_session()">
+		  <li class="cards_item" onclick="document.location='{% url 'view_session' %}'">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #4285f4; margin-top: 10%;" class="material-icons"> video_library </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #bbdefb 40%, #FFFFFF 100%);">
@@ -34,7 +34,7 @@
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item" onclick="view_marks_admin()">
+		  <li class="cards_item" onclick="document.location='{% url 'view_marks_admin' %}'">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #fcc834; margin-top: 10%;" class="material-icons"> assignment </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #f8e096 40%, #FFFFFF 100%);">
@@ -43,7 +43,7 @@
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item" onclick="timetable()">
+		  <li class="cards_item" onclick="document.location='{% url 'timetable' %}'">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #76e989; margin-top: 10%;" class="material-icons"> today </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #c8e6c9 40%, #FFFFFF 100%);">
@@ -52,7 +52,7 @@
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item" onclick="code()">
+		  <li class="cards_item" onclick="document.location='{% url 'index' %}'">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #ba68c8; margin-top: 10%;" class="material-icons"> code </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #e1bee7 40%, #FFFFFF 100%);">
@@ -61,7 +61,7 @@
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item" onclick="manage_announcements()">
+		  <li class="cards_item" onclick="document.location='{% url 'manage_announcement' %}'">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 100px; color: #F1615C; margin-top: 10%;" class="material-icons"> campaign </span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #f8bbd0 40%, #FFFFFF 100%);">
@@ -70,7 +70,7 @@
 			  </div>
 			</div>
 		  </li>
-		  <li class="cards_item" onclick="view_elibrary()">
+		  <li class="cards_item" onclick="document.location='{% url 'view' %}'">
 			<div class="card">
 			  <div class="card_icon"><span style="font-size: 95px; color: #607d8b; margin: 10% 0 12.5px 0;" class="fas fa-swatchbook"></span></div>
 			  <div class="card_content" style="background: linear-gradient(to bottom left, #bdbdbd 40%, #FFFFFF 100%);">
