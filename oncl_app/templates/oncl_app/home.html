@@ -407,7 +407,7 @@ footer .end {
   style="padding: 18px;"
   {% endif %}
   >
-    <a href="/" class="navbar-brand">
+    <a {% if request.user.is_authenticated %} href="{% url 'dashboard' %}" {% else %} href="/" {% endif %} class="navbar-brand">
         <img class="header_img" src="{% static 'oncl_app/OnCl Logo.gif' %}" alt="OnCl Logo">
         <span style="font-weight: 500; font-family: 'Fredoka One', cursive; color: #3c4043; font-size: 1.6rem;">
           <span class="hidden_text" style="color: tomato;">O</span><span class="hidden_text" style="color: #5f95eb;">n</span><span class="hidden_text" style="color: #76e989;">C</span><span class="hidden_text" style="color: #fcc834">l</span> <span class="hidden_text">- Edu. Cloud</span>
