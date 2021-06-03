@@ -127,13 +127,15 @@ def login_page(request):
         cap_json=json.loads(cap_server_response.text)
 
         if cap_json['success']==False:
-            messages.error(request,"Invalid Captcha Try Again")
-            return render(request,"oncl_app/login_register/recaptcha_message.html")
+            messages.error(request,"Invalid Captcha Try Again!")
+            # return render(request,"oncl_app/login_register/recaptcha_message.html")
+            return redirect('login')
         else:
             messages.success(request, "Recaptcha Verified.")
 
         if user is not None:
             login(request, user)
+            messages.success(request, 'You Logged In Successfully.')
             template = render_to_string('oncl_app/login_register/login_mail.html', {'email':request.user.email})
             send_mail('OnCl Account Login Alert', template, settings.EMAIL_HOST_USER, [request.user.email], html_message=template)
             
@@ -155,6 +157,7 @@ def login_page(request):
 
 def logoutUser(request):
     logout(request)
+    messages.info(request,"You have logged out!")
     return redirect('login')
 
 @unauthenticated_user
@@ -622,12 +625,12 @@ def edit_staff_save(request):
             staff_model.microsoft_academic_link = microsoft_academic_link
             staff_model.save()
 
-            messages.success(request, "Faculty Updated Successfully.")
             # return redirect('/edit_staff/'+staff_id)
+            messages.success(request, "Faculty Info. Updated Successfully.")
             return redirect('manage_staff')
 
         except:
-            messages.error(request, "Failed to Update Faculty!")
+            messages.error(request, "Failed to Update Faculty Info.!")
             return redirect('/edit_staff/'+staff_id+"/")
 
 @login_required(login_url='login')
@@ -637,10 +640,10 @@ def delete_staff(request, staff_id):
     try:
         staff.delete()
         staff.user.delete()
-        messages.success(request, "Faculty Deleted Successfully.")
+        messages.info(request, "Faculty Record Deleted Successfully.")
         return redirect('manage_staff')
     except:
-        messages.error(request, "Failed to Delete Faculty!")
+        messages.error(request, "Failed to Delete Faculty Record!")
         return redirect('manage_staff')
 
 @login_required(login_url='login')
@@ -738,11 +741,11 @@ def edit_student_save(request):
             student_model.profile_pic = profile_pic
             student_model.save()
 
-            messages.success(request, "Student Updated Successfully.")
+            messages.success(request, "Student Info. Updated Successfully.")
             return redirect('manage_student')
         
         except:
-            messages.error(request, "Failed to Update Student!")
+            messages.error(request, "Failed to Update Student Info.!")
             return redirect('/edit_student/'+student_id+"/")
 
 @login_required(login_url='login')
@@ -763,10 +766,10 @@ def delete_student(request, student_id):
     try:
         student.delete()
         student.user.delete()
-        messages.success(request, "Student Deleted Successfully.")
+        messages.info(request, "Student Record Deleted Successfully.")
         return redirect('manage_student')
     except:
-        messages.error(request, "Failed to Delete Student!")
+        messages.error(request, "Failed to Delete Student Record!")
         return redirect('manage_student')
 
 @login_required(login_url='login')
@@ -855,7 +858,7 @@ def delete_announcement(request, announcement_id):
     announcement = Announcements_news.objects.get(id=announcement_id)
     try:
         announcement.delete()
-        messages.success(request, "Announcement Deleted Successfully.")
+        messages.info(request, "Announcement Deleted Successfully.")
         return redirect('manage_announcement')
     except:
         messages.error(request, "Failed to Delete Announcement!")
