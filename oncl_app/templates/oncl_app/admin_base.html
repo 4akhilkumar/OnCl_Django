@@ -356,7 +356,7 @@ h1 {
 <body>
 
     <nav class="navbar sticky-top navbar-light bg-light" style="padding: 18px;">
-        <a href="/" class="navbar-brand">
+        <a {% if request.user.is_authenticated %} href="{% url 'dashboard' %}" {% else %} href="/" {% endif %} class="navbar-brand">
             <img class="header_img" src="{% static 'oncl_app/OnCl Logo.gif' %}" alt="OnCl Logo">
 			<span style="font-weight: 500; font-family: 'Fredoka One', cursive; color: #3c4043;" id="headername">
 				<span class="hidden_text" style="color: tomato;">O</span><span class="hidden_text" style="color: #5f95eb;">n</span><span class="hidden_text" style="color: #76e989;">C</span><span class="hidden_text" style="color: #fcc834">l</span> <span class="hidden_text">- Edu. Cloud</span>
@@ -371,7 +371,7 @@ h1 {
 				  
 			  </div>
 		      <ul class="User-Dropdown" style="font-weight: 700; box-shadow: 0 20px 40px 5px rgba(0, 0, 0, 0.25);">
-				 <li style="line-height: 1.5; padding: 0.6em 0 0 0;" onclick="admin_dashboard()"> 
+				 <li style="line-height: 1.5; padding: 0.6em 0 0 0;" onclick="document.location='{% url 'admin_dashboard' %}'"> 
 					<div style="padding-top: 1px; padding: 0px;"> Signed in as </div>
 					<div>{{user.username}}</div>
 				 </li>
@@ -396,6 +396,8 @@ h1 {
     {% block content %}{% endblock %}
 
     {% include 'oncl_app/top_button.html' %}
+
+	{% include 'oncl_app/messages.html' %}
   
   <script>
     $('.User-avtar').click(function(event) {
@@ -413,33 +415,6 @@ h1 {
   	      $('.User-avtar').removeClass('__opened');
   	  $('.User-Dropdown').removeClass("U-open");
   	});
-	  function admin_dashboard() {
-		  window.location.replace("{% url 'admin_dashboard' %}");
-	  }
-	  function manage_faculty() {
-		  window.open("{% url 'manage_staff' %}");
-	  }
-	  function manage_student() {
-		  window.open("{% url 'manage_student' %}");
-	  }
-	  function manage_announcements() {
-		  window.open("{% url 'manage_announcement' %}");
-	  }
-	  function view_elibrary() {
-		  window.open("{% url 'view' %}");
-	  }
-	  function view_session() {
-		  window.open("{% url 'view_session' %}");
-	  }
-	  function timetable() {
-		  window.open("{% url 'timetable' %}");
-	  }
-	  function code() {
-		  window.open("{% url 'index' %}");
-	  }
-	  function view_marks_admin() {
-		  window.open("{% url 'view_marks_admin' %}");
-	  }
   </script>
 
 <script>
