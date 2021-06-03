@@ -19,29 +19,46 @@
         justify-content: space-around;
         padding: 50px 0 50px 0;
     }
+    .img-container {
+        text-align: center;
+    }
 </style>
 
 <link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
 
+{% if data.count == 0 %}
+<div class="img-container" onclick="document.location='{% url 'upload_session' %}'" style="cursor: pointer;">
+    <img src="{% static 'oncl_app/no_media_files_default.png' %}" style="max-height: 30rem;" alt="no_media_files_default" class="img-fluid">
+</div>
+<div style="text-align: center; font-weight: bold; font-size: 1.4rem;">
+    <p><i class="fas fa-info-circle"></i> No Sessions Uploaded Yet!</p>
+</div>
+
+{% else %}
 <script src="https://kit.fontawesome.com/f64de7b412.js" crossorigin="anonymous"></script>
 <div class="search_bar_custom">
     <div class="content">
     <form method="POST" action="/search_session">
       <div class="search">
         {% csrf_token %}
-        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Sessions...">
+        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Sessions..." required>
         <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
       </div>
     </form>
     </div>
 </div>
+{% endif %}
 
 <div class="main">
+    {% if data.count == 0 %}
+    {% else %}
     <div style="padding: 30px 0px 10px 10px;">
-        <div class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
-            <a href="{% url 'upload_session' %}" style="text-decoration: none; color: #000;"><i class="fas fa-photo-video"></i> Add Session</a>
+        <div onclick="document.location='{% url 'upload_session' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+            <a href="#" style="text-decoration: none; color: #000;"><i class="fas fa-photo-video"></i> Add Session</a>
         </div>
     </div>
+    {% endif %}
+
     <ul class="cards">
     {% for session in data %}
     <li class="cards_item">

@@ -117,8 +117,21 @@ table th {
   justify-content: space-around;
   padding: 50px 0 50px 0;
 }
+
+.img-container {
+  text-align: center;
+}
 </style>
 
+{% if staffs.count == 0 %}
+<div class="img-container" onclick="document.location='{% url 'add_staff' %}'" style="cursor: pointer; padding-top: 40px;">
+  <img src="{% static 'oncl_app/no_faculty.png' %}" style="max-height: 30rem;" alt="no_faculty" class="img-fluid">
+</div> 
+<div style="text-align: center; font-weight: bold; font-size: 1.4rem;">
+  <p><i class="fas fa-info-circle"></i> No Faculty Records are Created Yet!</p>
+</div>
+
+{% else %}
 <link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
 
 <script src="https://kit.fontawesome.com/f64de7b412.js" crossorigin="anonymous"></script>
@@ -157,6 +170,7 @@ table th {
           </tr>
         </thead>
         <tbody>
+        {% endif %}
         {% for staff in staffs %}
           <tr>
             <td data-label="ID">{{ staff.user.username }}</td>

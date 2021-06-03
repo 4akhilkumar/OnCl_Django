@@ -126,12 +126,24 @@ hr {
   border-bottom: 1px solid #DDD !important;
 }
 .avatar{
-    width:50px;
-    height:50px;
-    border-radius: 25px;
+  width:50px;
+  height:50px;
+  border-radius: 25px;
+}
+.img-container {
+  text-align: center;
 }
 </style>
 
+{% if announcements.count == 0 %}
+<div class="img-container" onclick="document.location='{% url 'add_announcement' %}'" style="cursor: pointer; padding-top: 40px;">
+  <img src="{% static 'oncl_app/no_announcements.jpg' %}" style="max-height: 30rem;" alt="no_announcements" class="img-fluid">
+</div>
+<div style="text-align: center; font-weight: bold; font-size: 1.4rem;">
+  <p><i class="fas fa-info-circle"></i> No Announcements Made Yet!</p>
+</div>
+
+{% else %}
 <link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
 
 <script src="https://kit.fontawesome.com/f64de7b412.js" crossorigin="anonymous"></script>
@@ -154,6 +166,7 @@ hr {
         <a href="{% url 'add_announcement' %}" style="text-decoration: none; color: #000;"><i class="fas fa-bullhorn"></i> Make Announcement</a>
     </div>
 </div>
+  {% endif %}
   {% endif %}
   {% for announcement in announcements %}
   <div class="row message-wrapper rounded shadow mb-20">

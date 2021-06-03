@@ -19,10 +19,22 @@
         justify-content: space-around;
         padding: 50px 0 50px 0;
     }
+    .img-container {
+        text-align: center;
+    }
 </style>
 
 <link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
 
+{% if data.count == 0 %}
+<div class="img-container" onclick="document.location='{% url 'upload_session' %}'" style="cursor: pointer;">
+    <img src="{% static 'oncl_app/no_media_files_default.png' %}" style="max-height: 30rem;" alt="no_media_files_default" class="img-fluid">
+</div>
+<div style="text-align: center; font-weight: bold; font-size: 1.4rem;">
+    <p><i class="fas fa-info-circle"></i> No Books Uploaded Yet!</p>
+</div>
+
+{% else %}
 <script src="https://kit.fontawesome.com/f64de7b412.js" crossorigin="anonymous"></script>
 <div class="search_bar_custom">
     <div class="content">
@@ -42,6 +54,7 @@
             <a href="{% url 'upload' %}" style="text-decoration: none; color: #000;"><i class="fas fa-book"></i> Add Book</a>
         </div>
     </div>
+    {% endif %}
     <ul class="cards">
     {% for book in data %}
     <li class="cards_item">
