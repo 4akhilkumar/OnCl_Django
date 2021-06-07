@@ -202,9 +202,23 @@
 		</div>
 	</div>
 
-	<footer dir="rtl">
-		<p id="demo"></p>
-	</footer>
+
+<footer style="padding: 10px 5px;">
+<p id="demo"></p>
+<p><button onclick="getLocation()"><span style="font-weight: bold;">Click Here</span>, To allow OnCl to know your location.</button></p>
+</footer>
+
+<script>
+var x=document.getElementById("demo");
+function getLocation()
+  {
+  if (navigator.geolocation)
+    {
+    navigator.geolocation.getCurrentPosition(showPosition,showError);
+    }
+  else{x.innerHTML="Geolocation is not supported by this browser.";}
+  }
+</script>
 	
 <!--===============================================================================================-->
 	<script src="{% static 'oncl_app/login_register/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
