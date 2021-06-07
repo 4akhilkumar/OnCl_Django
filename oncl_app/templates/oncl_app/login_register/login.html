@@ -115,7 +115,7 @@
 }
 </style>
 </head>
-<body>
+<body onload="getLocation()">
 	<!-- Google Tag Manager (noscript) -->
 	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PQDLPCV"
 	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -207,18 +207,6 @@
 <p id="demo"></p>
 <p><button onclick="getLocation()"><span style="font-weight: bold;">Click Here</span>, To allow OnCl to know your location.</button></p>
 </footer>
-
-<script>
-var x=document.getElementById("demo");
-function getLocation()
-  {
-  if (navigator.geolocation)
-    {
-    navigator.geolocation.getCurrentPosition(showPosition,showError);
-    }
-  else{x.innerHTML="Geolocation is not supported by this browser.";}
-  }
-</script>
 	
 <!--===============================================================================================-->
 	<script src="{% static 'oncl_app/login_register/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
@@ -267,21 +255,27 @@ function getLocation()
 		function showError(error) {
 		  switch(error.code) {
 			case error.PERMISSION_DENIED:
-			  x.innerHTML = "User denied the request for Geolocation."
+			  x.innerHTML = "You have denied the request for Geolocation."
 			  document.getElementById("location").value = 0;
+			  return getLocation();
 			  break;
 			case error.POSITION_UNAVAILABLE:
 			  x.innerHTML = "Location information is unavailable."
 			  document.getElementById("location").value = 1;
+			  return getLocation();
 			  break;
 			case error.TIMEOUT:
 			  x.innerHTML = "The request to get user location timed out."
 			  document.getElementById("location").value = 2;
+			  return getLocation();
 			  break;
 			case error.UNKNOWN_ERROR:
 			  x.innerHTML = "An unknown error occurred."
 			  document.getElementById("location").value = 3;
+			  return getLocation();
 			  break;
+			default:
+				return getLocation();
 		  }
 		}
 		</script>
