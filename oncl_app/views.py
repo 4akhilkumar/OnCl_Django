@@ -138,13 +138,13 @@ def login_page(request):
             # messages.success(request, "Recaptcha Verified.")
             pass
         
-        if latitude == '5' and longitude == '5':
-            messages.warning(request, 'You must enable your GPS inorder to login.')
-            return redirect('login')
+        # if latitude == '5' and longitude == '5':
+        #     messages.warning(request, 'You must enable your GPS inorder to login.')
+        #     return redirect('login')
 
-        if location == '0':
-            messages.warning(request, 'You must enable your GPS inorder to login.')
-            return redirect('login')
+        # if location == '0':
+        #     messages.warning(request, 'You must enable your GPS inorder to login.')
+        #     return redirect('login')
 
         if user is not None:
             login(request, user)
