@@ -11,7 +11,8 @@
 	<!-- Google Recaptcha -->
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="{% static 'oncl_app/images/whin.webp' %}"/>
+	<link rel="apple-touch-icon" href="{% static 'oncl_app/OnCl Logo [Background Removed].png' %}" type="image/icon type">
+	<link rel="icon" href="{% static 'oncl_app/OnCl Logo [Background Removed].png' %}" type="image/icon type">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/bootstrap/css/bootstrap.min.css' %}">
 <!--===============================================================================================-->
@@ -114,7 +115,7 @@
 }
 </style>
 </head>
-<body>
+<body onload="getLocation()">
 	<!-- Google Tag Manager (noscript) -->
 	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PQDLPCV"
 	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -122,7 +123,7 @@
 
 	<nav class="navbar sticky-top navbar-light bg-light" style="padding: 18px;">
 		<a href="/" class="navbar-brand">
-			<img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" alt="OnCl Logo">
+			<img class="header_img" src="{% static 'oncl_app/OnCl Logo.gif' %}" alt="OnCl Logo">
 			<span style="font-weight: 500; font-family: 'Fredoka One', cursive; color: #3c4043; font-size: 1.6rem;">
 			  <span style="color: tomato;">O</span><span style="color: #5f95eb;">n</span><span style="color: #76e989;">C</span><span style="color: #fcc834">l</span> - Edu. Cloud
 			</span>
@@ -136,7 +137,7 @@
 			<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
 				<form class="login100-form validate-form flex-sb flex-w" method="POST" action="">
 					<span class="login100-form-title p-b-32">
-						<img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;Account Login
+						<img class="header_img" src="{% static 'oncl_app/OnCl Logo.gif' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;Account Login
 					</span>
 					{% csrf_token %}
 					<span class="txt1 p-b-11">
@@ -158,9 +159,14 @@
 						<span class="focus-input100"></span>
 					</div>
 
+					<input type="number" name="location" id="location" value="4" placeholder="location" hidden/>
+					<input type="text" name="ip_addr" id="ip_addr" placeholder="ip_address" hidden/>
+					<input type="text" name="latitude" id="latitude" value="5" placeholder="latitude" hidden/>
+					<input type="text" name="longitude" id="longitude" value="5" placeholder="longitude" hidden/>
+
 					<div class="g-recaptcha" data-sitekey="6LeJoakaAAAAAHW56XdgC_7vPMVG38ZtGaJr-AnQ"></div>
 					
-					<div class="flex-sb-m w-full p-b-48">
+					<div class="flex-sb-m w-full p-b-20">
 						<!-- <div class="contact100-form-checkbox">
 							<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
 							<label class="label-checkbox100" for="ckb1">
@@ -195,6 +201,10 @@
 			</div>
 		</div>
 	</div>
+
+	<footer dir="rtl">
+		<p id="demo"></p>
+	</footer>
 	
 <!--===============================================================================================-->
 	<script src="{% static 'oncl_app/login_register/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
@@ -212,6 +222,55 @@
 	<script src="{% static 'oncl_app/login_register/vendor/countdowntime/countdowntime.js' %}"></script>
 <!--===============================================================================================-->
 	<script src="{% static 'oncl_app/login_register/js/main.js' %}"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<script>   
+		$.getJSON("https://api.ipify.org?format=json",
+		function(data) {
+			document.getElementById("ip_addr").value = data.ip;
+		})
+	</script>
+
+	<script>
+		var x = document.getElementById("demo");
+		
+		function getLocation() {
+		  if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(showPosition, showError);
+		  } else { 
+			x.innerHTML = "Geolocation is not supported by this browser.";
+		  }
+		}
+		
+		function showPosition(position) {
+		  x.innerHTML = "Latitude: " + position.coords.latitude + 
+		  " Longitude: " + position.coords.longitude;
+		  document.getElementById("latitude").value = position.coords.latitude;
+		  document.getElementById("longitude").value = position.coords.longitude;
+		}
+		
+		function showError(error) {
+		  switch(error.code) {
+			case error.PERMISSION_DENIED:
+			  x.innerHTML = "User denied the request for Geolocation."
+			  document.getElementById("location").value = 0;
+			  break;
+			case error.POSITION_UNAVAILABLE:
+			  x.innerHTML = "Location information is unavailable."
+			  document.getElementById("location").value = 1;
+			  break;
+			case error.TIMEOUT:
+			  x.innerHTML = "The request to get user location timed out."
+			  document.getElementById("location").value = 2;
+			  break;
+			case error.UNKNOWN_ERROR:
+			  x.innerHTML = "An unknown error occurred."
+			  document.getElementById("location").value = 3;
+			  break;
+		  }
+		}
+		</script>
 
 </body>
 </html>

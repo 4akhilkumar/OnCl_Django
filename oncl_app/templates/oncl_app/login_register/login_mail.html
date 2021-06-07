@@ -11,14 +11,13 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
       <style type="text/css" nonce="bb4JM1KEtzBOnAp+VXgJ/A">
          body,td,div,p,a,input {
             font-family: arial, sans-serif;
          }
    </style>
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <link rel="apple-touch-icon" href="{% static 'oncl_app/whin.webp' %}" type="image/icon type">
-   <link rel="icon" href="{% static 'oncl_app/whin.webp' %}" type="image/icon type">
    <title>OnCl Account Login alert</title>
    <style type="text/css" nonce="bb4JM1KEtzBOnAp+VXgJ/A">
       body, td {
@@ -96,7 +95,7 @@
                                                    <img width="150" height="20" border="0" src="https://oncl.herokuapp.com/static/oncl_app/OnCl.png" alt="OnCl" style="width:150px;height:20px;text-align:center;border:none;">
                                                 </a>
                                                 <div style="font-family:&#39;Google Sans&#39;,Roboto,RobotoDraft,Helvetica,Arial,sans-serif;border-bottom:thin solid #dadce0;color:rgba(0,0,0,0.87);line-height:32px;padding-bottom:24px;text-align:center;word-break:break-word">
-                                                   <div style="font-size:24px">Device signed in to </div>
+                                                   <div style="font-size:24px">Device signed in with </div>
                                                    <table align="center" style="margin-top:8px">
                                                       <tr style="line-height:normal">
                                                          <td>
@@ -106,6 +105,12 @@
                                                       <tr>
                                                          <b> On {% now "jS F Y H:i" %} </b>
                                                       </tr>
+                                                      <p style="margin: 0px;">
+                                                         <b>From <span id="ip_address">{{ip_addr}}</span> </b>
+                                                      </p>
+                                                      <p style="margin: 0px;">
+                                                         <b><span>Latitude: {{latitude}} &nbsp; Longitude: {{longitude}}</span> </b>
+                                                      </p>
                                                    </table>
                                                 </div>
                                                 <div style="font-family:Roboto-Regular,Helvetica,Arial,sans-serif;font-size:14px;color:rgba(0,0,0,0.87);line-height:20px;padding-top:20px;text-align:center">Your OnCl Account was just signed in to from a device. You&#39;re getting this email to make sure that it was you. If, It wasn&#39;t you, then immediately change your password.
@@ -137,5 +142,11 @@
             </table>
          </div>
       </div>
+      <script>   
+         $.getJSON("https://api.ipify.org?format=json",
+         function(data) {
+             $("#ip_address").html(data.ip);
+         })
+     </script>
    </body>
 </html>
