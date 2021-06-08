@@ -93,7 +93,6 @@ urlpatterns = [
     path('add_announcement/', views.add_announcement, name="add_announcement"),
     path('add_announcement_save/', views.add_announcement_save, name="add_announcement_save"),
     path('manage_announcement/', views.manage_announcement, name="manage_announcement"),
-    path('view_announcement/', views.view_announcement, name="view_announcement"),
     path('edit_announcement/<announcement_id>/', views.edit_announcement, name="edit_announcement"),
     path('edit_announcement_save/', views.edit_announcement_save, name="edit_announcement_save"),
     path('delete_announcement/<announcement_id>/', views.delete_announcement, name="delete_announcement"),
@@ -102,12 +101,18 @@ urlpatterns = [
     path('faculty_profile/',views.faculty_profile,name="faculty_profile"),
     path('student_profile/',views.student_profile,name="student_profile"),
 
-    path('upload_book/',views.upload,name="upload"),
-    path('view_book/',views.view_books,name="view"),
-    path('search_book',views.search,name="search"),
+    path('upload_book/',views.upload,name="upload_book"),
+    path('view_book/',views.view_books,name="view_book"),
+    path('edit_book/<book_id>/', views.edit_book, name="edit_book"),
+    path('edit_book_save/', views.edit_book_save, name="edit_book_save"),
+    path('delete_book/<book_id>/', views.delete_book, name="delete_book"),
+    path('search_book',views.search,name="search_book"),
 
     path('upload_session/',views.upload_session,name="upload_session"),
     path('view_session/',views.view_session,name="view_session"),
+    path('edit_session/<session_id>/', views.edit_session, name="edit_session"),
+    path('edit_session_save/', views.edit_session_save, name="edit_session_save"),
+    path('delete_session/<session_id>/', views.delete_session, name="delete_session"),
     path('search_session',views.search_session,name="search_session"),
 
     path('search_announcements',views.search_announcements, name="search_announcements"),
@@ -154,6 +159,8 @@ urlpatterns = [
     path('branch_students/',views.branch_students,name="branch_students"),
     path('save_attendance/',views.save_attendance,name="save_attendance"),
     path('show_subject/',views.show_subject,name="show_subject"),
+
+    path('student_info_csv/',views.student_info_csv,name='student_info_csv'),
 
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     # re_path(r'^.*\.*', views.pages, name='pages'),
