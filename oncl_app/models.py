@@ -40,6 +40,40 @@ class Subjects(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
+GENDER_CHOICES = [
+    ("Select Gender", "Select Gender"),
+    ("Male", "Male"),
+    ("Female", "Female"),
+]
+
+BLOOD_GROUP_CHOICES = [
+    ("","Blood Group"),
+    ("A+","A+"),
+    ("A-","A-"),
+    ("B+","B+"),
+    ("B-","B-"),
+    ("O+","O+"),
+    ("O-","O-"),
+    ("AB+","AB+"),
+    ("AB-","AB-"),
+]
+
+MOTHER_TOUNGE_CHOICES = [
+    ("","Mother Tounge"),
+    ("Hindi","Hindi"),
+    ("English","English"),
+    ("Telugu","Telugu"),
+]
+
+BRANCH_CHOICES = [
+    ("","Branch Name"),
+    ("CSE","Computer Science and Engineering"),
+    ("AE","Aerospace/aeronautical Engineering"),
+    ("ChE","Chemical Engineering"),
+    ("CE","Civil Engineering"),
+    ("ECE","Electronics and Communications Engineering"),
+]
+
 class Staffs(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete = models.CASCADE)
@@ -68,14 +102,21 @@ class Staffs(models.Model):
 class Students(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete = models.CASCADE)
-    gender = models.CharField(max_length=50, default="NA")
-    phone = models.CharField(max_length=50, default="NA")
-    address = models.TextField(default="NA")
-    branch = models.CharField(max_length=100, default="NA")
-    git_link = models.CharField(max_length=50, default="NA")
-    website_link = models.CharField(max_length=50, default="NA")
-    linkedin_link = models.CharField(max_length=50, default="NA")
-    bio = models.TextField(default="NA")
+    gender = models.CharField(max_length=14, choices = GENDER_CHOICES, default=1)
+    father_name = models.CharField(max_length=100, default="")
+    father_occ = models.CharField(max_length=100, default="")
+    father_phone = models.CharField(max_length=100, default="")
+    mother_name = models.CharField(max_length=100, default="")
+    mother_tounge = models.CharField(max_length=50, choices = MOTHER_TOUNGE_CHOICES, default=1)
+    dob = models.DateField(default='2000-01-01')
+    blood_group = models.CharField(max_length=18, choices = BLOOD_GROUP_CHOICES, default=1)
+    phone = models.CharField(max_length=100, default="")
+    dno_sn = models.CharField(max_length=100, default="")
+    zip_code = models.CharField(max_length=100, default="")
+    city_name = models.CharField(max_length=50, default="")
+    state_name = models.CharField(max_length=50, default="")
+    country_name = models.CharField(max_length=50, default="")
+    branch = models.CharField(max_length=18, choices = BRANCH_CHOICES, default=1)
     profile_pic = models.ImageField(null=True, blank=True, default="avatar.webp", upload_to='student/')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -108,25 +149,27 @@ class Announcements_news(models.Model):
     id = models.AutoField(primary_key=True)
     sub_an = models.CharField(max_length=100, default="")
     what_an = models.TextField()
-    an_image = models.ImageField(null=True, blank=True, default='no_media_files_default.webp',upload_to='announcements/')
-    an_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    an_image = models.FileField(null=True, blank=True, default='False',upload_to='announcements/')
+    an_user = models.CharField(max_length=100, default="")
+    an_by = models.CharField(max_length=100, default="")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
-class file_upload(models.Model):
+class E_Books(models.Model):
     id = models.AutoField(primary_key=True)
     book_id = models.CharField(max_length=100, default="NA")
     book_name = models.CharField(max_length=50, default="NA")
     book_author = models.CharField(max_length=50, default="NA")
+    book_author_uid = models.CharField(max_length=50, default="")
     book_pub_date = models.CharField(max_length=20, default="NA")
     book_desc = models.TextField(max_length=255, default="NA")
     book_tag1 = models.CharField(max_length=20, default="NA")
     book_tag2 = models.CharField(max_length=20, default="NA")
     book_tag3 = models.CharField(max_length=20, default="NA")
     book_tag4 = models.CharField(max_length=20, default="NA")
-    book_pic = models.ImageField(null=True, blank=True, default='book.jpg',upload_to='books/')
-    book_file = models.FileField(upload_to='books/')
+    book_pic = models.ImageField(null=True, blank=True, default='False',upload_to='books/')
+    book_file = models.FileField(null=True, blank=True, default='False',upload_to='books/')
 
     def __str__(self):
         return self.book_name
@@ -136,14 +179,15 @@ class PCS_Cloud(models.Model):
     session_id = models.CharField(max_length=100, default="NA")
     session_name = models.CharField(max_length=50, default="NA")
     session_author = models.CharField(max_length=50, default="NA")
+    session_author_uid = models.CharField(max_length=50, default="")
     session_pub_date = models.CharField(max_length=20, default="NA")
     session_desc = models.TextField(max_length=255, default="NA")
     session_tag1 = models.CharField(max_length=20, default="NA")
     session_tag2 = models.CharField(max_length=20, default="NA")
     session_tag3 = models.CharField(max_length=20, default="NA")
     session_tag4 = models.CharField(max_length=20, default="NA")
-    session_pic = models.ImageField(upload_to='sessions/', null=True, blank=True, default="session.jpg")
-    session_file = models.FileField(upload_to='sessions/', default="")
+    session_pic = models.ImageField(upload_to='sessions/', null=True, blank=True, default="False")
+    session_file = models.FileField(upload_to='sessions/', null=True, blank=True, default="False")
 
     def __str__(self):
         return self.session_name
