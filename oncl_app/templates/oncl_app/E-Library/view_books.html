@@ -26,8 +26,17 @@
 
 <link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
 
-{% if data.count == 0 %}
-<div class="img-container" onclick="document.location='{% url 'upload_session' %}'" style="cursor: pointer;">
+{% if all_data_all.count == 0 %}
+<div class="img-container"
+{% for group_for in request.user.groups.all %}
+{% if group_for.name == 'Admin' %}
+onclick="document.location='{% url 'upload_book' %}'"
+{% elif group_for.name == 'Faculty' %}
+onclick="document.location='{% url 'upload_book' %}'"
+{% else %}
+{% endif %}
+{% endfor %}
+style="cursor: pointer;">
     <img src="{% static 'oncl_app/no_media_files_default.png' %}" style="max-height: 30rem;" alt="no_media_files_default" class="img-fluid">
 </div>
 <div style="text-align: center; font-weight: bold; font-size: 1.4rem;">
@@ -51,7 +60,7 @@
 <div class="main">
     <div style="padding: 30px 0px 10px 10px;">
         <div class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
-            <a href="{% url 'upload' %}" style="text-decoration: none; color: #000;"><i class="fas fa-book"></i> Add Book</a>
+            <a href="{% url 'upload_book' %}" style="text-decoration: none; color: #000;"><i class="fas fa-book"></i> Add Book</a>
         </div>
     </div>
     {% endif %}
@@ -94,10 +103,22 @@
                    <p class="card_text">
                        <div style="display: flex; justify-content: space-between">
                            <div>
-                            <a href="{{book.book_file.url}}">Download Book</a>
+                            <a href="{{book.book_file.url}}"><i class="fas fa-download"></i> Book</a>
                            </div>
                            <div>
-                            <a href="{{book.book_file.url}}">Preview Book</a>
+                            {% for group_for in request.user.groups.all %} 
+                            {% if group_for.name == 'Admin' %}
+                            <a href="{% url 'edit_book' book.id %}"><i class="fas fa-edit"></i></a>
+                            <a href="{% url 'delete_book' book.id %}" style="color: #f44336;"><i class="far fa-trash-alt"></i></a>
+                            {% elif group_for.name == 'Faculty' %}
+                            {% if request.user.id == book.book_author_uid|add:"0" %}
+                            <a href="{% url 'edit_book' book.id %}"><i class="fas fa-edit"></i></a>
+                            <a href="{% url 'delete_book' book.id %}" style="color: #f44336;"><i class="far fa-trash-alt"></i></a>
+                            {% else %}
+                            {% endif %}
+                            {% else %}
+                            {% endif %}
+                            {% endfor %}
                            </div>
                        </div>
                    </p>
@@ -107,5 +128,30 @@
     {% endfor %}
     </ul>
 </div>
+{% if data.has_other_pages %}
+<nav aria-label="Pagination">
+  <ul class="pagination">
+    {% if data.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ data.previous_page_number }}">Previous</a>
+    </li>
+    {% endif %}
+    {% for i in data.paginator.page_range %}
+    {% if data.number == i %}
+    <li class="page-item active">
+      <a class="page-link" href="#">{{ i }}  <span class="sr-only">(current)</span></a>
+    </li>
+    {% else %}
+    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+    {% endfor %}
+    {% if data.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ data.next_page_number }}">Next</a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
 
 {% endblock %}
