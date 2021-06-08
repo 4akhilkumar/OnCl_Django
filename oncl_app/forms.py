@@ -26,12 +26,16 @@ class StaffsForm(forms.ModelForm):
 class StudentsForm(forms.ModelForm):
     class Meta:
         model = Students
-        fields = ('gender','phone','address','branch','git_link','website_link','linkedin_link','bio','profile_pic') 
+        blood_group = forms.ChoiceField(choices = BLOOD_GROUP_CHOICES)
+        mother_tounge = forms.ChoiceField(choices = MOTHER_TOUNGE_CHOICES)
+        branch = forms.ChoiceField(choices = BRANCH_CHOICES)
+        fields = ['gender','father_name','father_occ','father_phone','mother_name','mother_tounge','dob','blood_group','phone','dno_sn','zip_code','city_name','state_name','country_name','profile_pic','branch'] 
 
-class MyfileUploadForm(forms.Form):
+class BookUploadForm(forms.Form):
     book_id = forms.CharField(widget=forms.TextInput())
     book_name = forms.CharField(widget=forms.TextInput())
     book_author = forms.CharField(widget=forms.TextInput())
+    book_author_uid = forms.CharField(widget=forms.TextInput())
     book_pub_date = forms.CharField(widget=forms.TextInput())
     book_desc = forms.CharField(widget=forms.Textarea)
     book_tag1 = forms.CharField(widget=forms.TextInput())
@@ -45,6 +49,7 @@ class SessionUploadForm(forms.Form):
     session_id = forms.CharField(widget=forms.TextInput())
     session_name = forms.CharField(widget=forms.TextInput())
     session_author = forms.CharField(widget=forms.TextInput())
+    session_author_uid = forms.CharField(widget=forms.TextInput())
     session_pub_date = forms.CharField(widget=forms.TextInput())
     session_desc = forms.CharField(widget=forms.Textarea)
     session_tag1 = forms.CharField(widget=forms.TextInput())
