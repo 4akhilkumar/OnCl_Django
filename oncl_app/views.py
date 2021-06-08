@@ -1112,7 +1112,7 @@ def search(request):
         now1 = pydt.datetime.now()
         cal_time = (now1 - now).total_seconds()
 
-        return render(request, 'oncl_app/E-Library/search_books.html', {'books': books, 'cal_time':cal_time})
+        return render(request, 'oncl_app/E-Library/search_books.html', {'books': books, 'cal_time':cal_time, 'query':query})
     else:
         all_data = E_Books.objects.all()
         context = {

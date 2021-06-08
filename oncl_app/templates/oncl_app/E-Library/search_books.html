@@ -29,7 +29,7 @@
     <form method="POST" action="/search_book">
       <div class="search">
         {% csrf_token %}
-        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Books..." required>
+        <input type="text" class="search__input" aria-label="search-book" value="{{query}}" name="search" placeholder="Search Books..." required>
         <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
       </div>
     </form>
