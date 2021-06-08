@@ -1,4 +1,4 @@
-{% extends "oncl_app/base.html" %}
+{% extends "oncl_app/admin_base.html" %}
 
 {% block content %}
 
@@ -29,7 +29,7 @@
     <form method="POST" action="/search_session">
       <div class="search">
         {% csrf_token %}
-        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Sessions...">
+        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Sessions..." required>
         <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
       </div>
     </form>
@@ -77,7 +77,19 @@
                             <a href="{{session.session_file.url}}">Download Session</a>
                            </div>
                            <div>
-                            <a href="{{session.session_file.url}}">Preview Session</a>
+                            {% for group_for in request.user.groups.all %} 
+                            {% if group_for.name == 'Admin' %}
+                            <a href="{% url 'edit_session' session.id %}"><i class="fas fa-edit"></i></a>
+                            <a href="{% url 'delete_session' session.id %}" style="color: #f44336;"><i class="far fa-trash-alt"></i></a>
+                            {% elif group_for.name == 'Faculty' %}
+                            {% if request.user.id == session.session_author_uid|add:"0" %}
+                            <a href="{% url 'edit_session' session.id %}"><i class="fas fa-edit"></i></a>
+                            <a href="{% url 'delete_session' session.id %}" style="color: #f44336;"><i class="far fa-trash-alt"></i></a>
+                            {% else %}
+                            {% endif %}
+                            {% else %}
+                            {% endif %}
+                            {% endfor %}
                            </div>
                        </div>
                    </p>
