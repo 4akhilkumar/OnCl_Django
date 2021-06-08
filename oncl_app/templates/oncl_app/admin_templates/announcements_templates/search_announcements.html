@@ -1,4 +1,4 @@
-{% extends "oncl_app/base.html" %}
+{% extends "oncl_app/admin_base.html" %}
 
 {% block content %}
 
@@ -128,6 +128,9 @@ hr {
     height:50px;
     border-radius: 25px;
 }
+.hidden{
+  display : none;
+}
 </style>
 
 <link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
@@ -138,7 +141,7 @@ hr {
     <form method="POST" action="/search_announcements">
       <div class="search">
         {% csrf_token %}
-        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Announcements...">
+        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Announcements..." required>
         <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
       </div>
     </form>
@@ -151,37 +154,69 @@ hr {
   <p>Tip: Try using words that might appear on the book that you’re looking for. For example, 'Subject', 'Any related keywords of the Announcement(s)'.</p>
   {% else %}
   <p>About {{ announcements.count}} result{{ announcements.count|pluralize:"s" }} found in ({{cal_time}}) seconds </p>
-  {% endif %}
+  
 </div>
 
 <div class="container">
-  {% if request.user.is_staff %}
-<div style="padding-bottom: 10px;">
-    <div onclick="add_announcement()" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
-        <a href="{% url 'add_announcement' %}" style="text-decoration: none; color: #000;"><i class="fas fa-bullhorn"></i> Make Announcement</a>
+  {% for group_for in request.user.groups.all %}
+  {% if group_for.name == 'Admin' %}
+  <div style="padding-bottom: 10px;">
+      <div onclick="document.location='{% url 'add_announcement' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+          <a href="#" style="text-decoration: none; color: #000;"><i class="fas fa-bullhorn"></i> Make Announcement</a>
+      </div>
+  </div>
+  {% elif group_for.name == 'Faculty' %}
+  <div style="padding-bottom: 10px;">
+    <div onclick="document.location='{% url 'add_announcement' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+        <a href="#" style="text-decoration: none; color: #000;"><i class="fas fa-bullhorn"></i> Make Announcement</a>
     </div>
-</div>
+  </div>
+  {% else %}
+  {% endif %}
+  {% endfor %}
   {% endif %}
   {% for announcement in announcements %}
   <div class="row message-wrapper rounded shadow mb-20">
     <div class="col-md-12 message-sideright">
         <div class="panel">
             <div class="panel-heading">
-                <div class="media" style="gap: 10px;">
-                    <a class="pull-left" href="#">
-                        <img src="{% static 'oncl_app/images/avatar.webp' %}" alt="profile_pic" class="img-circle avatar">
-                    </a>
-                    <div class="media-body">
-                        <h4 class="media-heading">{{ announcement.an_by }}
-                          {% if request.user.is_staff %}
-                          |
-                          <a class="edit_button" href="{% url 'edit_announcement' announcement.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp;
-                          <a class="delete_button" href="{% url 'delete_announcement' announcement.id %}"><i class="fas fa-trash"></i> Delete</a>
-                          {% endif %}
-                        </h4>
-                        <small>{{ announcement.created_at }}</small>
-                    </div>
+              <div class="media" style="gap: 10px;">
+                <a class="pull-left" href="#">
+                    <img alt="avatar" letters="{{announcement.an_by|first}}" alt="profile_pic" class="img-circle avatar">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">{{ announcement.an_by }} 
+                      {% if announcement.an_user > '1' %}
+                      <a class="view_button" href="{% url 'view_staff' announcement.an_user %}" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                      {% endif %}
+                      
+                      {% for group_for in request.user.groups.all %} 
+                      {% if group_for.name == 'Admin' %}
+                      |
+                      <a class="edit_button" href="{% url 'edit_announcement' announcement.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp;
+                      <a class="delete_button" href="{% url 'delete_announcement' announcement.id %}"><i class="fas fa-trash"></i> Delete</a>
+                      {% elif group_for.name == 'Faculty' %}
+                      {% if request.user.id == announcement.an_user|add:"0" %}
+                      |
+                      <a class="edit_button" href="{% url 'edit_announcement' announcement.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp;
+                      <a class="delete_button" href="{% url 'delete_announcement' announcement.id %}"><i class="fas fa-trash"></i> Delete</a>
+                      {% else %}
+                      {% endif %}
+                      {% else %}
+                      {% endif %}
+                      {% endfor %}
+                    </h4>
+                    <small>{{ announcement.created_at }}</small>
+                    <small title="{{ announcement.updated_at }}" onclick="showhide_{{announcement.id|safe}}()">
+                      {% if announcement.updated_at != announcement.created_at %}
+                      [Edited]
+                      {% endif %}
+                    </small>
+                    {% if announcement.updated_at != announcement.created_at %}
+                      <small id="newpost_{{announcement.id|safe}}" class="hidden">{{ announcement.updated_at }}</small>
+                    {% endif %}                        
                 </div>
+              </div>
             </div>
             <div class="panel-body">
                 <p class="lead" style="margin-top: 10px;">
@@ -199,9 +234,14 @@ hr {
 </div>
 
 <script>
-  function add_announcement(){
-    window.location.replace("{% url 'add_announcement' %}");
+  {% for announcement in announcements %}
+  function showhide_{{announcement.id|safe}}() {
+    
+    var div_{{announcement.id|safe}} = document.getElementById("newpost_{{announcement.id|safe}}");
+    div_{{announcement.id|safe}}.classList.toggle('hidden'); 
+    
   }
+  {% endfor %}
 </script>
 
 {% endblock %}
