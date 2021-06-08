@@ -24,7 +24,6 @@ urlpatterns = [
     path('', include('oncl_app.urls')),
     path("robots.txt",TemplateView.as_view(template_name="oncl_app/robots.txt", content_type="text/plain")),
     path('sitemap.xml',TemplateView.as_view(template_name="oncl_app/sitemap.xml", content_type="application/xml")),
-    path(".well-known/pki-validation/E71EA447C28BA9CB3F8514CC607995C2.txt",TemplateView.as_view(template_name="oncl_app/E71EA447C28BA9CB3F8514CC607995C2.txt", content_type="text/plain")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
