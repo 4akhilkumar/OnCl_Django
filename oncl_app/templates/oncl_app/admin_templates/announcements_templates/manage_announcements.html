@@ -16,6 +16,11 @@ a:hover {
     text-decoration: none;
 }
 
+.view_button {
+  color: #03a9f4;
+  font-size: medium;
+}
+
 .edit_button {
     color: #fcc834;
     font-size: medium;
@@ -133,9 +138,12 @@ hr {
 .img-container {
   text-align: center;
 }
+.hidden{
+  display : none;
+}
 </style>
 
-{% if announcements.count == 0 %}
+{% if announcements_all.count == 0 %}
 <div class="img-container" onclick="document.location='{% url 'add_announcement' %}'" style="cursor: pointer; padding-top: 40px;">
   <img src="{% static 'oncl_app/no_announcements.jpg' %}" style="max-height: 30rem;" alt="no_announcements" class="img-fluid">
 </div>
@@ -152,7 +160,7 @@ hr {
     <form method="POST" action="/search_announcements">
       <div class="search">
         {% csrf_token %}
-        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Announcements...">
+        <input type="text" class="search__input" aria-label="search" id="tags" name="search" placeholder="Search Announcements...">
         <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
       </div>
     </form>
@@ -160,13 +168,22 @@ hr {
 </div>
 
 <div class="container">
-  {% if request.user.is_staff %}
+{% for group_for in request.user.groups.all %}
+{% if group_for.name == 'Admin' %}
 <div style="padding-bottom: 10px;">
-    <div onclick="add_announcement()" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
-        <a href="{% url 'add_announcement' %}" style="text-decoration: none; color: #000;"><i class="fas fa-bullhorn"></i> Make Announcement</a>
+    <div onclick="document.location='{% url 'add_announcement' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+        <a href="#" style="text-decoration: none; color: #000;"><i class="fas fa-bullhorn"></i> Make Announcement</a>
     </div>
 </div>
-  {% endif %}
+{% elif group_for.name == 'Faculty' %}
+<div style="padding-bottom: 10px;">
+  <div onclick="document.location='{% url 'add_announcement' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+      <a href="#" style="text-decoration: none; color: #000;"><i class="fas fa-bullhorn"></i> Make Announcement</a>
+  </div>
+</div>
+{% else %}
+{% endif %}
+{% endfor %}
   {% endif %}
   {% for announcement in announcements %}
   <div class="row message-wrapper rounded shadow mb-20">
@@ -175,17 +192,39 @@ hr {
             <div class="panel-heading">
                 <div class="media" style="gap: 10px;">
                     <a class="pull-left" href="#">
-                        <img src="{% static 'oncl_app/images/avatar.webp' %}" alt="profile_pic" class="img-circle avatar">
+                        <img alt="avatar" letters="{{announcement.an_by|first}}" alt="profile_pic" class="img-circle avatar">
                     </a>
                     <div class="media-body">
-                        <h4 class="media-heading">{{ announcement.an_by }}
-                          {% if request.user.is_staff %}
+                        <h4 class="media-heading">{{ announcement.an_by }} 
+                          {% if announcement.an_user > '1' %}
+                          <a class="view_button" href="{% url 'view_staff' announcement.an_user %}" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                          {% endif %}
+                          
+                          {% for group_for in request.user.groups.all %} 
+                          {% if group_for.name == 'Admin' %}
                           |
                           <a class="edit_button" href="{% url 'edit_announcement' announcement.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp;
                           <a class="delete_button" href="{% url 'delete_announcement' announcement.id %}"><i class="fas fa-trash"></i> Delete</a>
+                          {% elif group_for.name == 'Faculty' %}
+                          {% if request.user.id == announcement.an_user|add:"0" %}
+                          |
+                          <a class="edit_button" href="{% url 'edit_announcement' announcement.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp;
+                          <a class="delete_button" href="{% url 'delete_announcement' announcement.id %}"><i class="fas fa-trash"></i> Delete</a>
+                          {% else %}
                           {% endif %}
+                          {% else %}
+                          {% endif %}
+                          {% endfor %}
                         </h4>
                         <small>{{ announcement.created_at }}</small>
+                        <small title="{{ announcement.updated_at }}" onclick="showhide_{{announcement.id|safe}}()">
+                          {% if announcement.updated_at != announcement.created_at %}
+                          [Edited]
+                          {% endif %}
+                        </small>
+                        {% if announcement.updated_at != announcement.created_at %}
+                          <small id="newpost_{{announcement.id|safe}}" class="hidden">{{ announcement.updated_at }}</small>
+                        {% endif %}                        
                     </div>
                 </div>
             </div>
@@ -198,10 +237,10 @@ hr {
                   {{announcement.what_an}}
                 </p>
                 <p>
-                  {% if announcement.an_image.url == '/files/no_media_files_default.webp' %}
-                  <i class="fas fa-paperclip"></i> No media files attached.
+                  {% if announcement.an_image.url == '/files/False' %}
+                  <i class="fas fa-paperclip"></i> No files attached.
                   {% else %}
-                  <a href="{{announcement.an_image.url}}"><i class="fas fa-paperclip"></i> Download Media File(s)</a>
+                  <a href="{{announcement.an_image.url}}" target="_blank"><i class="fas fa-paperclip"></i> Download/View Attached File(s)</a>
                   {% endif %}
                 </p>
             </div>
@@ -209,12 +248,56 @@ hr {
     </div>
   </div>
   {% endfor %}
+  {% if announcements.has_other_pages %}
+  <nav aria-label="Pagination">
+    <ul class="pagination">
+      {% if announcements.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ announcements.previous_page_number }}">Previous</a>
+      </li>
+      {% endif %}
+      {% for i in announcements.paginator.page_range %}
+      {% if announcements.number == i %}
+      <li class="page-item active">
+        <a class="page-link" href="#">{{ i }}  <span class="sr-only">(current)</span></a>
+      </li>
+      {% else %}
+      <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if announcements.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ announcements.next_page_number }}">Next</a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
 </div>
 
 <script>
-  function add_announcement(){
-    window.location.replace("{% url 'add_announcement' %}");
+  $( function() { 
+    var availableTags = [
+        {% for announcement in announcements %}
+            "{{announcement.sub_an}}",
+            "{{announcement.an_by}}",
+        {% endfor %}
+    ];
+    $( "#tags" ).autocomplete({
+      source: availableTags
+    });
+  } );
+</script>
+
+<script>
+  {% for announcement in announcements %}
+  function showhide_{{announcement.id|safe}}() {
+    
+    var div_{{announcement.id|safe}} = document.getElementById("newpost_{{announcement.id|safe}}");
+    div_{{announcement.id|safe}}.classList.toggle('hidden'); 
+    
   }
+  {% endfor %}
 </script>
 
 {% endblock %}
