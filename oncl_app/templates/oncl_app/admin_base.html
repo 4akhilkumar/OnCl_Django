@@ -32,7 +32,11 @@
     <meta http-equiv="Cache-Control: max-age=31536000" content="public">
 	<!-- Google reCaptcha -->
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
+	<!-- AutoComplete -->
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>   -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>  
+	<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css" /> 
+	<!-- Icons -->
     <link rel="apple-touch-icon" href="{% static 'oncl_app/OnCl Logo [Background Removed].png' %}" type="image/icon type">
     <link rel="icon" href="{% static 'oncl_app/OnCl Logo [Background Removed].png' %}" type="image/icon type">
 
@@ -171,7 +175,7 @@
 		background: #fff;
 		box-shadow: 0px 0px 8px rgba(214, 214, 214, 0.78);
 		list-style: none;
-		padding: 0 20px;
+		padding: 0 0 0 20px;
 		width: 175px;
 		margin: 0;
 		top: 70px;
@@ -345,11 +349,22 @@ h1 {
     text-align: center;
 }
 
-.dropdown-divider {
-    display: block;
-    height: 0;
-    margin: 0;
-    border-top: 1px solid #000000;
+.pagination {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .25rem;
+    justify-content: center;
+}
+
+.notify_count {
+	background: #16d67a;
+	padding: 3px 10px;
+	color: #fff;
+	border-radius: 30px;
+	font-size: 13px;
 }
   </style>
 </head>
@@ -375,18 +390,50 @@ h1 {
 					<div style="padding-top: 1px; padding: 0px;"> Signed in as </div>
 					<div>{{user.username}}</div>
 				 </li>
-		         <li><span><i class="fas fa-user-circle"></i> </span> <a href="{% url 'admin_profile' %}">My Profile</a></li>
-				 <div role="none" class="dropdown-divider"></div>
-				 <li><span><i class="fas fa-chart-bar"></i> </span> <a href="{% url 'aca_stats' %}" target="_blank">Acadmic Stats</a></li>
-				 <li><span><i class="fas fa-school"></i></span> <a href="{% url 'manage_semester' %}" target="_blank">Sem. Mgmt.</a></li>
-				 <li><span><i class="fas fa-code-branch"></i></span> <a href="{% url 'manage_branch' %}" target="_blank">Branch Mgmt.</a></li>
-				 <li><span><i class="fas fa-book"></i> </span> <a href="{% url 'manage_subject' %}" target="_blank">subjects Mgmt.</a></li>
-				 <li><span><i class="fas fa-fist-raised"></i> <i class="fas fa-user-graduate"></i> </span> <a href="{% url 'student_leave_view' %}" target="_blank">Leave Info.</a></li>
-				 <li><span><i class="fas fa-fist-raised"></i> <i class="fas fa-chalkboard-teacher"></i> </span> <a href="{% url 'staff_leave_view' %}" target="_blank">Leave Info.</a></li>
-				 <div role="none" class="dropdown-divider"></div>
+				 {% for group_for in request.user.groups.all %}
+					{% if group_for.name == 'Admin' %}
+					<li><span><i class="fas fa-user-circle"></i> </span> <a href="{% url 'admin_profile' %}">My Profile</a></li>
+					
+					<li><span><i class="fas fa-chart-bar"></i> </span> <a href="{% url 'aca_stats' %}" target="_blank">Acadmic Stats</a></li>
+					<li><span><i class="fas fa-school"></i></span> <a href="{% url 'manage_semester' %}" target="_blank">Sem. Mgmt.</a></li>
+					<li><span><i class="fas fa-code-branch"></i></span> <a href="{% url 'manage_branch' %}" target="_blank">Branch Mgmt.</a></li>
+					<li><span><i class="fas fa-book"></i> </span> <a href="{% url 'manage_subject' %}" target="_blank">subjects Mgmt.</a></li>
+					{% if request.path == '/admin_dashboard/' %}
+					<li><span><i class="fas fa-user-graduate"></i> </span> <a href="{% url 'student_leave_view' %}" target="_blank">Leave Info.</a><span class="notify_count">{{count_LeaveReportStudent}}</span></li>
+					<li><span><i class="fas fa-chalkboard-teacher"></i> </span> <a href="{% url 'staff_leave_view' %}" target="_blank">Leave Info.</a><span class="notify_count">{{count_LeaveReportStaff}}</span></li>
+					{% else %}
+					<li><span><i class="fas fa-user-graduate"></i> </span> <a href="{% url 'student_leave_view' %}" target="_blank">Leave Info.</a></li>
+					<li><span><i class="fas fa-chalkboard-teacher"></i> </span> <a href="{% url 'staff_leave_view' %}" target="_blank">Leave Info.</a></li>
+					{% endif %}
+					{% elif group_for.name == 'Faculty' %}
+					<li><span><i class="fas fa-user-circle"></i> </span> <a href="{% url 'faculty_profile' %}" target="_blank">My Profile</a></li>
+					
+					<li><span><i class="fas fa-photo-video"></i> </span> <a href="{% url 'view_session' %}" target="_blank">PCS Cloud</a></li>
+					<li><span><i class="far fa-edit"></i> </span> <a href="{% url 'exam_evaluation' %}" target="_blank">Exams</a></li>
+					<li><span><i class="far fa-calendar-alt"></i> </span> <a href="{% url 'timetable' %}" target="_blank">Schedule</a></li>
+					<li><span><i class="fas fa-book"></i> </span> <a href="{% url 'view_book' %}" target="_blank">E - Library</a></li>
+					<li><span><i class="fas fa-chalkboard-teacher"></i> </span> <a href="{% url 'staff_apply_leave' %}" target="_blank">Leave Info.</a></li>
+					
+					<li><span><i class="fas fa-video"></i> </span> <a href="{% url 'start_live_classroom' %}" target="_blank">Online VC</a></li>
+					{% else %}
+					<li><span><i class="fas fa-user-circle"></i> </span> <a href="{% url 'student_profile' %}">My Profile</a></li>
+					
+					<li><span><i class="fas fa-photo-video"></i> </span> <a href="{% url 'view_session' %}">PCS Cloud</a></li>
+					<li><span><i class="far fa-edit"></i> </span> <a href="{% url 'view_my_marks' %}">Exam Marks</a></li>
+					<li><span><i class="far fa-calendar-alt"></i> </span> <a href="{% url 'timetable' %}">Schedule</a></li>
+					<li><span><i class="fas fa-book"></i> </span> <a href="{% url 'view_book' %}">E - Library</a></li>
+					<li><span><i class="fas fa-user-graduate"></i> </span> <a href="{% url 'student_apply_leave' %}" target="_blank">Leave Info.</a></li>
+					
+					<li><span><i class="fas fa-video"></i> </span> <a href="{% url 'join_class_room' 13 %}" target="_blank">Online VC</a></li>
+					{% endif %}
+				 {% endfor %}
+				 {% if request.path == '/admin_dashboard/' or request.path == '/faculty_dashboard/' or request.path == '/student_dashboard/' %}
+				 <li><span><i class="far fa-list-alt"></i> </span> <a href="{% url 'tasks' %}" target="_blank">To Do List</a><span class="notify_count">{{count_Task}}</span></li>
+				 {% else %}
 				 <li><span><i class="far fa-list-alt"></i> </span> <a href="{% url 'tasks' %}" target="_blank">To Do List</a></li>
+				 {% endif %}
 				 <li><span><i class="fas fa-music"></i> </span> <a href="{% url 'audio' %}" target="_blank">FAR Space</a></li>
-				 <div role="none" class="dropdown-divider"></div>
+				 
 		         <li><span><i class="fas fa-sign-out-alt"></i></span> <a href="{% url 'logout' %}">Logout</a></li>
 		      </ul>
 			</div>
