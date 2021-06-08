@@ -14,6 +14,7 @@ from django import template
 import json
 import datetime as pydt
 import requests
+import csv
 
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -33,8 +34,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 
 from .models import *
-from .forms import CreateUserForm, ContactForm, PositionForm, StaffsForm, StudentsForm, MyfileUploadForm, SessionUploadForm
+from .forms import CreateUserForm, ContactForm, PositionForm, StaffsForm, StudentsForm, BookUploadForm, SessionUploadForm
 from .decorators import unauthenticated_user, allowed_users
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 def te_page(request):
@@ -92,22 +94,27 @@ def register_page(request):
     form = CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
+        current_email = request.POST.get('email')
+        check_email = User.objects.filter(email=current_email).exists()
+        if not check_email:
+            if form.is_valid():
+                user = form.save()
+                username = form.cleaned_data['username']
+                email = form.cleaned_data['email']
+                first_name = form.cleaned_data['first_name']
+                last_name = form.cleaned_data['last_name']
 
-            group = Group.objects.get(name='Faculty')
-            user.groups.add(group)
+                group = Group.objects.get(name='Student')
+                user.groups.add(group)
 
-            context = {'username':username, 'email':email, 'first_name':first_name, 'last_name':last_name}
-            template = render_to_string('oncl_app/login_register/register_mail.html', context)
-            send_mail(first_name + ', welcome to your new OnCl Account', template, settings.EMAIL_HOST_USER, [email], html_message=template)				
-            
-            messages.success(request, 'Hey ' + username + '! Your Account is Created Succesfully!')
-            return redirect('login')
+                context = {'username':username, 'email':email, 'first_name':first_name, 'last_name':last_name}
+                template = render_to_string('oncl_app/login_register/register_mail.html', context)
+                # send_mail(first_name + ', welcome to your new OnCl Account', template, settings.EMAIL_HOST_USER, [email], html_message=template)				
+                
+                messages.success(request, 'Hey ' + username + '! Your Account is Created Succesfully!')
+                return redirect('login')
+        else:
+            messages.warning(request, 'Email Already Exist!')
     context = {'form':form}
     return render(request, 'oncl_app/login_register/register.html', context)
 
@@ -182,19 +189,31 @@ def dashboard_page(request):
 @allowed_users(allowed_roles=['Student'])
 def dashboard_student_page(request):
     username = request.user.get_username()
-    return render(request, 'oncl_app/dashboard_student.html', {'username':username})
+    count_Task = Task.objects.filter(user=request.user.id).count()
+    return render(request, 'oncl_app/dashboard_student.html', {'username':username, 'count_Task':count_Task,})
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Faculty'])
 def dashboard_faculty_page(request):
     username = request.user.get_username()
-    return render(request, 'oncl_app/dashboard_faculty.html', {'username':username})
+    count_Task = Task.objects.filter(user=request.user.id).count()
+    return render(request, 'oncl_app/dashboard_faculty.html', {'username':username, 'count_Task':count_Task,})
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def dashboard_admin_page(request):
     username = request.user.get_username()
-    return render(request, 'oncl_app/dashboard_admin.html', {'username':username})
+    count_LeaveReportStudent = LeaveReportStudent.objects.all().count()
+    count_LeaveReportStaff = LeaveReportStaff.objects.all().count()
+    count_Task = Task.objects.filter(user=request.user.id).count()
+
+    context = {
+        'username':username,
+        'count_LeaveReportStudent':count_LeaveReportStudent,
+        'count_LeaveReportStaff':count_LeaveReportStaff,
+        'count_Task':count_Task,
+    }
+    return render(request, 'oncl_app/dashboard_admin.html', context)
 
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
@@ -573,7 +592,7 @@ def edit_staff(request, staff_id):
     return render(request, "oncl_app/admin_templates/faculty_templates/edit_faculty.html", context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin','Faculty','Student'])
 def view_staff(request, staff_id):
     staff = Staffs.objects.get(user=staff_id)
 
@@ -664,7 +683,6 @@ def delete_staff(request, staff_id):
 def add_student(request):
     form = CreateUserForm()
     student_form = StudentsForm()
-    branch = Branches.objects.all()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         student_form = StudentsForm(request.POST,request.FILES)
@@ -688,7 +706,7 @@ def add_student(request):
             form = CreateUserForm()
             student_form = StudentsForm()
 
-    context = {'form':form, 'student_form':student_form, 'branch':branch}        
+    context = {'form':form, 'student_form':student_form}        
     return render(request, "oncl_app/admin_templates/student_templates/add_student.html", context)
 
 @login_required(login_url='login')
@@ -789,8 +807,10 @@ def delete_student(request, student_id):
 @allowed_users(allowed_roles=['Admin','Faculty'])
 def add_announcement(request):
     username = request.user.get_username()
+    staffs = User.objects.filter(groups='2')
     context={
-            'username':username
+            'username':username,
+            'staffs':staffs,
         }
     return render(request, "oncl_app/admin_templates/announcements_templates/add_announcement.html", context)
 
@@ -804,33 +824,44 @@ def add_announcement_save(request):
         announcement = request.POST.get('announcement')
         sub_an = request.POST.get('sub_an')
         an_by = request.POST.get('an_by')
+        an_user = request.POST.get('an_user')
+        if 'an_image' in request.FILES:
+            print("YES")
+            an_image = request.FILES['an_image']
+            print(an_image)
+        else:
+            an_image = False
+            print("No")
+            print(an_image)
+ 
         try:
-            announcement_model = Announcements_news(what_an=announcement,sub_an=sub_an,an_by=an_by)
+            announcement_model = Announcements_news(what_an=announcement,sub_an=sub_an,an_by=an_by,an_user=an_user,an_image=an_image)
             announcement_model.save()
-            messages.success(request, "Announcement Added Successfully.")
+            messages.success(request, "Announcement Made Successfully.")
             return redirect('manage_announcement')
         except:
-            messages.error(request, "Failed to Add Announcement!")
+            messages.error(request, "Failed to Make Announcement!")
             return redirect('add_announcement')
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
 def manage_announcement(request):
-    announcements = Announcements_news.objects.all()
+    announcements_all = Announcements_news.objects.order_by('-created_at')
+    page = request.GET.get('page', 1)
+    
+    paginator = Paginator(announcements_all, 11)
+    try:
+        announcements = paginator.page(page)
+    except PageNotAnInteger:
+        announcements = paginator.page(1)
+    except EmptyPage:
+        announcements = paginator.page(paginator.num_pages)
+
     context = {
-        "announcements": announcements
+        "announcements": announcements,
+        "announcements_all":announcements_all,
     }
     return render(request, 'oncl_app/admin_templates/announcements_templates/manage_announcements.html', context)
-
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
-def view_announcement(request):
-    username = request.user.get_username()
-    announcements = Announcements_news.objects.all()
-    context = {
-        "announcements": announcements, 'username':username
-    }
-    return render(request, 'oncl_app/admin_templates/announcements_templates/view_announcement.html', context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
@@ -849,13 +880,29 @@ def edit_announcement_save(request):
         HttpResponse("Invalid Method")
     else:
         announcement_id = request.POST.get('announcement_id')
-        what_an = request.POST.get('announcement')
         sub_an = request.POST.get('sub_an')
+        what_an = request.POST.get('announcement')
+        an_by = request.POST.get('an_by')
+        an_user = request.POST.get('an_user')
+        if 'an_image' in request.FILES:
+            print("YES")
+            an_image = request.FILES['an_image']
+            print(an_image)
+        else:
+            an_image = False
+            print("No")
+            print(an_image)
 
         try:
             announcement = Announcements_news.objects.get(id=announcement_id)
             announcement.what_an = what_an
             announcement.sub_an = sub_an
+            announcement.an_by = an_by
+            announcement.an_user = an_user
+            if an_image == False:
+                pass
+            else:
+                announcement.an_image = an_image
             announcement.save()
 
             messages.success(request, "Announcement Updated Successfully!")
@@ -909,14 +956,15 @@ def student_profile(request):
     return render(request, 'oncl_app/profile_templates/student_profile.html', context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin','Librarian'])
+@allowed_users(allowed_roles=['Admin','Librarian','Faculty'])
 def upload(request):
     if request.method == 'POST':
-        form = MyfileUploadForm(request.POST,request.FILES)
+        form = BookUploadForm(request.POST,request.FILES)
         if form.is_valid():
             book_id = form.cleaned_data['book_id']
             book_name = form.cleaned_data['book_name']
             book_author = form.cleaned_data['book_author']
+            book_author_uid = form.cleaned_data['book_author_uid']
             book_desc = form.cleaned_data['book_desc']
             book_pub_date = form.cleaned_data['book_pub_date']
             book_pic = form.cleaned_data['book_pic']
@@ -926,9 +974,10 @@ def upload(request):
             book_tag3 = form.cleaned_data['book_tag3']
             book_tag4 = form.cleaned_data['book_tag4']
 
-            file_upload(book_id = book_id,
+            E_Books(book_id = book_id,
                         book_name = book_name, 
                         book_author = book_author, 
+                        book_author_uid = book_author_uid,
                         book_desc = book_desc,
                         book_pub_date = book_pub_date,
                         book_pic = book_pic,
@@ -937,23 +986,116 @@ def upload(request):
                         book_tag2 = book_tag2,
                         book_tag3 = book_tag3,
                         book_tag4 = book_tag4).save()
-            return HttpResponse("Book Uploaded Successfully.")
+            messages.success(request, "E-Book Uploaded Successfully.")
+            return redirect('view_book')
         else:
-            return HttpResponse('Failed to Upload Book!')
+            messages.error(request, "Failed to Uploaded E-Book!")
+            return redirect('upload_book')
     else:
         context={
-            'form': MyfileUploadForm()
+            'form': BookUploadForm()
         }
         return render(request, "oncl_app/E-Library/upload_book.html",context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
 def view_books(request):
-    all_data = file_upload.objects.all()
+    all_data_all = E_Books.objects.all()
+
+    page = request.GET.get('page', 1)    
+    paginator = Paginator(all_data_all, 20)
+    try:
+        all_data = paginator.page(page)
+    except PageNotAnInteger:
+        all_data = paginator.page(1)
+    except EmptyPage:
+        all_data = paginator.page(paginator.num_pages)
+
     context = {
-        'data':all_data
+        'data':all_data,
+        'all_data_all':all_data_all,
     }
     return render(request,'oncl_app/E-Library/view_books.html', context)
+
+
+def edit_book(request, book_id):
+    e_book = E_Books.objects.get(id=book_id)
+    context = {
+        "e_book": e_book,
+        "id": book_id
+    }
+    return render(request, 'oncl_app/E-Library/edit_book.html', context)
+
+def edit_book_save(request):
+    if request.method != "POST":
+        HttpResponse("Invalid Method")
+    else:
+        main_book_id = request.POST.get('main_book_id')
+        book_id = request.POST.get('book_id')
+        book_name = request.POST.get('book_name')
+        book_author = request.POST.get('book_author')
+        book_pub_date = request.POST.get('book_pub_date')
+        book_desc = request.POST.get('book_desc')
+        book_tag1 = request.POST.get('book_tag1')
+        book_tag2 = request.POST.get('book_tag2')
+        book_tag3 = request.POST.get('book_tag3')
+        book_tag4 = request.POST.get('book_tag4')
+        
+        if 'book_pic' in request.FILES:
+            print("YES")
+            book_pic = request.FILES['book_pic']
+            print(book_pic)
+        else:
+            book_pic = False
+            print("No")
+            print(book_pic)
+        if 'book_file' in request.FILES:
+            print("YES")
+            book_file = request.FILES['book_file']
+            print(book_file)
+        else:
+            book_file = False
+            print("No")
+            print(book_file)
+
+        try:
+            e_book = E_Books.objects.get(id=main_book_id)
+            e_book.book_id = book_id
+            e_book.book_name = book_name
+            e_book.book_author = book_author
+            e_book.book_pub_date = book_pub_date
+            e_book.book_desc = book_desc
+            e_book.book_tag1 = book_tag1
+            e_book.book_tag2 = book_tag2
+            e_book.book_tag3 = book_tag3
+            e_book.book_tag4 = book_tag4
+            
+            if book_pic == False:
+                pass
+            else:
+                e_book.book_pic = book_pic
+            if book_file == False:
+                pass
+            else:
+                e_book.book_file = book_file
+            e_book.save()
+
+            messages.success(request, "Book Info. Updated Successfully.")
+            return redirect('view_book')
+
+        except:
+            messages.error(request, "Failed to Update Book Info.!")
+            return redirect('/edit_book/'+main_book_id+'/')
+
+def delete_book(request, book_id):
+    e_book = E_Books.objects.get(id=book_id)
+    try:
+        e_book.delete()
+        messages.info(request, "E-Book Deleted Successfully.")
+        return redirect('view_book')
+    except:
+        messages.error(request, "Failed to Delete E-Book!")
+        return redirect('view_book')
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
@@ -961,7 +1103,7 @@ def search(request):
     if request.method == 'POST':
         now = pydt.datetime.now()
         query = request.POST['search']
-        books = file_upload.objects.filter(
+        books = E_Books.objects.filter(
             Q(book_id__contains=query) | Q(book_name__contains=query) | 
             Q(book_author__contains=query) | Q(book_desc__contains=query) | 
             Q(book_pub_date__contains=query) | Q(book_tag1__contains=query) | 
@@ -972,7 +1114,7 @@ def search(request):
 
         return render(request, 'oncl_app/E-Library/search_books.html', {'books': books, 'cal_time':cal_time})
     else:
-        all_data = file_upload.objects.all()
+        all_data = E_Books.objects.all()
         context = {
             'data': all_data 
         }
@@ -985,7 +1127,7 @@ def search_announcements(request):
         now = pydt.datetime.now()
         query = request.POST['search']
         announcements = Announcements_news.objects.filter(
-            Q(sub_an__contains=query) | Q(what_an__contains=query) | 
+            Q(sub_an__contains=query) | Q(what_an__contains=query) | Q(an_by__contains=query) | 
             Q(created_at__contains=query) | Q(updated_at__contains=query))
         now1 = pydt.datetime.now()
         cal_time = (now1 - now).total_seconds()
@@ -1017,10 +1159,14 @@ def search_student(request):
         student = Students.objects.filter(
             Q(user__first_name__contains=query) | Q(user__last_name__contains=query) |
             Q(user__email__contains=query) | Q(user__username__contains=query) |
-            Q(branch__branch__contains=query) | Q(address__contains=query) |
-            Q(gender__contains=query) | Q(phone__contains=query) |
-            Q(linkedin_link__contains=query) |
-            Q(git_link__contains=query) | Q(website_link__contains=query))
+            Q(gender__contains=query) | Q(father_name__contains=query) |
+            Q(father_occ__contains=query) | Q(father_phone__contains=query) |
+            Q(mother_name__contains=query) | Q(mother_tounge__contains=query) |
+            Q(dob__contains=query) | Q(blood_group__contains=query) |
+            Q(phone__contains=query) | Q(dno_sn__contains=query) |
+            Q(zip_code__contains=query) | Q(city_name__contains=query) |
+            Q(state_name__contains=query) | Q(country_name__contains=query) |
+            Q(branch__contains=query))
 
         now1 = pydt.datetime.now()
         cal_time = (now1 - now).total_seconds()
@@ -1036,6 +1182,7 @@ def upload_session(request):
             session_id = form.cleaned_data['session_id']
             session_name = form.cleaned_data['session_name']
             session_author = form.cleaned_data['session_author']
+            session_author_uid = form.cleaned_data['session_author_uid']
             session_desc = form.cleaned_data['session_desc']
             session_pub_date = form.cleaned_data['session_pub_date']
             session_pic = form.cleaned_data['session_pic']
@@ -1047,7 +1194,8 @@ def upload_session(request):
 
             PCS_Cloud(session_id = session_id,
                         session_name = session_name, 
-                        session_author = session_author, 
+                        session_author = session_author,
+                        session_author_uid = session_author_uid,
                         session_desc = session_desc,
                         session_pub_date = session_pub_date,
                         session_pic = session_pic,
@@ -1056,9 +1204,11 @@ def upload_session(request):
                         session_tag2 = session_tag2,
                         session_tag3 = session_tag3,
                         session_tag4 = session_tag4).save()
-            return HttpResponse("Session Uploaded Successfully.")
+            messages.success(request, "Session Info. Uploaded Successfully.")
+            return redirect('view_session')
         else:
-            return HttpResponse('Failed to Upload Session!')
+            messages.error(request, "Failed to Upload Session Info.!")
+            return redirect('upload_session')
     else:
         context={
             'form': SessionUploadForm()
@@ -1068,11 +1218,101 @@ def upload_session(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
 def view_session(request):
-    all_data = PCS_Cloud.objects.all()
+    all_data_all = PCS_Cloud.objects.all()
+
+    page = request.GET.get('page', 1)    
+    paginator = Paginator(all_data_all, 20)
+    try:
+        all_data = paginator.page(page)
+    except PageNotAnInteger:
+        all_data = paginator.page(1)
+    except EmptyPage:
+        all_data = paginator.page(paginator.num_pages)
+
     context = {
-        'data':all_data
+        'data':all_data,
+        'all_data_all':all_data_all,
     }
     return render(request,'oncl_app/PCS_Cloud/view_sessions.html', context)
+
+def edit_session(request, session_id):
+    session = PCS_Cloud.objects.get(id=session_id)
+    context = {
+        "session": session,
+        "id": session_id
+    }
+    return render(request, 'oncl_app/PCS_Cloud/edit_session.html', context)
+
+def edit_session_save(request):
+    if request.method != "POST":
+        HttpResponse("Invalid Method")
+    else:
+        main_session_id = request.POST.get('main_session_id')
+        session_id = request.POST.get('session_id')
+        session_name = request.POST.get('session_name')
+        session_author = request.POST.get('session_author')
+        session_pub_date = request.POST.get('session_pub_date')
+        session_desc = request.POST.get('session_desc')
+        session_tag1 = request.POST.get('session_tag1')
+        session_tag2 = request.POST.get('session_tag2')
+        session_tag3 = request.POST.get('session_tag3')
+        session_tag4 = request.POST.get('session_tag4')
+        
+        if 'session_pic' in request.FILES:
+            print("YES")
+            session_pic = request.FILES['session_pic']
+            print(session_pic)
+        else:
+            session_pic = False
+            print("No")
+            print(session_pic)
+        if 'session_file' in request.FILES:
+            print("YES")
+            session_file = request.FILES['session_file']
+            print(session_file)
+        else:
+            session_file = False
+            print("No")
+            print(session_file)
+
+        try:
+            session = PCS_Cloud.objects.get(id=main_session_id)
+            session.session_id = session_id
+            session.session_name = session_name
+            session.session_author = session_author
+            session.session_pub_date = session_pub_date
+            session.session_desc = session_desc
+            session.session_tag1 = session_tag1
+            session.session_tag2 = session_tag2
+            session.session_tag3 = session_tag3
+            session.session_tag4 = session_tag4
+            
+            if session_pic == False:
+                pass
+            else:
+                session.session_pic = session_pic
+            if session_file == False:
+                pass
+            else:
+                session.session_file = session_file
+            session.save()
+
+            messages.success(request, "Session Info. Updated Successfully.")
+            return redirect('view_session')
+
+        except:
+            messages.error(request, "Failed to Update Session Info.!")
+            return redirect('/edit_session/'+main_session_id+'/')
+
+def delete_session(request, session_id):
+    session = PCS_Cloud.objects.get(id=session_id)
+    try:
+        session.delete()
+        messages.info(request, "Session Deleted Successfully.")
+        return redirect('view_session')
+    except:
+        messages.error(request, "Failed to Delete Session!")
+        return redirect('view_session')
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
@@ -1080,6 +1320,7 @@ def search_session(request):
     if request.method == 'POST':
         now = pydt.datetime.now()
         query = request.POST['search']
+        
         sessions = PCS_Cloud.objects.filter(
             Q(session_id__contains=query) | Q(session_name__contains=query) | 
             Q(session_author__contains=query) | Q(session_desc__contains=query) | 
@@ -1089,7 +1330,11 @@ def search_session(request):
         now1 = pydt.datetime.now()
         cal_time = (now1 - now).total_seconds()
 
-        return render(request, 'oncl_app/PCS_Cloud/search_sessions.html', {'sessions': sessions, 'cal_time':cal_time})
+        context = {
+            'sessions': sessions,
+            'cal_time':cal_time,
+        }
+        return render(request, 'oncl_app/PCS_Cloud/search_sessions.html', context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
@@ -1479,5 +1724,23 @@ def save_attendance(request):
 
         ars = AttendanceReportStudent(student_id=student_id,branch_id=branch,subject=subject,attend_status=attend_status)
         ars.save()
-        messages.success(request, "Announcement Added Successfully.")
+        messages.success(request, "Attendance Saved Successfully.")
         return redirect('branch_students')
+
+def student_info_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=student_info_record' + \
+        str(pydt.datetime.now()) + '.csv'
+
+    writer = csv.writer(response)
+    writer.writerow(['Username', 'First Name', 'Last Name', 'Email', 
+                    'Gender', 'Father Name', 'Father Occupation', 'Father Phone', 'Mother Name', 'Mother Tounge', 'Date of Birth',
+                    'Blood Group', 'Phone', 'Door No.', 'Zip Code', 'City Name', 'State Name', 'Country', 'Branch'])
+    
+    student = Students.objects.all()
+
+    for i in student:
+        writer.writerow([i.user.username, i.user.first_name, i.user.last_name, i.user.email,
+                        i.gender, i.father_name, i.father_occ, i.father_phone, i.mother_name, i.mother_tounge,
+                        i.dob, i.blood_group, i.phone, i.dno_sn, i.zip_code, i.city_name, i.state_name, i.country_name, i.branch])
+    return response
