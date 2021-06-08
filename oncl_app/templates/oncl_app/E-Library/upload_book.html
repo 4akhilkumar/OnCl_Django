@@ -1,182 +1,129 @@
-{% extends "oncl_app/base.html" %}
+{% extends "oncl_app/admin_base.html" %}
 
 {% block content %}
 
 {% load static %}
 
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/bootstrap/css/bootstrap.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animate/animate.css' %}">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/css-hamburgers/hamburgers.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animsition/css/animsition.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/select2/select2.min.css' %}">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/util.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/main.css' %}">
+<head>
+    <link href="{% static 'oncl_app/colorlib-regform-4/css/main.css' %}" rel="stylesheet" media="all">
+    <title>Upload E-Books | OnCl - Edu. Cloud</title>
+    <style>
+    #file-chosen, #file-chosen2{
+      margin-left: 0.3rem;
+    }
+    input, textarea {
+      outline: #000000;
+      border: 1px solid #c4c4c4;
+    }
+    </style>
+</head>
 
-<title>Upload Book | OnCl - Edu. Cloud</title>
-
-<style>
-label {
-  background-color: #6c757d1a;
-  color: #555555;
-  padding: 0.5rem;
-  font-family: sans-serif;
-  cursor: pointer;
-  display: inline-block;
-}
-
-#file-chosen, #file-chosen2{
-  margin-left: 0.3rem;
-}
-
-a {
-    text-decoration: none;
-    font-weight: bolder;
-}
-a:hover {
-    text-decoration: none;
-}
-
-/* Styles for Navbar */
-.bg-light {
-	background-color: #ffffff!important;
-	box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
-}
-</style>
-
-<div class="limiter">
-  <div class="container-login100" style="background-color: #e3f2fd;">
-    <div class="wrap-login100 p-l-40 p-r-40 p-t-55 p-b-55" style="border-color: #64b5f6;">
-      <form class="login100-form validate-form flex-sb flex-w" method="POST" action="" enctype="multipart/form-data">
-        <span class="login100-form-title p-b-32">
-          <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;Upload Book | OnCl
-        </span>
-        {% csrf_token %}
-        <span class="txt1 p-b-11">
-          <i class="fab fa-ideal"></i>&nbsp;Book ID
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="book_id" required id="id_book_id" placeholder="Book ID">
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-book"></i>&nbsp;Book Name
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="book_name" required id="id_book_name" placeholder="Book Name">
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-feather-alt"></i>&nbsp;Book Author
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="book_author" required id="id_book_author" placeholder="Book Author">
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-calendar-day"></i>&nbsp;Book Publish Date
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="book_pub_date" required id="id_book_pub_date" placeholder="Book Publish Date E.g. 11 April 2004">
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-align-left"></i>&nbsp;Book Description
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <textarea class="input100" name="book_desc" maxlength="200" style="padding: 15px 25px 0 25px; height: 150px;"  placeholder="Book Description" id="id_book_desc" required>{{task.description}}</textarea>
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-tags"></i>&nbsp;Book Tags
-        </span>
-        <div class="wrap-input100 validate-input m-b-20" style="display: flex;">
-          <input class="input100" name="book_tag1" maxlength="20" required id="id_book_tag1" placeholder="Book Tag 1">
-          <span class="focus-input100"></span>
-          <input class="input100" name="book_tag2" maxlength="20" required id="id_book_tag2" placeholder="Book Tag 2">
-          <span class="focus-input100"></span>
-        </div>
-        <div class="wrap-input100 validate-input m-b-20" style="display: flex;">
-          <input class="input100" name="book_tag3" maxlength="20" required id="id_book_tag3" placeholder="Book Tag 3">
-          <span class="focus-input100"></span>
-          <input class="input100" name="book_tag4" maxlength="20" required id="id_book_tag4" placeholder="Book Tag 4">
-          <span class="focus-input100"></span>
-        </div>       
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-image"></i>&nbsp;Upload Book Cover
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input type="file" name="book_pic" id="id_book_pic" hidden/>
-          <label for="id_book_pic">Choose Image</label>
-          <span id="file-chosen"><b>No Image Chosen</b></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-file"></i>&nbsp;Upload Book File
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input type="file" name="book_file" id="id_book_file" hidden/>
-          <label for="id_book_file">Choose File</label>
-          <span id="file-chosen2"><b>No File Chosen</b></span>
-        </div>
-
-        <div class="container-login100-form-btn" style="justify-content: space-between">
-          <button class="login100-form-btn" style="border-radius: 6px; background-color: #ef5350;" type="submit" value="">
-            <i class="fas fa-file-upload"></i>&nbsp;Upload Book
-          </button>
-        </div>
-      </form>
-    </div>
+<body style="background-color: #bbdefb;">
+  <div class="page-wrapper bg-gra-02 p-t-80 p-b-80 font-poppins">
+      <div class="wrapper wrapper--w680">
+          <div class="card-4">
+              <div class="card-body">
+                  <h2 class="title"><i class="fas fa-swatchbook"></i> Upload E-Books</h2>
+                  <form method="POST" action="" enctype="multipart/form-data">
+                  {% csrf_token %}
+                      <div class="row row-space">
+                        <div class="col-2">
+                          <div class="input-group">
+                            <label class="label"><i class="fab fa-ideal"></i> Book ID</label>
+                            <input class="input--style-4" type="text" name="book_id" id="id_book_id" placeholder="Book ID" required>
+                          </div>
+                        </div>
+                        <div class="col-2">
+                          <div class="input-group">
+                            <label class="label"><i class="fas fa-book"></i> Book Name</label>
+                            <input class="input--style-4" type="text" name="book_name" id="id_book_name" placeholder="Book Name" required>
+                          </div>
+                        </div>
+                        <div class="col-2">
+                          <div class="input-group">
+                            <label class="label"><i class="fas fa-feather-alt"></i> Book Author</label>
+                            <input class="input--style-4" type="text" name="book_author" id="id_book_author" placeholder="Book Author" required>
+                            <input type="text" name="book_author_uid" id="id_book_author_uid" value="{{request.user.id}}" hidden/>
+                          </div>
+                        </div>
+                        <div class="col-2">
+                          <div class="input-group">
+                            <label class="label"><i class="fas fa-calendar-day"></i> Book Published On</label>
+                            <input class="input--style-4" type="text" name="book_pub_date" id="id_book_pub_date" placeholder="Book Published On E.g. 11 April 2004" required>
+                          </div>
+                        </div>
+                      </div>                        
+                      <div class="input-group">
+                        <div class="input-group">
+                            <label class="label"><i class="fas fa-align-left"></i> What is the Book About?</label>
+                            <textarea class="input--style" name="book_desc" placeholder="Book Description" id="id_book_desc" style="width: 100%; height: 10rem;" required></textarea>
+                        </div>
+                      </div>
+                      <div class="row row-space">
+                        <div class="col-2">
+                          <div class="input-group">
+                            <label class="label"><i class="fas fa-tags"></i> Book Tag 1</label>
+                            <input class="input--style-4" type="text" name="book_tag1" id="id_book_tag1" placeholder="Book Tag 1" required>
+                          </div>
+                        </div>
+                        <div class="col-2">
+                          <div class="input-group">
+                            <label class="label"><i class="fas fa-tags"></i> Book Tag 2</label>
+                            <input class="input--style-4" type="text" name="book_tag2" id="id_book_tag2" placeholder="Book Tag 2" required>
+                          </div>
+                        </div>
+                        <div class="col-2">
+                          <div class="input-group">
+                            <label class="label"><i class="fas fa-tags"></i> Book Tag 3</label>
+                            <input class="input--style-4" type="text" name="book_tag3" id="id_book_tag3" placeholder="Book Tag 3" required>
+                          </div>
+                        </div>
+                        <div class="col-2">
+                          <div class="input-group">
+                            <label class="label"><i class="fas fa-tags"></i> Book Tag 4</label>
+                            <input class="input--style-4" type="text" name="book_tag4" id="id_book_tag4" placeholder="Book Tag 4" required>
+                          </div>
+                        </div>
+                        <div class="col-2">
+                          <div class="input-group">
+                            <label class="label"><i class="fas fa-image"></i> Upload Book Cover</label>
+                            <input type="file" name="book_pic" id="id_book_pic" required hidden/>
+                            <label style="background-color: #e0e0e0; color: #555555; padding: 0.9rem; font-family: sans-serif; cursor: pointer; display: inline-block; border-radius: 5px;" for="id_book_pic">Choose File</label>
+                            <span id="file-chosen"><b>No File is Chosen</b></span>
+                          </div>
+                        </div>
+                        <div class="col-2">
+                          <div class="input-group">
+                            <label class="label"><i class="fas fa-file"></i> Upload Book File</label>
+                            <input type="file" name="book_file" id="id_book_file" required hidden/>
+                            <label style="background-color: #e0e0e0; color: #555555; padding: 0.9rem; font-family: sans-serif; cursor: pointer; display: inline-block; border-radius: 5px;" for="id_book_file">Choose File</label>
+                            <span id="file-chosen2"><b>No File is Chosen</b></span>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <button class="btn btn--radius-2 btn--blue" type="submit">Upload E-Book</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
   </div>
-</div>
 
-<!--===============================================================================================-->
-<script src="{% static 'oncl_app/login_register/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/animsition/js/animsition.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/popper.js' %}"></script>
-	<script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/select2/select2.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/daterangepicker/moment.min.js' %}"></script>
-	<script src="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/countdowntime/countdowntime.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/js/main.js' %}"></script>
+    <script>
+      const actualBtn = document.getElementById('id_book_pic');    
+      const fileChosen = document.getElementById('file-chosen');
+      actualBtn.addEventListener('change', function(){
+        fileChosen.textContent = this.files[0].name
+      })
+  
+      const actualBtn2 = document.getElementById('id_book_file');    
+      const fileChosen2 = document.getElementById('file-chosen2');
+      actualBtn2.addEventListener('change', function(){
+        fileChosen2.textContent = this.files[0].name
+      })
+    </script>
 
-
-<script>
-    const actualBtn = document.getElementById('id_book_pic');    
-    const fileChosen = document.getElementById('file-chosen');
-    actualBtn.addEventListener('change', function(){
-      fileChosen.textContent = this.files[0].name
-    })
-
-    const actualBtn2 = document.getElementById('id_book_file');    
-    const fileChosen2 = document.getElementById('file-chosen2');
-    actualBtn2.addEventListener('change', function(){
-      fileChosen2.textContent = this.files[0].name
-    })
-</script>
+</body>
 
 {% endblock %}
