@@ -201,12 +201,6 @@
 			</div>
 		</div>
 	</div>
-
-
-<footer style="padding: 10px 5px;">
-<p id="demo"></p>
-<p><button onclick="getLocation()"><span style="font-weight: bold;">Click Here</span>, To allow OnCl to know your location.</button></p>
-</footer>
 	
 <!--===============================================================================================-->
 	<script src="{% static 'oncl_app/login_register/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
@@ -255,27 +249,21 @@
 		function showError(error) {
 		  switch(error.code) {
 			case error.PERMISSION_DENIED:
-			  x.innerHTML = "You have denied the request for Geolocation."
+			  x.innerHTML = "User denied the request for Geolocation."
 			  document.getElementById("location").value = 0;
-			  return getLocation();
 			  break;
 			case error.POSITION_UNAVAILABLE:
 			  x.innerHTML = "Location information is unavailable."
 			  document.getElementById("location").value = 1;
-			  return getLocation();
 			  break;
 			case error.TIMEOUT:
 			  x.innerHTML = "The request to get user location timed out."
 			  document.getElementById("location").value = 2;
-			  return getLocation();
 			  break;
 			case error.UNKNOWN_ERROR:
 			  x.innerHTML = "An unknown error occurred."
 			  document.getElementById("location").value = 3;
-			  return getLocation();
 			  break;
-			default:
-				return getLocation();
 		  }
 		}
 		</script>
