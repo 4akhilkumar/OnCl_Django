@@ -124,6 +124,7 @@ urlpatterns = [
     path('student_leave_view/', views.student_leave_view, name="student_leave_view"),
     path('student_leave_approve/<leave_id>/', views.student_leave_approve, name="student_leave_approve"),
     path('student_leave_reject/<leave_id>/', views.student_leave_reject, name="student_leave_reject"),
+    path('student_leave_undo/<leave_id>/', views.student_leave_undo, name="student_leave_undo"),
 
     path('student_apply_leave/', views.student_apply_leave, name="student_apply_leave"),
     path('student_apply_leave_save/', views.student_apply_leave_save, name="student_apply_leave_save"),
@@ -131,6 +132,7 @@ urlpatterns = [
     path('staff_leave_view/', views.staff_leave_view, name="staff_leave_view"),
     path('staff_leave_approve/<leave_id>/', views.staff_leave_approve, name="staff_leave_approve"),
     path('staff_leave_reject/<leave_id>/', views.staff_leave_reject, name="staff_leave_reject"),
+    path('staff_leave_undo/<leave_id>/', views.staff_leave_undo, name="staff_leave_undo"),
 
     path('staff_apply_leave/', views.staff_apply_leave, name="staff_apply_leave"),
     path('staff_apply_leave_save/', views.staff_apply_leave_save, name="staff_apply_leave_save"),
