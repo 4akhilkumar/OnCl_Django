@@ -1751,12 +1751,12 @@ def student_info_csv(request):
     writer = csv.writer(response)
     writer.writerow(['Username', 'First Name', 'Last Name', 'Email', 
                     'Gender', 'Father Name', 'Father Occupation', 'Father Phone', 'Mother Name', 'Mother Tounge', 'Date of Birth',
-                    'Blood Group', 'Phone', 'Door No.', 'Zip Code', 'City Name', 'State Name', 'Country', 'Branch'])
+                    'Blood Group', 'Phone', 'Door No.', 'Zip Code', 'City Name', 'State Name', 'Country', 'Branch', 'Last Login'])
     
     student = Students.objects.all()
 
     for i in student:
         writer.writerow([i.user.username, i.user.first_name, i.user.last_name, i.user.email,
                         i.gender, i.father_name, i.father_occ, i.father_phone, i.mother_name, i.mother_tounge,
-                        i.dob, i.blood_group, i.phone, i.dno_sn, i.zip_code, i.city_name, i.state_name, i.country_name, i.branch])
+                        i.dob, i.blood_group, i.phone, i.dno_sn, i.zip_code, i.city_name, i.state_name, i.country_name, i.branch, i.user.last_login])
     return response
