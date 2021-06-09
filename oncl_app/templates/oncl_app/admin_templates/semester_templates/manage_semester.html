@@ -115,8 +115,8 @@ table th {
 
 {% if request.user.is_staff %}
 <div style="padding: 30px 0px 10px 10px;">
-    <div onclick="add_semester()" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
-        <a href="{% url 'add_semester' %}" style="text-decoration: none; color: #000;"><i class="fas fa-university"></i> Add Semester</a>
+    <div onclick="document.location='{% url 'add_semester' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+        <a href="#" style="text-decoration: none; color: #000;"><i class="fas fa-university"></i> Add Semester</a>
     </div>
 </div>
 {% endif %}
@@ -149,11 +149,5 @@ table th {
         </tbody>
     </table>
 </div>
-
-<script>
-    function add_semester(){
-        window.location.replace("{% url 'add_semester' %}");
-    }
-</script>
 
 {% endblock %}
