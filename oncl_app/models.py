@@ -31,6 +31,9 @@ class Branches(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
+    def __str__(self):
+        return self.branch
+
 class Subjects(models.Model):
     id = models.AutoField(primary_key=True)
     subject_name = models.CharField(max_length=50)
@@ -39,6 +42,9 @@ class Subjects(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
+
+    def __str__(self):
+        return self.subject_name
 
 GENDER_CHOICES = [
     ("Select Gender", "Select Gender"),
@@ -155,6 +161,9 @@ class Announcements_news(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
+
+    def __str__(self):
+        return self.sub_an
 
 class E_Books(models.Model):
     id = models.AutoField(primary_key=True)
