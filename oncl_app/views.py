@@ -1448,6 +1448,14 @@ def student_leave_reject(request, leave_id):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
+def student_leave_undo(request, leave_id):
+    leave = LeaveReportStudent.objects.get(id=leave_id)
+    leave.leave_status = 0 
+    leave.save()
+    return redirect('student_leave_view')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
 def staff_leave_view(request):
     leaves = LeaveReportStaff.objects.all()
     context = {
@@ -1468,6 +1476,14 @@ def staff_leave_approve(request, leave_id):
 def staff_leave_reject(request, leave_id):
     leave = LeaveReportStaff.objects.get(id=leave_id)
     leave.leave_status = 2
+    leave.save()
+    return redirect('staff_leave_view')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def staff_leave_undo(request, leave_id):
+    leave = LeaveReportStaff.objects.get(id=leave_id)
+    leave.leave_status = 0
     leave.save()
     return redirect('staff_leave_view')
 
