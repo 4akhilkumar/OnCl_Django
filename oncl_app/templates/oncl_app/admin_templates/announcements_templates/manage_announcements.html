@@ -222,6 +222,8 @@ hr {
                         <small title="{{ announcement.updated_at }}" onclick="showhide_{{announcement.id|safe}}()">
                           {% if announcement.updated_at != announcement.created_at %}
                           [Edited]
+                          {% else %}
+                          
                           {% endif %}
                         </small>
                         {% if announcement.updated_at != announcement.created_at %}
