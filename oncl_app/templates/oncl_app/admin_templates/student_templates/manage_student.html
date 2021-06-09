@@ -184,7 +184,7 @@ img {
     <div>
       {% include 'oncl_app/messages.html' %}
     </div>
-    <div onclick="exportTableToCSV('Student_Info.csv')" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+    <div onclick="document.location='{% url 'student_info_csv' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
       <span style="text-decoration: none; font-size: 1rem; color: #000;"><b>Export <i class="fas fa-file-csv"></i> File</b></span>
     </div>
 </div>
@@ -258,51 +258,6 @@ img {
       }
     });
   } );
-</script>
-
-<script>
-  function exportTableToCSV(filename) {
-    var csv = [];
-    var rows = document.querySelectorAll("table tr");
-    
-    for (var i = 0; i < rows.length; i++) {
-        var row = [], cols = rows[i].querySelectorAll("td, th");
-        
-        for (var j = 0; j < cols.length; j++) 
-            row.push(cols[j].innerText);
-        
-        csv.push(row.join(","));        
-    }
-
-    // Download CSV file
-    downloadCSV(csv.join("\n"), filename);
-}
-
-function downloadCSV(csv, filename) {
-    var csvFile;
-    var downloadLink;
-
-    // CSV file
-    csvFile = new Blob([csv], {type: "text/csv"});
-
-    // Download link
-    downloadLink = document.createElement("a");
-
-    // File name
-    downloadLink.download = filename;
-
-    // Create a link to the file
-    downloadLink.href = window.URL.createObjectURL(csvFile);
-
-    // Hide download link
-    downloadLink.style.display = "none";
-
-    // Add the link to DOM
-    document.body.appendChild(downloadLink);
-
-    // Click download link
-    downloadLink.click();
-}
 </script>
 
 {% endblock %}
