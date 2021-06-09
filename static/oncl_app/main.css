@@ -11,6 +11,16 @@
   border-radius: 40px;
   width: 70%;
 }
+
+@media screen and (max-width: 480px)  {
+  .content {
+    background: #fff;
+    padding: 1rem;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.25);
+    border-radius: 40px;
+    width: 90%;
+  } 
+}
 .search {
   display: flex;
   border-style: solid;
