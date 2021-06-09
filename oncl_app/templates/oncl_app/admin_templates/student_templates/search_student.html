@@ -213,7 +213,7 @@ img {
         <td data-label="Email"><a class="a_tags" href="mailto:{{ student.user.email }}">{{ student.user.email }}</a></td>
         <td data-label="Phone"><a class="a_tags" href="tel:Mobile : +91{{ student.phone }}">{{ student.phone }}</a></td>
         <td data-label="Address"><a class="a_tag_address" href="https://www.google.com/maps/place/{{student.city_name}}" target="_blank">{{ student.city_name }}</a></td>
-        <td data-label="Last Login"> {% if student.user.last_login == None %} User Not Logged Yet! {% else %} {{ student.user.last_login }} {% endif %}</td>
+        <td data-label="Last Login"> {% if student.user.last_login == None %} User Not Logged Yet! {% else %} {{ student.user.last_login|date:"SHORT_DATETIME_FORMAT" }} {% endif %}</td>
         <td data-label="Action" class="outlined">
             <a href="{% url 'view_student' student.user.id %}" target="_blank"><i class="fas fa-eye"></i> View</a> &nbsp; <br>
             <a class="edit_button" href="{% url 'edit_student' student.user.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp; <br>
@@ -266,7 +266,7 @@ img {
     for (var i = 0; i < rows.length; i++) {
         var row = [], cols = rows[i].querySelectorAll("td, th");
         
-        for (var j = 0; j < cols.length; j++) 
+        for (var j = 0; j < cols.length-1; j++) 
             row.push(cols[j].innerText);
         
         csv.push(row.join(","));        
