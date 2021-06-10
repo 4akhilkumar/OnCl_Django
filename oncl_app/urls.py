@@ -7,9 +7,6 @@ from . import views
 urlpatterns = [
     path('te_page/', views.te_page, name = 'te_page'),
 
-    path('oncl_logo_page/', views.oncl_logo_page, name = 'oncl_logo_page'),
-    path('oncl_page/', views.oncl_page, name = 'oncl_page'),
-
     path('', views.home_page, name = 'home'),
     path('login/', views.login_page, name = 'login'),
     path('register/', views.register_page, name = 'register'),

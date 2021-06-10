@@ -40,13 +40,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 def te_page(request):
-    return render(request, 'oncl_app/login_register/register_mail.html')
-
-def oncl_logo_page(request):
-    return render(request, 'oncl_app/static_files_folder/OnCl_logo.html')
-
-def oncl_page(request):
-    return render(request, 'oncl_app/static_files_folder/OnCl.html')
+    return render(request, 'oncl_app/password_reset/password_reset_email.html')
 
 def home_page(request):
     return render(request,'oncl_app/home.html')
