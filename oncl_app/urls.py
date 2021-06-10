@@ -7,7 +7,7 @@ from . import views
 urlpatterns = [
     path('te_page/', views.te_page, name = 'te_page'),
 
-    path('whin_page/', views.whin_page, name = 'whin_page'),
+    path('oncl_logo_page/', views.oncl_logo_page, name = 'oncl_logo_page'),
     path('oncl_page/', views.oncl_page, name = 'oncl_page'),
 
     path('', views.home_page, name = 'home'),
@@ -15,7 +15,7 @@ urlpatterns = [
     path('register/', views.register_page, name = 'register'),
 	path('logout/', views.logoutUser, name="logout"),
     path('reset_password/',
-        auth_views.PasswordResetView.as_view(template_name="oncl_app/password_reset/password_reset.html"),
+        auth_views.PasswordResetView.as_view(template_name="oncl_app/password_reset/password_reset.html", html_email_template_name = 'oncl_app/password_reset/password_reset_email.html'),
         name="reset_password"),
     path('reset_password_sent/',
         auth_views.PasswordResetDoneView.as_view(template_name="oncl_app/password_reset/password_reset_sent.html"),
