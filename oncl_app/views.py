@@ -734,15 +734,31 @@ def edit_student_save(request):
         email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        address = request.POST.get('address')
         gender = request.POST.get('gender')
-        branch = request.POST.get('branch')
+        father_name = request.POST.get('father_name')
+        father_occ = request.POST.get('father_occ')
+        father_phone = request.POST.get('father_phone')
+        mother_name = request.POST.get('mother_name')
+        mother_tounge = request.POST.get('mother_tounge')
+        dob = request.POST.get('dob')
+        blood_group = request.POST.get('blood_group')
         phone = request.POST.get('phone')
-        website_link = request.POST.get('website_link')
-        linkedin_link = request.POST.get('linkedin_link')
-        git_link = request.POST.get('git_link')
-        bio = request.POST.get('bio')
-        profile_pic = request.POST.get('profile_pic')
+        dno_sn = request.POST.get('dno_sn')
+        zip_code = request.POST.get('zip_code')
+        city_name = request.POST.get('city_name')
+        state_name = request.POST.get('state_name')
+        country_name = request.POST.get('country_name')
+        branch = request.POST.get('branch')
+
+        if 'profile_pic' in request.FILES:
+            print("YES")
+            profile_pic = request.FILES['profile_pic']
+            print("If part",profile_pic)
+        else:
+            print("Else Part")
+            profile_pic = 'avatar.webp'
+            print("Else part",profile_pic)
+            print("NO")
 
         try:
             # INSERTING into User Model
@@ -755,15 +771,26 @@ def edit_student_save(request):
             
             # INSERTING into Students Model
             student_model = Students.objects.get(user=student_id)
-            student_model.address = address
             student_model.gender = gender
-            student_model.branch = branch
+            student_model.father_name = father_name
+            student_model.father_occ = father_occ
+            student_model.father_phone = father_phone
+            student_model.mother_name = mother_name
+            student_model.mother_tounge = mother_tounge
+            student_model.dob = dob
+            student_model.blood_group = blood_group
             student_model.phone = phone
-            student_model.website_link = website_link
-            student_model.linkedin_link = linkedin_link
-            student_model.git_link = git_link
-            student_model.bio = bio
-            student_model.profile_pic = profile_pic
+            student_model.dno_sn = dno_sn
+            student_model.zip_code = zip_code
+            student_model.city_name = city_name
+            student_model.state_name = state_name
+            student_model.country_name = country_name
+            student_model.branch = branch            
+
+            if profile_pic == 'avatar.webp':
+                pass
+            else:
+                student_model.profile_pic = profile_pic
             student_model.save()
 
             messages.success(request, "Student Info. Updated Successfully.")
