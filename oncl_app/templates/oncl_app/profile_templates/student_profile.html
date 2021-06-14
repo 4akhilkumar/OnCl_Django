@@ -4,9 +4,12 @@
 
 {% load static %}
 
+{% load humanize %}
+
 <title>View Student Info.</title>
 
 <style>  
+
 {% if student.gender == 'Male' %}
 
 :root {
@@ -35,16 +38,20 @@ body {
 .card:hover {
  transform: None;
 }
+
+.hidden{
+  display : none;
+}
 </style>
 
-<div class="container" style="margin-top: 40px;">
+<div class="container" style="margin-top: 50px;">
     <div class="main-body">  
           <div class="row gutters-sm">
             <div class="col-md-4 mb-3">
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="{{ student.profile_pic.url }}" alt="Student_Profile Pic" style="border-radius: 5px; border: 2px solid #bdbdbd;" width="200" height="225">
+                    <img src="{{ student.profile_pic.url }}" alt="Student_Profile Pic" style="border-radius: 5px; border: 2px solid #bdbdbd;" width="200" height="220">
                     <div class="mt-3">
                       <h4>{{student.user.first_name}}</h4>
                       <p class="text-secondary mb-1"> Student </p>
@@ -133,9 +140,50 @@ body {
                   </div>
                 </div>
               </div>
+              <div class="row gutters-sm" style="justify-content: start">
+                
+                <div class="card h-100" style="margin-top: 20px; margin-bottom: 40px;">
+                  <div class="card-body">
+                    <h5 class="d-flex align-items-center mb-3"><i class="fas fa-flag-checkered"></i> &nbsp;Recent Login Activity</h5>
+                    <p>
+                      {% if student.user.last_login == None %} Not Logged In Yet!
+                    </p>
+                      {% else %} 
+                    <p>Your recent login is <b>{{ student.user.last_login|naturaltime }}.</b> </p>
+                    <p>                      
+                       You have logged in on <b>{{ student.user.last_login|date:"l, dS F, Y" }}</b> at <b>{{ student.user.last_login|date:"H:i:s A" }}</b>
+                    </p>
+                    <span style="color: #ec407a; cursor: pointer;" onclick="showhide()"><b>Check Complete Login Activity</b></span>
+                    <br><br>
+                    <div id="newpost" class="hidden">
+                      {% for i in sld %}
+                      <div style="margin: 0; padding: 0;">
+                       <div style="background-color: #e0e0e0; padding: 20px; border-radius: 10px; margin: 0;">
+                       <p style="margin: 0; padding: 0;">From <b>{{ i.ip_addr }}</b></p>
+                       <p style="margin: 0; padding: 0;">
+                       You have logged in on <b>{{ i.created_at|date:"l, dS F, Y" }}</b> at <b>{{ i.created_at|date:"H:i:s A" }}</b>
+                       </p>
+                      </div>
+                       <br>
+                       </div>
+                      {% endfor %}
+                      </div>
+                      
+                      {% endif %}                    
+                  </div>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>
     </div>
+
+    <script>
+      function showhide() {
+        var div = document.getElementById("newpost");
+        div.classList.toggle('hidden');
+      }
+    </script>
 
 {% endblock %}
