@@ -133,6 +133,16 @@ class Students(models.Model):
     
     class Meta:
         ordering = ["user__username"]
+        
+class user_login_details(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ip_addr = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return '%s - %s' % (self.user.username, self.ip_addr)
 
 class LeaveReportStudent(models.Model):
     id = models.AutoField(primary_key=True)
