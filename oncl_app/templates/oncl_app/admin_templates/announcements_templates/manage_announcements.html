@@ -4,8 +4,6 @@
 
 {% load static %}
 
-{% load humanize %}
-
 <title>Manage Announcements | OnCl - Edu. Cloud</title>
 
 <style>
@@ -218,7 +216,7 @@ hr {
                           {% endif %}
                           {% endfor %}
                         </h4>
-                        <small>{{ announcement.created_at|naturaltime }}</small>
+                        <small>{{ announcement.created_at }}</small>
                         <small title="{{ announcement.updated_at }}" onclick="showhide_{{announcement.id|safe}}()">
                           {% if announcement.updated_at != announcement.created_at %}
                           [Edited]
