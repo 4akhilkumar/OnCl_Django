@@ -815,10 +815,11 @@ def edit_student_save(request):
 @allowed_users(allowed_roles=['Admin'])
 def view_student(request, student_id):
     student = Students.objects.get(user=student_id)
-
+    sld = user_login_details.objects.filter(user=student_id)
     context = {
         "student": student,
-        "id": student_id
+        "id": student_id,
+        "sld":sld,
     }
     return render(request, "oncl_app/profile_templates/student_profile.html", context)
 
@@ -982,8 +983,12 @@ def student_profile(request):
     username = request.user.get_username()
     user = User.objects.get(id=request.user.id)
     student = Students.objects.get(user=user)
+    sld = user_login_details.objects.filter(user=user)
     context = {
-            'username':username, 'student':student, "user": user
+            'username':username,
+            'student':student, 
+            "user": user, 
+            "sld":sld,
         }
     return render(request, 'oncl_app/profile_templates/student_profile.html', context)
 
