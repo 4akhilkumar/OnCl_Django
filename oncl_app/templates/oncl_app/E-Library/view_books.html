@@ -50,7 +50,7 @@ style="cursor: pointer;">
     <form method="POST" action="/search_book">
       <div class="search">
         {% csrf_token %}
-        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Books...">
+        <input type="text" class="search__input" aria-label="search" id="tags" name="search" placeholder="Search Books...">
         <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
       </div>
     </form>
@@ -153,5 +153,28 @@ style="cursor: pointer;">
   </ul>
 </nav>
 {% endif %}
+
+<script>
+    $( function() { 
+      var availableTags = [
+          {% for view_books in all_data_all %}
+              "{{view_books.book_id}}",
+              "{{view_books.book_name}}",
+              "{{view_books.book_author}}",
+              "{{view_books.book_pub_date}}",
+              "{{view_books.book_tag1}}",
+              "{{view_books.book_tag2}}",
+              "{{view_books.book_tag3}}",
+              "{{view_books.book_tag4}}",
+          {% endfor %}
+      ];
+      $( "#tags" ).autocomplete({
+      source: function(request, response) {
+        var results = $.ui.autocomplete.filter(availableTags, request.term);
+        response(results.slice(0, 4));
+      }
+    });
+    } );
+  </script>
 
 {% endblock %}
