@@ -146,6 +146,9 @@ def login_page(request):
         # if location == '0':
         #     messages.warning(request, 'You must enable your GPS inorder to login.')
         #     return redirect('login')
+        
+        user_name = username
+        save_login_details(request, user_name, ip_addr)
 
         if user is not None:
             login(request, user)
@@ -173,6 +176,14 @@ def logoutUser(request):
     logout(request)
     messages.info(request,"You have logged out!")
     return redirect('login')
+
+def save_login_details(request, user_name, ip_addr):
+    uid = User.objects.get(username=user_name)
+    try:
+        sld = user_login_details(ip_addr=ip_addr, user=uid)
+        sld.save()
+    except:
+        return #
 
 @unauthenticated_user
 def dashboard_page(request):
