@@ -782,7 +782,7 @@ def view_student(request, student_id):
         "student": student,
         "id": student_id
     }
-    return render(request, "oncl_app/profile_templates/admin_student_view_profile.html", context)
+    return render(request, "oncl_app/profile_templates/student_profile.html", context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
