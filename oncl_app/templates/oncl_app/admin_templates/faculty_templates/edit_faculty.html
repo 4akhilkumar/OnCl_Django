@@ -58,7 +58,7 @@ a:hover {
 <div class="limiter">
   <div class="container-login100" style="background-color: #e3f2fd;">
     <div class="wrap-login100 p-l-40 p-r-40 p-t-55 p-b-55" style="border-color: #64b5f6;">
-      <form class="login100-form validate-form flex-sb flex-w" method="POST" action="{% url 'edit_staff_save' %}">
+      <form class="login100-form validate-form flex-sb flex-w" method="POST" action="{% url 'edit_staff_save' %}" enctype="multipart/form-data">
         <span class="login100-form-title p-b-32">
           <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;Update Faculty Info.
         </span>
