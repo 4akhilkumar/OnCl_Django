@@ -632,7 +632,16 @@ def edit_staff_save(request):
         gscholar_link = request.POST.get('gscholar_link')
         microsoft_academic_link = request.POST.get('microsoft_academic_link')
         bio = request.POST.get('bio')
-        profile_pic = request.POST.get('profile_pic')
+
+        if 'profile_pic' in request.FILES:
+            print("YES")
+            profile_pic = request.FILES['profile_pic']
+            print("If part",profile_pic)
+        else:
+            print("Else Part")
+            profile_pic = 'avatar.webp'
+            print("Else part",profile_pic)
+            print("NO")
 
         try:
             # INSERTING into User Model
@@ -652,7 +661,10 @@ def edit_staff_save(request):
             staff_model.desgination = desgination
             staff_model.address = address
             staff_model.qualification = qualification
-            staff_model.profile_pic = profile_pic
+            if profile_pic == 'avatar.webp':
+                pass
+            else:
+                staff_model.profile_pic = profile_pic
             staff_model.git_link = git_link
             staff_model.website_link = website_link
             staff_model.linkedin_link = linkedin_link
