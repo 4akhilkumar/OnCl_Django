@@ -130,6 +130,9 @@ class Students(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+    class Meta:
+        ordering = ["user__username"]
 
 class LeaveReportStudent(models.Model):
     id = models.AutoField(primary_key=True)
