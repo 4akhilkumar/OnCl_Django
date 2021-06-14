@@ -7,12 +7,28 @@
 <title>View Student Info.</title>
 
 <style>  
+{% if student.gender == 'Male' %}
+
+:root {
+  --light_color: #e0f2f1;
+  --dark_color: #b2dfdb;
+}
+
+{% else %}
+
+:root {
+  --light_color: #e1f5fe;
+  --dark_color: #b3e5fc;
+}
+
+{% endif %}
+
 body {
-  background-color: #fbe9e7;
+  background-color: var(--light_color);
 }
 
 .card {
-  box-shadow: 6px 6px 0px -2px #ffcdd2;
+  box-shadow: 6px 6px 0px -2px var(--dark_color);
   border-radius: 10px;
 }
 
