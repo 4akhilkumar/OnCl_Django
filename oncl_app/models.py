@@ -4,47 +4,51 @@ from django.contrib.auth.models import User
 # Note: If migrations didn't detected then use this command -> py manage.py makemigrations app_name
 
 # Create your models here.
-class Task(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    title = models.CharField(max_length=100)
-    description = models.TextField(null=True, blank=True)
-    complete = models.BooleanField(default=False)
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        order_with_respect_to = 'user'
-
 class Semester(models.Model):
+    SEM_MODE = (
+        ('EVEN','EVEN'),
+        ('ODD','ODD'),
+    )
     id = models.AutoField(primary_key=True)
-    semester_mode = models.CharField(max_length=4, default="")
+    semester_mode = models.CharField(max_length=4, choices=SEM_MODE)
     semester_start_year = models.DateField()
     semester_end_year = models.DateField()
     objects = models.Manager()
 
+    def __str__(self):
+        return '%s %s-%s' % (self.semester_mode, self.semester_start_year.year, self.semester_end_year.year)
+
+BRANCH_CHOICES = [
+    ("","Branch Name"),
+    ("CSE","Computer Science and Engineering"),
+    ("AE","Aerospace/aeronautical Engineering"),
+    ("ChE","Chemical Engineering"),
+    ("CE","Civil Engineering"),
+    ("ECE","Electronics and Communications Engineering"),
+]
+
 class Branches(models.Model):
     id = models.AutoField(primary_key=True)
-    branch = models.CharField(max_length=50)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE, default=1)
+    branch = models.CharField(max_length=18, choices = BRANCH_CHOICES, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
     def __str__(self):
-        return self.branch
+        return '%s %s' % (self.branch, self.semester)
 
 class Subjects(models.Model):
     id = models.AutoField(primary_key=True)
     subject_name = models.CharField(max_length=50)
-    branch_id = models.ForeignKey(Branches, on_delete=models.CASCADE, default=1)
+    branch = models.CharField(max_length=18, choices = BRANCH_CHOICES, default=1)
     staff_id = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
     def __str__(self):
-        return self.subject_name
+        return '%s %s %s' % (self.subject_name, self.staff_id, self.branch)
 
 GENDER_CHOICES = [
     ("Select Gender", "Select Gender"),
@@ -71,15 +75,6 @@ MOTHER_TOUNGE_CHOICES = [
     ("Telugu","Telugu"),
 ]
 
-BRANCH_CHOICES = [
-    ("","Branch Name"),
-    ("CSE","Computer Science and Engineering"),
-    ("AE","Aerospace/aeronautical Engineering"),
-    ("ChE","Chemical Engineering"),
-    ("CE","Civil Engineering"),
-    ("ECE","Electronics and Communications Engineering"),
-]
-
 class Staffs(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete = models.CASCADE)
@@ -103,7 +98,10 @@ class Staffs(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.user.username
+        return '%s %s %s' % (self.user, self.user.first_name, self.user.last_name)
+    
+    class Meta:
+        ordering = ["user__username"]
 
 class Students(models.Model):
     id = models.AutoField(primary_key=True)
@@ -129,11 +127,11 @@ class Students(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.user.username
-    
+        return '%s %s %s' % (self.user, self.user.first_name, self.user.last_name)
+
     class Meta:
         ordering = ["user__username"]
-        
+    
 class user_login_details(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -154,6 +152,9 @@ class LeaveReportStudent(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
+    def __str__(self):
+        return '%s %s' % (self.student_id, self.leave_date)
+
 class LeaveReportStaff(models.Model):
     id = models.AutoField(primary_key=True)
     staff_id = models.ForeignKey(Staffs, on_delete=models.CASCADE)
@@ -163,6 +164,9 @@ class LeaveReportStaff(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
+
+    def __str__(self):
+        return '%s %s' % (self.staff_id, self.leave_date)
 
 class Announcements_news(models.Model):
     id = models.AutoField(primary_key=True)
@@ -248,3 +252,16 @@ class AttendanceReportStudent(models.Model):
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
+
+class Task(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    title = models.CharField(max_length=100)
+    description = models.TextField(null=True, blank=True)
+    complete = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        order_with_respect_to = 'user'
