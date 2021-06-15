@@ -34,7 +34,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 
 from .models import *
-from .forms import CreateUserForm, ContactForm, PositionForm, StaffsForm, StudentsForm, BookUploadForm, SessionUploadForm
+from .forms import *
 from .decorators import unauthenticated_user, allowed_users
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -103,7 +103,7 @@ def register_page(request):
 
                 context = {'username':username, 'email':email, 'first_name':first_name, 'last_name':last_name}
                 template = render_to_string('oncl_app/login_register/register_mail.html', context)
-                # send_mail(first_name + ', welcome to your new OnCl Account', template, settings.EMAIL_HOST_USER, [email], html_message=template)				
+                send_mail(first_name + ', welcome to your new OnCl Account', template, settings.EMAIL_HOST_USER, [email], html_message=template)				
                 
                 messages.success(request, 'Hey ' + username + '! Your Account is Created Succesfully!')
                 return redirect('login')
@@ -146,7 +146,7 @@ def login_page(request):
         # if location == '0':
         #     messages.warning(request, 'You must enable your GPS inorder to login.')
         #     return redirect('login')
-        
+
         user_name = username
         save_login_details(request, user_name, ip_addr)
 
@@ -294,7 +294,11 @@ def pages(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def add_semester(request):
-    return render(request, "oncl_app/admin_templates/semester_templates/add_semester.html")
+    semester_form = SemesterForm()
+    context = {
+        "semester_form":semester_form
+    }
+    return render(request, "oncl_app/admin_templates/semester_templates/add_semester.html", context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
@@ -303,13 +307,14 @@ def add_semester_save(request):
         messages.error(request, "Invalid Method")
         return redirect('add_branch')
     else:
+        semester_mode = request.POST.get('semester_mode')
         semester_start_year = request.POST.get('semester_start_year')
         semester_end_year = request.POST.get('semester_end_year')
 
         try:
-            semesteryear = Semester(semester_start_year=semester_start_year, semester_end_year=semester_end_year)
+            semesteryear = Semester(semester_mode=semester_mode,semester_start_year=semester_start_year, semester_end_year=semester_end_year)
             semesteryear.save()
-            messages.success(request, "Semester Added Successfully.")
+            messages.success(request, "Semester Plan Added Successfully.")
             return redirect("manage_semester")
         except:
             messages.error(request, "Failed to Add Semester Year!")
@@ -319,8 +324,10 @@ def add_semester_save(request):
 @allowed_users(allowed_roles=['Admin'])
 def edit_semester(request, semester_id):
     semester_year = Semester.objects.get(id=semester_id)
+    semester_form = SemesterForm()
     context = {
-        "semester_year": semester_year
+        "semester_year": semester_year,
+        "semester_form":semester_form,
     }
     return render(request, "oncl_app/admin_templates/semester_templates/edit_semester.html", context)
 
@@ -332,11 +339,13 @@ def edit_semester_save(request):
         return redirect('manage_semester')
     else:
         semester_id = request.POST.get('semester_id')
+        semester_mode = request.POST.get('semester_mode')
         semester_start_year = request.POST.get('semester_start_year')
         semester_end_year = request.POST.get('semester_end_year')
 
         try:
             semester_year = Semester.objects.get(id=semester_id)
+            semester_year.semester_mode = semester_mode
             semester_year.semester_start_year = semester_start_year
             semester_year.semester_end_year = semester_end_year
             semester_year.save()
@@ -362,7 +371,7 @@ def delete_semester(request, semester_id):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def manage_semester(request):
-    semester_years = Semester.objects.all()
+    semester_years = Semester.objects.order_by('semester_start_year')
     context = {
         "semester_years": semester_years
     }
@@ -371,7 +380,13 @@ def manage_semester(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def add_branch(request):
-    return render(request, "oncl_app/admin_templates/branch_templates/add_branch.html")
+    student_form = StudentsForm()
+    semester = Semester.objects.all()
+    context = {
+        "student_form":student_form,
+        "semester":semester,
+    }
+    return render(request, "oncl_app/admin_templates/branch_templates/add_branch.html", context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
@@ -381,8 +396,10 @@ def add_branch_save(request):
         return redirect('add_branch')
     else:
         branch = request.POST.get('branch')
+        semester_id = request.POST.get('semester')
+        semester = Semester.objects.get(id=semester_id)
         try:
-            branch_model = Branches(branch=branch)
+            branch_model = Branches(branch=branch, semester=semester)
             branch_model.save()
             messages.success(request, "Branch Added Successfully.")
             return redirect('manage_branch')
@@ -403,9 +420,13 @@ def manage_branch(request):
 @allowed_users(allowed_roles=['Admin'])
 def edit_branch(request, branch_id):
     branch = Branches.objects.get(id=branch_id)
+    student_form = StudentsForm()
+    semester = Semester.objects.all()
     context = {
         "branch": branch,
-        "id": branch_id
+        "id": branch_id,
+        "student_form":student_form,
+        "semester":semester
     }
     return render(request, 'oncl_app/admin_templates/branch_templates/edit_branch.html', context)
 
@@ -417,15 +438,17 @@ def edit_branch_save(request):
     else:
         branch_id = request.POST.get('branch_id')
         branch_name = request.POST.get('branch')
+        semester_id = request.POST.get('semester')
+        semester = Semester.objects.get(id=semester_id)
 
         try:
             branch = Branches.objects.get(id=branch_id)
-            branch.branch_name = branch_name
+            branch.branch = branch_name
+            branch.semester = semester
             branch.save()
 
             messages.success(request, "Branch Updated Successfully!")
             return redirect('manage_branch')
-
         except:
             messages.error(request, "Failed to Update Branch!")
             return redirect('/edit_branch/'+branch_id+'/')
@@ -445,10 +468,10 @@ def delete_branch(request, branch_id):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def add_subject(request):
-    branches = Branches.objects.all()
+    student_form = StudentsForm()
     staffs = User.objects.filter(groups='2')
     context = {
-        "branches": branches,
+        "student_form": student_form,
         "staffs": staffs
     }
     return render(request, 'oncl_app/admin_templates/subject_templates/add_subject.html', context)
@@ -461,15 +484,12 @@ def add_subject_save(request):
         return redirect('add_subject')
     else:
         subject_name = request.POST.get('subject')
-
         branch_id = request.POST.get('branch')
-        branch = Branches.objects.get(id=branch_id)
-        
         staff_id = request.POST.get('staff')
         staff = User.objects.get(id=staff_id)
 
         try:
-            subject = Subjects(subject_name=subject_name, branch_id=branch, staff_id=staff)
+            subject = Subjects(subject_name=subject_name, branch=branch_id, staff_id=staff)
             subject.save()
             messages.success(request, "Subject Added Successfully.")
             return redirect('manage_subject')
@@ -490,13 +510,13 @@ def manage_subject(request):
 @allowed_users(allowed_roles=['Admin'])
 def edit_subject(request, subject_id):
     subject = Subjects.objects.get(id=subject_id)
-    branches = Branches.objects.all()
+    student_form = StudentsForm()
     staffs = User.objects.filter(groups='2')
     context = {
         "subject": subject,
-        "branches": branches,
         "staffs": staffs,
-        "id": subject_id
+        "id": subject_id,
+        "student_form": student_form,
     }
     return render(request, 'oncl_app/admin_templates/subject_templates/edit_subject.html', context)
 
@@ -508,30 +528,23 @@ def edit_subject_save(request):
     else:
         subject_id = request.POST.get('subject_id')
         subject_name = request.POST.get('subject')
-        branch_id = request.POST.get('branch')
+        branch = request.POST.get('branch')
         staff_id = request.POST.get('staff')
 
         try:
             subject = Subjects.objects.get(id=subject_id)
             subject.subject_name = subject_name
-
-            branch = Branches.objects.get(id=branch_id)
-            subject.branch_id = branch
-
+            subject.branch = branch
             staff = User.objects.get(id=staff_id)
             subject.staff_id = staff
-            
             subject.save()
 
             messages.success(request, "Subject Updated Successfully.")
-            # return redirect('/edit_subject/'+subject_id)
             return redirect('manage_subject')
-            # return HttpResponseRedirect(reverse("edit_subject", kwargs={"subject_id":subject_id}))
 
         except:
             messages.error(request, "Failed to Update Subject!")
             return HttpResponseRedirect(reverse("edit_subject", kwargs={"subject_id":subject_id}))
-            # return redirect('/edit_subject/'+subject_id)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
@@ -970,15 +983,6 @@ def delete_announcement(request, announcement_id):
         return redirect('manage_announcement')
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
-def admin_profile(request):
-    username = request.user.get_username()
-    context={
-            'username':username
-        }
-    return render(request, 'oncl_app/profile_templates/admin_profile.html', context)
-
-@login_required(login_url='login')
 @allowed_users(allowed_roles=['Faculty'])
 def faculty_profile(request):
     username = request.user.get_username()
@@ -1390,8 +1394,6 @@ def search_session(request):
 def aca_stats(request):
     staff_count = Staffs.objects.all().count()
     student_count = Students.objects.all().count()
-    branch_count = Branches.objects.all().count()
-    subject_count = Subjects.objects.all().count()
     student_leave_count = LeaveReportStudent.objects.all().count()
     staff_leave_count = LeaveReportStaff.objects.all().count()
     branch_all = Branches.objects.all()
@@ -1401,7 +1403,7 @@ def aca_stats(request):
     female_count = Students.objects.filter(gender="Female").count()
 
     for branch in branch_all:
-        subjects = Subjects.objects.filter(branch_id=branch.id).count()
+        subjects = Subjects.objects.filter(branch=branch).count()
         branch_list.append(branch.branch)
         subject_count_list.append(subjects)
 
