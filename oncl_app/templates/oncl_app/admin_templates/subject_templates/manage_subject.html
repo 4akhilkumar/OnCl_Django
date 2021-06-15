@@ -111,13 +111,26 @@ table th {
         border-left: 2px solid var(--gray);
     }
 }
+.img-container {
+  text-align: center;
+}
 </style>
+
+{% if subjects.count == 0 %}
+<div class="img-container" onclick="document.location='{% url 'add_subject' %}'" style="cursor: pointer; padding-top: 40px;">
+  <img src="{% static 'oncl_app/no_subjects.jpg' %}" style="max-height: 30rem;" alt="no_subjects" class="img-fluid">
+</div>
+<div style="text-align: center; font-weight: bold; font-size: 1.4rem;">
+  <p><i class="fas fa-info-circle"></i> No Subjects Created Yet!</p>
+</div>
+
+{% else %}
 
 <link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
 
-<div style="padding: 30px 80px 10px 80px; display: flex; justify-content: space-between;">
-    <div class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
-        <a href="{% url 'add_subject' %}" style="text-decoration: none; font-size: 1rem; color: #000;"><i class="fas fa-book"></i> Add Subject</a>
+<div style="padding: 30px 10px 10px 10px; display: flex; justify-content: space-between;">
+    <div onclick="document.location='{% url 'add_subject' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+        <a href="#" style="text-decoration: none; font-size: 1rem; color: #000;"><i class="fas fa-book"></i> Add Subject</a>
     </div>
     <div onclick="exportTableToCSV('Subject_Info.csv')" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
       <span style="text-decoration: none; font-size: 1rem; color: #000;"><b>Export <i class="fas fa-file-csv"></i> File</b></span>
@@ -125,7 +138,7 @@ table th {
 </div>
 
 
-<div style="padding: 10px 80px 10px 80px;">
+<div style="padding: 10px;">
     <table>
         <thead>
           <tr>
@@ -133,20 +146,17 @@ table th {
             <th scope="col">Subject Name</th>
             <th scope="col">Branch</th>
             <th scope="col">Faculty</th>
-            <!-- <th scope="col">Created At</th> -->
-            <!-- <th scope="col">Updated At</th> -->
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
+        {% endif %}
         {% for subject in subjects %}
         <tr>
-        <td data-label="">{{ subject.id }}</td>
-        <td data-label="">{{ subject.subject_name }}</td>
-        <td data-label="">{{ subject.branch_id.branch }}</td>
-        <td data-label="">{{ subject.staff_id.first_name }} {{ subject.staff_id.last_name }}</td>
-        <!-- <td data-label="">{{ subject.created_at }}</td> -->
-        <!-- <td data-label="">{{ subject.updated_at }}</td> -->
+        <td data-label="ID">{{ subject.id }}</td>
+        <td data-label="Subject">{{ subject.subject_name }}</td>
+        <td data-label="Branch">{{ subject.branch }}</td>
+        <td data-label="Faculty">{{ subject.staff_id.first_name }} {{ subject.staff_id.last_name }}</td>
         <td data-label="Action" class="outlined">
             <a class="edit_button" href="{% url 'edit_subject' subject.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp; <br>
             <a class="delete_button" href="{% url 'delete_subject' subject.id %}"><i class="fas fa-trash"></i> Delete</a>
@@ -165,7 +175,7 @@ table th {
     for (var i = 0; i < rows.length; i++) {
         var row = [], cols = rows[i].querySelectorAll("td, th");
         
-        for (var j = 0; j < cols.length; j++) 
+        for (var j = 0; j < cols.length-1; j++) 
             row.push(cols[j].innerText);
         
         csv.push(row.join(","));        
