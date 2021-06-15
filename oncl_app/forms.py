@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
+from . models import *
 
 class CreateUserForm(UserCreationForm):
 	class Meta:
@@ -11,6 +12,15 @@ class CreateUserForm(UserCreationForm):
 
 class PositionForm(forms.Form):
     position = forms.CharField()
+
+class SemesterForm(forms.Form):
+    SEM_MODE = (
+        ('EVEN','EVEN'),
+        ('ODD','ODD'),
+    )
+    model = Semester
+    semester_mode = forms.ChoiceField(choices = SEM_MODE)
+    fields = ['semester_mode', 'semester_start_year', 'semester_end_year']
 
 class ContactForm(forms.Form):
     name = forms.CharField(required=True)
