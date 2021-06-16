@@ -592,9 +592,20 @@ def add_staff(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def manage_staff(request):
-    staffs = Staffs.objects.all()
+    staffs_all = Staffs.objects.all()
+    page = request.GET.get('page', 1)
+    
+    paginator = Paginator(staffs_all, 11)
+    try:
+        staffs = paginator.page(page)
+    except PageNotAnInteger:
+        staffs = paginator.page(1)
+    except EmptyPage:
+        staffs = paginator.page(paginator.num_pages)
+
     context = {
-        "staffs": staffs
+        "staffs": staffs,
+        "staffs_all": staffs_all
     }
     return render(request, "oncl_app/admin_templates/faculty_templates/manage_faculty.html", context)
 
@@ -637,14 +648,6 @@ def edit_staff_save(request):
         branch = request.POST.get('branch')
         desgination = request.POST.get('desgination')
         address = request.POST.get('address')
-        git_link = request.POST.get('git_link')
-        website_link = request.POST.get('website_link')
-        linkedin_link = request.POST.get('linkedin_link')
-        orcid_link = request.POST.get('orcid_link')
-        researcher_link = request.POST.get('researcher_link')
-        gscholar_link = request.POST.get('gscholar_link')
-        microsoft_academic_link = request.POST.get('microsoft_academic_link')
-        bio = request.POST.get('bio')
 
         if 'profile_pic' in request.FILES:
             print("YES")
@@ -669,7 +672,6 @@ def edit_staff_save(request):
             staff_model = Staffs.objects.get(user=staff_id)
             staff_model.gender = gender
             staff_model.phone = phone
-            staff_model.bio = bio
             staff_model.branch = branch
             staff_model.desgination = desgination
             staff_model.address = address
@@ -678,13 +680,6 @@ def edit_staff_save(request):
                 pass
             else:
                 staff_model.profile_pic = profile_pic
-            staff_model.git_link = git_link
-            staff_model.website_link = website_link
-            staff_model.linkedin_link = linkedin_link
-            staff_model.orcid_link = orcid_link
-            staff_model.researcher_link = researcher_link
-            staff_model.gscholar_link = gscholar_link
-            staff_model.microsoft_academic_link = microsoft_academic_link
             staff_model.save()
 
             # return redirect('/edit_staff/'+staff_id)
@@ -742,9 +737,20 @@ def add_student(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def manage_student(request):
-    students = Students.objects.all()
+    students_all = Students.objects.all()
+    page = request.GET.get('page', 1)
+    
+    paginator = Paginator(students_all, 11)
+    try:
+        students = paginator.page(page)
+    except PageNotAnInteger:
+        students = paginator.page(1)
+    except EmptyPage:
+        students = paginator.page(paginator.num_pages)
+
     context = {
-        "students": students
+        "students": students,
+        "students_all": students_all
     }
     return render(request, "oncl_app/admin_templates/student_templates/manage_student.html", context)
 
@@ -1406,6 +1412,8 @@ def aca_stats(request):
         subjects = Subjects.objects.filter(branch=branch.branch).count()
         branch_list.append(branch.branch)
         subject_count_list.append(subjects)
+        print(subjects)
+        print(subject_count_list)
 
     staff_count_15 = staff_count*15
 
