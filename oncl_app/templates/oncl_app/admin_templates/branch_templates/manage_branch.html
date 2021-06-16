@@ -1,4 +1,3 @@
-
 {% extends "oncl_app/admin_base.html" %}
 
 {% block content %}
@@ -112,12 +111,26 @@ table th {
         border-left: 2px solid var(--gray);
     }
 }
+
+.img-container {
+  text-align: center;
+}
 </style>
+
+{% if branches.count == 0 %}
+<div class="img-container" onclick="document.location='{% url 'add_branch' %}'" style="cursor: pointer; padding-top: 40px;">
+  <img src="{% static 'oncl_app/no_branches.png' %}" style="max-height: 30rem;" alt="no_branch" class="img-fluid">
+</div>
+<div style="text-align: center; font-weight: bold; font-size: 1.4rem;">
+  <p><i class="fas fa-info-circle"></i> No Branch Created Yet!</p>
+</div>
+
+{% else %}
 
 {% if request.user.is_staff %}
 <div style="padding: 30px 0px 10px 10px;">
-    <div onclick="add_branch()" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
-        <a href="{% url 'add_branch' %}" style="text-decoration: none; color: #000;"><i class="fas fa-code-branch"></i> Manage Branch</a>
+    <div onclick="document.location='{% url 'add_branch' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+        <a href="#" style="text-decoration: none; color: #000;"><i class="fas fa-code-branch"></i> Add Branch</a>
     </div>
 </div>
 {% endif %}
@@ -125,22 +138,19 @@ table th {
     <table>
         <thead>
           <tr>
-            <th scope="col">Branch ID</th>
-            <th scope="col">Branches</th>
-            <th scope="col">Created At</th>
-            <th scope="col">Updated At</th>
+            <th scope="col">Semester</th>
+            <th scope="col">Branch</th>
             {% if request.user.is_staff %}
             <th scope="col">Action</th>
             {% endif %}
           </tr>
         </thead>
         <tbody>
+        {% endif %}
         {% for branch in branches %}
           <tr>
-            <td data-label="ID"><b>{{ branch.id }}</b></td>
-            <td data-label="Subject"><b>{{branch.branch}}</b></td>
-            <td data-label="created_at">{{ branch.created_at }}</td>
-            <td data-label="updated_at">{{ branch.updated_at }}</td>
+            <td data-label="Semester">{{ branch.semester }}</td>
+            <td data-label="Branch">{{ branch.branch }}</td>
             {% if request.user.is_staff %}
             <td data-label="Action" class="outlined">
                 <a class="edit_button" href="{% url 'edit_branch' branch.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp;
