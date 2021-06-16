@@ -366,7 +366,7 @@ h1 {
 	border-radius: 30px;
 	font-size: 13px;
 }
-  
+
 /* width */
 ::-webkit-scrollbar {
   width: 8px;
@@ -408,8 +408,6 @@ h1 {
 				 </li>
 				 {% for group_for in request.user.groups.all %}
 					{% if group_for.name == 'Admin' %}
-					<li><span><i class="fas fa-user-circle"></i> </span> <a href="{% url 'admin_profile' %}">My Profile</a></li>
-					
 					<li><span><i class="fas fa-chart-bar"></i> </span> <a href="{% url 'aca_stats' %}" target="_blank">Acadmic Stats</a></li>
 					<li><span><i class="fas fa-school"></i></span> <a href="{% url 'manage_semester' %}" target="_blank">Sem. Mgmt.</a></li>
 					<li><span><i class="fas fa-code-branch"></i></span> <a href="{% url 'manage_branch' %}" target="_blank">Branch Mgmt.</a></li>
