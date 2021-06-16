@@ -4,6 +4,8 @@
 
 {% load static %}
 
+{% load humanize %}
+
 <title>PCS Cloud | OnCl - Edu. Cloud</title>
 
 <style>
@@ -162,7 +164,7 @@ style="cursor: pointer;">
             <div class="title">
               <h3><b>{{session.session_name}}</b></h3>
               <a href="https://www.google.com/search?q={{session.session_author}}" target="_blank"> {{session.session_author}} </a>
-              <span class="cu_span">{{session.session_pub_date}} • {{session.session_pub_date}}</span>
+              <span class="cu_span">{{session.session_pub_date}} • {{ session.session_pub_date|naturalday|title }}</span>
             </div>
           </div>
           <!-- <div style="display: flex; justify-content: space-between; background-color: #000;">
