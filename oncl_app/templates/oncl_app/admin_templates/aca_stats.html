@@ -44,17 +44,6 @@ a {
   }
 </style>
 
-<!-- <div style="font-weight: bolder; color: #FFF; background-color: #4fc3f7; margin: 20px; padding: 10px; border-radius: 5px; display: flex; flex-direction: row; flex-wrap: wrap; align-content: space-between; justify-content: space-evenly; align-items: center;">
-<h5><b>Branches Abbreviation</b></h5>
-    <p>CSE: Computer Science and Engineering &nbsp;</p>
-    <p>CE: Chemical Engineering &nbsp;</p>
-    <p>AE: Aerospace/Aeronautical Engineering &nbsp;</p>
-    <p>CE: Civil Engineering &nbsp;</p>
-    <p>EE: Electrical/Electronic Engineering &nbsp;</p>
-    <p>ME: Mechanical Engineering &nbsp;</p>
-    <p>ECE: Electronics and Communication Engineering &nbsp;</p>
-</div> -->
-
 <body onload="startTime()">
     <div style="text-align: center;">
         <div id="alertMessage">
@@ -104,13 +93,13 @@ a {
 <h1> <span style="font-family: 'Oswald', sans-serif;">Institute Analtics Reports</span> | <b><span class="text_bold" style="color: tomato;">O</span><span class="text_bold" style="color: #5f95eb;">n</span><span class="text_bold" style="color: #76e989;">C</span><span class="text_bold" style="color: #fcc834">l</span> <span class="text_bold">- Edu. Cloud</span></b></h1>
 {% if staff_count_15 >= student_count %}
 <h5 style="margin-top: 20px;">No issues found in Faculty - Student Ratio. Everything is Fine!</h5>
-{% else %}
-<h4 style="margin-top: 20px;">Student - Faculty Ratio is Not Good. So, Increase Faculty Strength!</h4>
-{% endif %}
 {% if staff_leave_count > student_leave_count %}
 <h4 style="margin-top: 20px;">Faculty are taking more leaves which effects on students education.</h4>
 {% else %}
 <h5 style="margin-top: 20px;"> No issues found in Faculty Leaves. Everything is Fine!</h5>
+{% endif %}
+{% else %}
+<h4 style="margin-top: 20px;">Student - Faculty Ratio is Not Good. So, Increase Faculty Strength!</h4>
 {% endif %}
 </div>
 
@@ -189,7 +178,7 @@ a {
       '<h1 class="display-1"> ' + greet + '!</h1>'+
       '<div id="alertMessage2">'+
         '<h5><b>Welcome to <span class="text_bold" style="color: tomato;">O</span><span class="text_bold" style="color: #5f95eb;">n</span><span class="text_bold" style="color: #76e989;">C</span><span class="text_bold" style="color: #fcc834">l</span> <span class="text_bold">- Edu. Cloud</span></b> </h5>'+
-        {% if staff_count_15 >= student_count %}
+        {% if staff_count_15 >= student_count and not staff_leave_count > student_leave_count %}
         '<h3 style="color:#76e989;"><b>Everything Sounds Good!</b><a href="#Check_Issues" style="text-decoration:none;"> <i class="fas fa-info-circle"></i></a></h3>'+    
         {% else %}
         '<h3 style="color:#ec407a;"><b>Something Not Right!</b><a href="#Check_Issues" style="text-decoration:none;"> <i class="fas fa-info-circle"></i></a></h3>'+
@@ -231,7 +220,7 @@ var ctx = document.getElementById('total_counts').getContext('2d');
 var total_counts = new Chart(ctx, {
     type: 'doughnut',
     data: {
-        labels: branch_list,
+        labels: branch_list, 
         datasets: [{
             data: subject_count_list,
             backgroundColor: [
@@ -339,7 +328,7 @@ var ctx = document.getElementById('branch_faculty_count').getContext('2d');
 var branch_faculty_count = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: branch_list,
+        labels: {{branch_list|safe}},
         datasets: [{
             label: '#Faculty in each Branch',
             data: {{values2}},
