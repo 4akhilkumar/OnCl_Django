@@ -94,7 +94,6 @@ urlpatterns = [
     path('edit_announcement_save/', views.edit_announcement_save, name="edit_announcement_save"),
     path('delete_announcement/<announcement_id>/', views.delete_announcement, name="delete_announcement"),
 
-    path('admin_profile/',views.admin_profile,name="admin_profile"),
     path('faculty_profile/',views.faculty_profile,name="faculty_profile"),
     path('student_profile/',views.student_profile,name="student_profile"),
 
