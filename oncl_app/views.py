@@ -1403,7 +1403,7 @@ def aca_stats(request):
     female_count = Students.objects.filter(gender="Female").count()
 
     for branch in branch_all:
-        subjects = Subjects.objects.filter(branch=branch).count()
+        subjects = Subjects.objects.filter(branch=branch.branch).count()
         branch_list.append(branch.branch)
         subject_count_list.append(subjects)
 
