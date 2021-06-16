@@ -111,12 +111,26 @@ table th {
         border-left: 2px solid var(--gray);
     }
 }
+
+.img-container {
+  text-align: center;
+}
 </style>
+
+{% if semester_years.count == 0 %}
+<div class="img-container" onclick="document.location='{% url 'add_semester' %}'" style="cursor: pointer; padding-top: 40px;">
+  <img src="{% static 'oncl_app/no_semesters.jpg' %}" style="max-height: 30rem;" alt="no_semester" class="img-fluid">
+</div>
+<div style="text-align: center; font-weight: bold; font-size: 1.4rem;">
+  <p><i class="fas fa-info-circle"></i> No Semesters Created Yet!</p>
+</div>
+
+{% else %}
 
 {% if request.user.is_staff %}
 <div style="padding: 30px 0px 10px 10px;">
     <div onclick="document.location='{% url 'add_semester' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
-        <a href="#" style="text-decoration: none; color: #000;"><i class="fas fa-university"></i> Add Semester</a>
+        <a href="#" style="text-decoration: none; color: #000;"><i class="fas fa-drafting-compass"></i> Plan Semester</a>
     </div>
 </div>
 {% endif %}
@@ -124,7 +138,7 @@ table th {
     <table>
         <thead>
           <tr>
-            <th scope="col">Semester ID</th>
+            <th scope="col">Semester Mode</th>
             <th scope="col">Semester Start Year</th>
             <th scope="col">Semester End Year</th>
             {% if request.user.is_staff %}
@@ -133,11 +147,12 @@ table th {
           </tr>
         </thead>
         <tbody>
+        {% endif %}
         {% for semester_year in semester_years %}
           <tr>
-            <td data-label="Semester ID"><b>Semester {{ semester_year.id }}</b></td>
-            <td data-label="Semester Start Year">{{ semester_year.semester_start_year }}</td>
-            <td data-label="Semester End Year">{{ semester_year.semester_end_year }}</td>
+            <td data-label="Semester Mode">{{ semester_year.semester_mode }}</td>
+            <td data-label="Semester Start Year">{{ semester_year.semester_start_year|date:"jS F Y" }}</td>
+            <td data-label="Semester End Year">{{ semester_year.semester_end_year|date:"jS F Y" }}</td>
             {% if request.user.is_staff %}
             <td data-label="Action" class="outlined">
                 <a class="edit_button" href="{% url 'edit_semester' semester_year.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp;
