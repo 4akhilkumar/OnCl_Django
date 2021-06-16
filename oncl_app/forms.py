@@ -31,7 +31,8 @@ class ContactForm(forms.Form):
 class StaffsForm(forms.ModelForm):
     class Meta:
         model = Staffs
-        fields = ('gender','phone','address','branch','qualification','designation','git_link','website_link','linkedin_link','orcid_link','researcher_link','gscholar_link','microsoft_academic_link','bio','profile_pic')
+        branch = forms.ChoiceField(choices = BRANCH_CHOICES)
+        fields = ('gender','phone','address','branch','qualification','designation','profile_pic')
 
 class StudentsForm(forms.ModelForm):
     class Meta:
