@@ -58,7 +58,7 @@ div.ex3 {
 div.sticky {
   position: -webkit-sticky;
   position: sticky;
-  top: 130px;
+  top: 138px;
 }
 </style>
 
@@ -147,7 +147,13 @@ div.sticky {
                       <h6 class="mb-0">Social Profile</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <i class="fab fa-linkedin" style="font-size: 24px;"></i> @4akhilkumar | <i class="fab fa-github-square" style="font-size: 24px;"></i> @4akhilkumar
+                      {% for i in ssp %}
+                      <i class="fab fa-linkedin" style="font-size: 24px;"></i>
+                        <a href="https://linkedin.com/in/{{ i.linkedin }}/" rel="noopener" target="_blank">{{ i.linkedin }}</a>
+                      |
+                      <i class="fab fa-github-square" style="font-size: 24px;"></i> 
+                      <a href="https://github.com/{{ i.github }}/" rel="noopener" target="_blank">{{ i.github }}</a>
+                      {% endfor %}
                     </div>
                   </div>
                 </div>
