@@ -850,10 +850,13 @@ def edit_student_save(request):
 def view_student(request, student_id):
     student = Students.objects.get(user=student_id)
     sld = user_login_details.objects.filter(user=student_id)
+    ssp = Student_Social_Profile.objects.filter(user=student_id)
+    print(sld)
     context = {
         "student": student,
         "id": student_id,
         "sld":sld,
+        "ssp":ssp,
     }
     return render(request, "oncl_app/profile_templates/student_profile.html", context)
 
@@ -1009,11 +1012,14 @@ def student_profile(request):
     user = User.objects.get(id=request.user.id)
     student = Students.objects.get(user=user)
     sld = user_login_details.objects.filter(user=user)
+    ssp = Student_Social_Profile.objects.filter(user=request.user.id)
+    print(ssp, sld)
     context = {
             'username':username,
             'student':student, 
             "user": user, 
             "sld":sld,
+            "ssp":ssp
         }
     return render(request, 'oncl_app/profile_templates/student_profile.html', context)
 
