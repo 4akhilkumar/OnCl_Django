@@ -58,7 +58,7 @@ input, textarea, .rs-select2 .select2-container .select2-selection--single {
                                     <select name="staff">
                                         <option disabled="disabled" selected="selected">Choose Faculty</option>
                                         {% for x in staffs %}
-                                        <option value="{{ x.id }}" {% if staffs.id == x %} selected {% endif %}>{{ x }}</option>
+                                        <option value="{{ x.id }}" {% if staffs.id == x %} selected {% endif %}>{{ x }} {{ x.first_name }} {{ x.last_name }}</option>
                                         {% endfor %}
                                     </select>
                                     <div class="select-dropdown"></div>
