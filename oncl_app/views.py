@@ -310,14 +310,15 @@ def add_semester_save(request):
         semester_mode = request.POST.get('semester_mode')
         semester_start_year = request.POST.get('semester_start_year')
         semester_end_year = request.POST.get('semester_end_year')
+        branch = request.POST.get('branch')
 
         try:
-            semesteryear = Semester(semester_mode=semester_mode,semester_start_year=semester_start_year, semester_end_year=semester_end_year)
+            semesteryear = Semester(semester_mode=semester_mode,semester_start_year=semester_start_year, semester_end_year=semester_end_year,branch=branch)
             semesteryear.save()
-            messages.success(request, "Semester Plan Added Successfully.")
+            messages.success(request, "Semester Planned Successfully.")
             return redirect("manage_semester")
         except:
-            messages.error(request, "Failed to Add Semester Year!")
+            messages.error(request, "Failed to Plan Semester!")
             return redirect("add_semester")
 
 @login_required(login_url='login')
@@ -342,18 +343,20 @@ def edit_semester_save(request):
         semester_mode = request.POST.get('semester_mode')
         semester_start_year = request.POST.get('semester_start_year')
         semester_end_year = request.POST.get('semester_end_year')
+        branch = request.POST.get('branch')
 
         try:
             semester_year = Semester.objects.get(id=semester_id)
             semester_year.semester_mode = semester_mode
             semester_year.semester_start_year = semester_start_year
             semester_year.semester_end_year = semester_end_year
+            semester_year.branch = branch
             semester_year.save()
 
-            messages.success(request, "Semester Updated Successfully.")
+            messages.success(request, "Semester Re-Planned Successfully.")
             return redirect('manage_semester')
         except:
-            messages.error(request, "Failed to Update Semester!.")
+            messages.error(request, "Failed to Re-Plan Semester!.")
             return redirect('/edit_semester/'+semester_id)
 
 @login_required(login_url='login')
@@ -1061,8 +1064,8 @@ def upload(request):
 def view_books(request):
     all_data_all = E_Books.objects.all()
 
-    page = request.GET.get('page', 1)    
-    paginator = Paginator(all_data_all, 20)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(all_data_all, 21)
     try:
         all_data = paginator.page(page)
     except PageNotAnInteger:
