@@ -49,7 +49,7 @@
                         <div class="col-2">
                           <div class="input-group">
                             <label class="label"><i class="fas fa-calendar-day"></i> Book Published On</label>
-                            <input class="input--style-4" type="text" name="book_pub_date"  value="{{e_book.book_pub_date}}" id="id_book_pub_date" placeholder="Book Published On E.g. 11 April 2004" required>
+                            <input class="input--style-4" type="date" name="book_pub_date"  value="{{ e_book.book_pub_date|date:"Y-m-d" }}" id="id_book_pub_date" placeholder="Book Published On E.g. 11 April 2004" required>
                           </div>
                         </div>
                       </div>                        
