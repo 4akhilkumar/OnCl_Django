@@ -137,7 +137,7 @@ style="cursor: pointer;">
     </form>
     </div>
 </div>
-{% endif %}
+<!--  -->
 
 <div style="margin: 0 auto; padding: 1rem;">
   {% if all_data_all.count == 0 %}
@@ -153,7 +153,7 @@ style="cursor: pointer;">
     <div class="videos">
       <div class="videos__container">
         {% for session in data %}
-        <div class="video" style="cursor: pointer;">
+        <div class="video" style="cursor: pointer;" onclick="document.location='{% url 'view_each_session' session.id %}'">
           <div class="video__thumbnail">
             <img src="{{session.session_pic.url}}" alt="Session Cover" />
           </div>
@@ -164,7 +164,7 @@ style="cursor: pointer;">
             <div class="title">
               <h3><b>{{session.session_name}}</b></h3>
               <a href="https://www.google.com/search?q={{session.session_author}}" target="_blank"> {{session.session_author}} </a>
-              <span class="cu_span">{{session.session_pub_date}} • {{ session.session_pub_date|naturalday|title }}</span>
+              <span class="cu_span">{{session.session_pub_date}} • {{ session.created_at|naturaltime|title }}</span>
             </div>
           </div>
           <!-- <div style="display: flex; justify-content: space-between; background-color: #000;">
@@ -193,6 +193,7 @@ style="cursor: pointer;">
     </div>
   </div>
 </div>
+{% endif %}
 
 {% if data.has_other_pages %}
 <nav aria-label="Pagination">
