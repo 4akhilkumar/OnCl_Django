@@ -42,6 +42,11 @@ body {
 .hidden{
   display : none;
 }
+
+div.ex3 {
+  height: 315px;
+  overflow-y: auto;
+}
 </style>
 
 <div class="container" style="margin-top: 50px;">
@@ -156,6 +161,7 @@ body {
                     <span style="color: #ec407a; cursor: pointer;" onclick="showhide()"><b>Check Complete Login Activity</b></span>
                     <br><br>
                     <div id="newpost" class="hidden">
+                      <div class="ex3">
                       {% for i in sld %}
                       <div style="margin: 0; padding: 0;">
                        <div style="background-color: #b3e5fc; padding: 20px; border-radius: 10px; margin: 0;">
@@ -167,6 +173,7 @@ body {
                        <br>
                        </div>
                       {% endfor %}
+                      </div>
                       </div>
                       
                       {% endif %}                    
