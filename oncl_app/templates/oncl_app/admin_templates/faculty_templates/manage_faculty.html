@@ -123,7 +123,7 @@ table th {
 }
 </style>
 
-{% if staffs.count == 0 %}
+{% if staffs_all.count == 0 %}
 <div class="img-container" onclick="document.location='{% url 'add_staff' %}'" style="cursor: pointer; padding-top: 40px;">
   <img src="{% static 'oncl_app/no_faculty.png' %}" style="max-height: 30rem;" alt="no_faculty" class="img-fluid">
 </div> 
@@ -188,6 +188,32 @@ table th {
           {% endfor %}
         </tbody>
     </table>
+    <div style="padding: 10px;"></div>
+    {% if staffs.has_other_pages %}
+    <nav aria-label="Pagination">
+      <ul class="pagination">
+        {% if staffs.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ staffs.previous_page_number }}">Previous</a>
+        </li>
+        {% endif %}
+        {% for i in staffs.paginator.page_range %}
+        {% if staffs.number == i %}
+        <li class="page-item active">
+          <a class="page-link" href="#">{{ i }}  <span class="sr-only">(current)</span></a>
+        </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if staffs.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ staffs.next_page_number }}">Next</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
 </div>
 
 <script>
