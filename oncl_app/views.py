@@ -599,7 +599,7 @@ def manage_staff(request):
     try:
         staffs = paginator.page(page)
     except PageNotAnInteger:
-        staffs = paginator.page(1)
+        staffs = paginator.page(1) 
     except EmptyPage:
         staffs = paginator.page(paginator.num_pages)
 
@@ -1301,6 +1301,14 @@ def edit_session(request, session_id):
         "id": session_id
     }
     return render(request, 'oncl_app/PCS_Cloud/edit_session.html', context)
+
+def view_each_session(request, session_id):
+    session = PCS_Cloud.objects.get(id=session_id)
+    context = {
+        "session": session,
+        "id": session_id
+    }
+    return render(request, 'oncl_app/PCS_Cloud/view_each_session.html', context)
 
 def edit_session_save(request):
     if request.method != "POST":
