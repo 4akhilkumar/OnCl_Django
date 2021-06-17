@@ -153,7 +153,7 @@ img {
 }
 </style>
 
-{% if students.count == 0 %}
+{% if students_all.count == 0 %}
 <div class="img-container" onclick="document.location='{% url 'add_student' %}'" style="cursor: pointer; padding-top: 40px;">
   <img src="{% static 'oncl_app/no_students.jpg' %}" style="max-height: 30rem;" alt="no_students" class="img-fluid">
 </div> 
@@ -225,6 +225,32 @@ img {
         {% endfor %}
         </tbody>
     </table>
+    <div style="padding: 10px;"></div>
+    {% if students.has_other_pages %}
+    <nav aria-label="Pagination">
+      <ul class="pagination">
+        {% if students.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ students.previous_page_number }}">Previous</a>
+        </li>
+        {% endif %}
+        {% for i in students.paginator.page_range %}
+        {% if students.number == i %}
+        <li class="page-item active">
+          <a class="page-link" href="#">{{ i }}  <span class="sr-only">(current)</span></a>
+        </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if students.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ students.next_page_number }}">Next</a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
 </div>
 
 <script>
