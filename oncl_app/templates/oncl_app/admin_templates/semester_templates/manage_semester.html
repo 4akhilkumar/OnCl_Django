@@ -141,6 +141,7 @@ table th {
             <th scope="col">Semester Mode</th>
             <th scope="col">Semester Start Year</th>
             <th scope="col">Semester End Year</th>
+            <th scope="col">Branch</th>
             {% if request.user.is_staff %}
             <th scope="col">Action</th>
             {% endif %}
@@ -153,6 +154,7 @@ table th {
             <td data-label="Semester Mode">{{ semester_year.semester_mode }}</td>
             <td data-label="Semester Start Year">{{ semester_year.semester_start_year|date:"jS F Y" }}</td>
             <td data-label="Semester End Year">{{ semester_year.semester_end_year|date:"jS F Y" }}</td>
+            <td data-label="Branch">{{ semester_year.branch }}</td>
             {% if request.user.is_staff %}
             <td data-label="Action" class="outlined">
                 <a class="edit_button" href="{% url 'edit_semester' semester_year.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp;
