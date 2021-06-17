@@ -74,7 +74,7 @@ div.sticky {
                     <div class="mt-3">
                       <h4>{{student.user.first_name}}</h4>
                       <p class="text-secondary mb-1"> Student </p>
-                      <p class="text-muted font-size-sm"><span><a style="text-decoration: none; color: #6c757d!important;" href="https://www.google.com/maps/place/{{student.city_name}}" target="_blank"><i class="fas fa-map-marked-alt"></i> {{student.city_name}} - {{student.zip_code}}</a></span></p>
+                      <p class="text-muted font-size-sm"><span><a style="text-decoration: none; color: #6c757d!important;" href="https://www.google.com/maps/place/{{student.city_name}}" rel="noreferrer" target="_blank"><i class="fas fa-map-marked-alt"></i> {{student.city_name}} - {{student.zip_code}}</a></span></p>
                     </div>
                   </div>
                 </div>
@@ -120,7 +120,7 @@ div.sticky {
                       <h6 class="mb-0">Email</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                        <a style="text-decoration: none; color: #6c757d!important;" href="mailto:{{student.user.email}}">{{student.user.email}}</a>
+                        <a style="text-decoration: none; color: #6c757d!important;" aria-label="Student Email Address" href="mailto:{{student.user.email}}">{{student.user.email}}</a>
                     </div>
                   </div>
                   <hr>
@@ -149,10 +149,10 @@ div.sticky {
                     <div class="col-sm-9 text-secondary">
                       {% for i in ssp %}
                       <i class="fab fa-linkedin" style="font-size: 24px;"></i>
-                        <a href="https://linkedin.com/in/{{ i.linkedin }}/" rel="noopener" target="_blank">{{ i.linkedin }}</a>
+                        <a href="https://linkedin.com/in/{{ i.linkedin }}/" style="color: #0277bd; font-weight: 600;" aria-label="Student LinkedIn Profile Link" rel="noreferrer" target="_blank">{{ i.linkedin }}</a>
                       |
                       <i class="fab fa-github-square" style="font-size: 24px;"></i> 
-                      <a href="https://github.com/{{ i.github }}/" rel="noopener" target="_blank">{{ i.github }}</a>
+                      <a href="https://github.com/{{ i.github }}/" style="color: #0277bd; font-weight: 600;" aria-label="Student Github Profile Link" rel="noreferrer" target="_blank">{{ i.github }}</a>
                       {% endfor %}
                     </div>
                   </div>
@@ -238,7 +238,7 @@ div.sticky {
                       <h6 class="mb-0">Address</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <span><a style="text-decoration: none; color: #6c757d!important;" href="https://www.google.com/maps/place/{{student.city_name}}" target="_blank">{{ student.dno_sn }}, {{ student.city_name }}, {{student.state_name}}, {{student.country_name}} - {{student.zip_code}}</a></span>
+                      <span><a style="text-decoration: none; color: #6c757d!important;" href="https://www.google.com/maps/place/{{student.city_name}}" rel="noreferrer" target="_blank">{{ student.dno_sn }}, {{ student.city_name }}, {{student.state_name}}, {{student.country_name}} - {{student.zip_code}}</a></span>
                     </div>
                   </div>
                 </div>
