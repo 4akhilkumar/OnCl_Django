@@ -15,12 +15,13 @@ class PositionForm(forms.Form):
 
 class SemesterForm(forms.Form):
     SEM_MODE = (
-        ('EVEN','EVEN'),
         ('ODD','ODD'),
+        ('EVEN','EVEN'),
     )
     model = Semester
     semester_mode = forms.ChoiceField(choices = SEM_MODE)
-    fields = ['semester_mode', 'semester_start_year', 'semester_end_year']
+    branch = forms.ChoiceField(choices = BRANCH_CHOICES)
+    fields = ['semester_mode', 'branch', 'semester_start_year', 'semester_end_year']
 
 class ContactForm(forms.Form):
     name = forms.CharField(required=True)
