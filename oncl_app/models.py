@@ -125,6 +125,28 @@ class Students(models.Model):
     class Meta:
         ordering = ["user__username"]
     
+class Student_Social_Profile(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    linkedin = models.CharField(max_length=100, default="no_linkedin")
+    github = models.CharField(max_length=100, default="no_github")
+
+    def __str__(self):
+        return '%s %s %s' % (self.user, self.linkedin, self.github)
+
+class Staff_Social_Profile(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    linkedin = models.CharField(max_length=100, default="no_linkedin")
+    github = models.CharField(max_length=100, default="no_github")
+    orcid = models.CharField(max_length=100, default="no_orcid")
+    researcher = models.CharField(max_length=100, default="no_researcher")
+    gscholar = models.CharField(max_length=100, default="no_gscholar")
+    microsoft_academic = models.CharField(max_length=100, default="no_microsoft_academic")
+
+    def __str__(self):
+        return '%s %s %s' % (self.user, self.linkedin, self.gscholar)
+    
 class user_login_details(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
