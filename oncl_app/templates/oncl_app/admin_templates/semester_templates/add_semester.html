@@ -8,7 +8,7 @@
 <link href="{% static 'oncl_app/colorlib-regform-4/css/main.css' %}" rel="stylesheet" media="all">
 <link href="{% static 'oncl_app/colorlib-regform-4/vendor/mdi-font/css/material-design-iconic-font.min.css' %}" rel="stylesheet" media="all">
 
-<title>Add Semester | OnCl - Edu. Cloud</title>
+<title>Create Semester | OnCl - Edu. Cloud</title>
 
 <style>
 input, textarea, .rs-select2 .select2-container .select2-selection--single {
@@ -31,7 +31,7 @@ input, textarea, .rs-select2 .select2-container .select2-selection--single {
                     <form method="POST" action="{% url 'add_semester_save' %}">
                     {% csrf_token %}
                         <div class="input-group">
-                            <label class="label"><i class="fas fa-code-branch"></i> Branch</label>
+                            <label class="label"><i class="fas fa-stream"></i> Semester Mode</label>
                             <div class="input-group">
                                 <div class="rs-select2 js-select-simple select--no-search" style="width: 600px;">
                                     <select name="semester_mode" id="id_semester_mode" required>
