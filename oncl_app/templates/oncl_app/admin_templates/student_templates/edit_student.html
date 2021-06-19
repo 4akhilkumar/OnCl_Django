@@ -67,10 +67,9 @@
 						<span style="margin-bottom: -24px; font-size: 11px; font-weight: 500;">*Please Provide Your Date of Birth</span>
 					</div>
 					<div class="form-row form-row-4">
-						<select name="gender">
-							<option value="{{student.gender}}">* {{student.gender}}</option>
+						<select name="gender" required>
 							{% for x,y in student_form.fields.gender.choices %}
-							<option value="{{ x }}"{% if student_form.fields.gender.value == x %} selected {% endif %}>{{ y }}</option>
+							<option value="{{ x }}"{% if x in student.gender %} selected {% endif %}>{{ y }}</option>
 							{% endfor %}
 						</select>
 						<span class="select-btn">
@@ -91,10 +90,9 @@
 						<input type="text" name="mother_name" value="{{student.mother_name}}" class="mother_name" id="id_mother_name" placeholder="Mother Name" required>
 					</div>
 					<div class="form-row form-row-4">
-						<select name="mother_tounge">
-                			<option value="{{student.mother_tounge}}">* {{student.mother_tounge}}</option>
+						<select name="mother_tounge" required>
 							{% for x,y in student_form.fields.mother_tounge.choices %}
-							<option value="{{ x }}" {% if student_form.fields.mother_tounge.value == x %} selected {% endif %}>{{ y }}</option>
+							<option value="{{ x }}" {% if x in student.mother_tounge %} selected {% endif %}>{{ y }}</option>
 							{% endfor %}
 						</select>
 						<span class="select-btn">
@@ -104,10 +102,9 @@
 				</div>
 				<div class="form-group">
 					<div class="form-row form-row-3">
-						<select name="branch">
-							<option value="{{student.branch}}">* {{student.branch}}</option>
+						<select name="branch" required>
 							{% for x,y in student_form.fields.branch.choices %}
-							<option value="{{ x }}" {% if student_form.fields.branch.value == x %} selected {% endif %}>{{ y }}</option>
+							<option value="{{ x }}" {% if x == student.branch.id %} selected {% endif %}>{{ y }}</option>
 							{% endfor %}
 						</select>
 						<span class="select-btn">
@@ -115,10 +112,9 @@
 						</span>
 					</div>    
 					<div class="form-row form-row-4">
-						<select name="blood_group">
-							<option value="{{student.blood_group}}">* {{student.blood_group}}</option>
+						<select name="blood_group" required>
 							{% for x,y in student_form.fields.blood_group.choices %}
-							<option value="{{ x }}" {% if student_form.fields.blood_group.value == x %} selected {% endif %}>{{ y }}</option>
+							<option value="{{ x }}" {% if x in student.blood_group %} selected {% endif %}>{{ y }}</option>
 							{% endfor %}
 						</select>
 						<span class="select-btn">
@@ -157,10 +153,9 @@
 				<div class="form-group">
 		            <div class="form-row form-row-1">
         		        <select name="country_name">
-							<option value="{{student.country_name}}">* {{student.country_name}}</option>
-							<option value="India">India</option>
-							<option value="Vietnam">Vietnam</option>
-							<option value="Malaysia">Malaysia</option>
+							<option value="India"{% if student.country_name == 'India' %} selected {% endif %}>India</option>
+							<option value="Vietnam"{% if student.country_name == 'Vietnam' %} selected {% endif %}>Vietnam</option>
+							<option value="Malaysia"{% if student.country_name == 'Malaysia' %} selected {% endif %}>Malaysia</option>
 						</select>
 						<span class="select-btn">
 							<i class="zmdi zmdi-chevron-down"></i>
@@ -168,10 +163,9 @@
             		</div>
 					<div class="form-row form-row-2">
 						<select name="state_name">
-							<option value="{{student.state_name}}">* {{student.state_name}}</option>
-							<option value="Andhra Pradesh">Andhra Pradesh</option>
-							<option value="Kerala">Kerala</option>
-							<option value="Tamil Nadu">Tamil Nadu</option>
+							<option value="Andhra Pradesh"{% if student.state_name == 'Andhra Pradesh' %} selected {% endif %}>Andhra Pradesh</option>
+							<option value="Kerala"{% if student.state_name == 'Kerala' %} selected {% endif %}>Kerala</option>
+							<option value="Tamil Nadu"{% if student.state_name == 'Tamil Nadu' %} selected {% endif %}>Tamil Nadu</option>
 						</select>
 						<span class="select-btn">
 							<i class="zmdi zmdi-chevron-down"></i>
