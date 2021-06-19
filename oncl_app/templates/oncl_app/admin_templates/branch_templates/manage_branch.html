@@ -138,7 +138,6 @@ table th {
     <table>
         <thead>
           <tr>
-            <th scope="col">Semester</th>
             <th scope="col">Branch</th>
             {% if request.user.is_staff %}
             <th scope="col">Action</th>
@@ -149,7 +148,6 @@ table th {
         {% endif %}
         {% for branch in branches %}
           <tr>
-            <td data-label="Semester">{{ branch.semester }}</td>
             <td data-label="Branch">{{ branch.branch }}</td>
             {% if request.user.is_staff %}
             <td data-label="Action" class="outlined">
