@@ -37,8 +37,8 @@ input, textarea, .rs-select2 .select2-container .select2-selection--single {
                             <div class="input-group">
                                 <div class="rs-select2 js-select-simple select--no-search" style="width: 600px;">
                                     <select name="branch" required>
-                                        {% for x,y in student_form.fields.branch.choices %}
-                                        <option value="{{ x }}" {% if x == branch.id %} selected {% endif %}>{{ y }}</option>
+                                        {% for i in branches %}
+                                        <option value="{{ i }}" {% if i == branch %} selected {% endif %}>{{ i }}</option>
                                         {% endfor %}
                                     </select>
                                     <div class="select-dropdown"></div>
