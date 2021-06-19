@@ -761,10 +761,11 @@ def manage_student(request):
 @allowed_users(allowed_roles=['Admin'])
 def edit_student(request, student_id):
     student = Students.objects.get(user=student_id)
-
+    student_form = StudentsForm()
     context = {
         "student": student,
-        "id": student_id
+        "id": student_id,
+        "student_form":student_form,
     }
     return render(request, "oncl_app/admin_templates/student_templates/edit_student.html", context)
 
@@ -793,6 +794,7 @@ def edit_student_save(request):
         city_name = request.POST.get('city_name')
         state_name = request.POST.get('state_name')
         country_name = request.POST.get('country_name')
+        branch = Branches.objects.get(id=branch)
         branch = request.POST.get('branch')
 
         if 'profile_pic' in request.FILES:
