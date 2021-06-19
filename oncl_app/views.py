@@ -423,13 +423,11 @@ def manage_branch(request):
 @allowed_users(allowed_roles=['Admin'])
 def edit_branch(request, branch_id):
     branch = Branches.objects.get(id=branch_id)
-    student_form = StudentsForm()
-    semester = Semester.objects.all()
+    branches = Branches.objects.all()
     context = {
         "branch": branch,
-        "id": branch_id,
-        "student_form":student_form,
-        "semester":semester
+        "branches":branches,
+        "id": branch_id
     }
     return render(request, 'oncl_app/admin_templates/branch_templates/edit_branch.html', context)
 
@@ -441,13 +439,10 @@ def edit_branch_save(request):
     else:
         branch_id = request.POST.get('branch_id')
         branch_name = request.POST.get('branch')
-        semester_id = request.POST.get('semester')
-        semester = Semester.objects.get(id=semester_id)
 
         try:
             branch = Branches.objects.get(id=branch_id)
             branch.branch = branch_name
-            branch.semester = semester
             branch.save()
 
             messages.success(request, "Branch Updated Successfully!")
