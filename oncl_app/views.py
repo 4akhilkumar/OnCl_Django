@@ -383,11 +383,9 @@ def manage_semester(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def add_branch(request):
-    student_form = StudentsForm()
-    semester = Semester.objects.all()
+    branches = Branches.objects.all()
     context = {
-        "student_form":student_form,
-        "semester":semester,
+        "branches":branches
     }
     return render(request, "oncl_app/admin_templates/branch_templates/add_branch.html", context)
 
@@ -399,10 +397,8 @@ def add_branch_save(request):
         return redirect('add_branch')
     else:
         branch = request.POST.get('branch')
-        semester_id = request.POST.get('semester')
-        semester = Semester.objects.get(id=semester_id)
         try:
-            branch_model = Branches(branch=branch, semester=semester)
+            branch_model = Branches(branch=branch)
             branch_model.save()
             messages.success(request, "Branch Added Successfully.")
             return redirect('manage_branch')
