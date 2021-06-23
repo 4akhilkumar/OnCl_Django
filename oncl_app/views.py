@@ -121,6 +121,7 @@ def login_page(request):
         longitude = request.POST.get('longitude')
         latitude = request.POST.get('latitude')
         location = request.POST.get('location')
+        computer_name = request.META['COMPUTERNAME']
 
         user = authenticate(request, username=username, password=password)
 
@@ -153,7 +154,7 @@ def login_page(request):
         if user is not None:
             login(request, user)
             messages.success(request, 'You Logged In Successfully.')
-            template = render_to_string('oncl_app/login_register/login_mail.html', {'email':request.user.email, 'ip_addr':ip_addr, 'latitude':latitude, 'longitude':longitude})
+            template = render_to_string('oncl_app/login_register/login_mail.html', {'email':request.user.email, 'ip_addr':computer_name, 'latitude':latitude, 'longitude':longitude})
             send_mail('OnCl Account Login Alert', template, settings.EMAIL_HOST_USER, [request.user.email], html_message=template)
             
             group = None
