@@ -106,6 +106,7 @@ urlpatterns = [
 
     path('upload_session/',views.upload_session,name="upload_session"),
     path('view_session/',views.view_session,name="view_session"),
+    path('view_each_session/<session_id>/', views.view_each_session, name="view_each_session"),
     path('edit_session/<session_id>/', views.edit_session, name="edit_session"),
     path('edit_session_save/', views.edit_session_save, name="edit_session_save"),
     path('delete_session/<session_id>/', views.delete_session, name="delete_session"),
