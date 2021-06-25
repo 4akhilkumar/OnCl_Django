@@ -11,3 +11,19 @@
 {{session.session_pic.url}}
 <br>
 {{session.session_file.url}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing Webpage</title>
+</head>
+<body>
+    <video width="400" controls>
+        <source src="{{session.session_file.url}}" type="video/mp4">
+        Your browser does not support HTML video.
+    </video>
+</body>
+</html>
