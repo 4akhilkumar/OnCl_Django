@@ -117,7 +117,7 @@ def login_page(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        ip_addr = request.POST.get('ip_addr')
+        ip_addr = request.META['HTTP_X_FORWARDED_FOR']
         longitude = request.POST.get('longitude')
         latitude = request.POST.get('latitude')
         location = request.POST.get('location')
@@ -177,10 +177,22 @@ def logoutUser(request):
     messages.info(request,"You have logged out!")
     return redirect('login')
 
+import re
+import httpagentparser
 def save_login_details(request, user_name, ip_addr):
+    user_agent = request.META['HTTP_USER_AGENT']
+    browser = httpagentparser.detect(user_agent)
+    if not browser:
+        browser = user_agent.split('/')[0]
+    else:
+        browser = browser['browser']['name']
+
+    res = re.findall(r'\(.*?\)', user_agent)
+    OS_Details = res[0][1:-1]
+
     uid = User.objects.get(username=user_name)
     try:
-        sld = user_login_details(ip_addr=ip_addr, user=uid)
+        sld = user_login_details(ip_addr=ip_addr, user=uid, os_details=OS_Details, browser_details=browser)
         sld.save()
     except:
         return #
