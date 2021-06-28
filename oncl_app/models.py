@@ -152,7 +152,7 @@ class user_login_details(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     ip_addr = models.CharField(max_length=100)
     os_details = models.CharField(max_length=100)
-    browser_details = models.CharField(null=False, blank=False, max_length=100)
+    browser_details = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
