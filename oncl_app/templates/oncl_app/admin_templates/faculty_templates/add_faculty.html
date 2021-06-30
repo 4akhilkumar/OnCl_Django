@@ -1,278 +1,215 @@
-{% extends "oncl_app/base.html" %}
+{% extends "oncl_app/admin_base.html" %}
 
 {% block content %}
 
 {% load static %}
 
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/bootstrap/css/bootstrap.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animate/animate.css' %}">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/css-hamburgers/hamburgers.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/animsition/css/animsition.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/select2/select2.min.css' %}">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/util.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/main.css' %}">
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/colorlib-regform-36/css/montserrat-font.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/colorlib-regform-36/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css' %}">
+    <link rel="stylesheet" href="{% static 'oncl_app/colorlib-regform-36/css/style.css' %}"/>
+    <title>Faculty Registration | OnCl - Edu. Cloud</title>
+    <style>
+        label {
+            background-color: #e0e0e0;
+            color: #555555;
+            padding: 0.5rem;
+            font-family: sans-serif;
+            cursor: pointer;
+            display: inline-block;
+            border-radius: 4px;
+        }
 
-<title>Add Faculty Info. | OnCl - Edu. Cloud</title>
+        #file-chosen {
+            margin-left: 0.3rem;
+        }
 
-<style>
-label {
-  background-color: #6c757d1a;
-  color: #555555;
-  padding: 0.5rem;
-  font-family: sans-serif;
-  cursor: pointer;
-  display: inline-block;
-}
+		.g-recaptcha {
+			transform:scale(0.84);
+			-webkit-transform:scale(0.84);
+			transform-origin:0 0;
+			-webkit-transform-origin:0 0;
+			width: 254px;
+			height: 78px;
+		}
 
-#file-chosen {
-  margin-left: 0.3rem;
-}
-
-a {
-    text-decoration: none;
-    font-weight: bolder;
-}
-a:hover {
-    text-decoration: none;
-}
-
-/* Styles for Navbar */
-.bg-light {
-	background-color: #ffffff!important;
-	box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
-}
-</style>
-
-<div class="limiter">
-  <div class="container-login100" style="background-color: #e3f2fd;">
-    <div class="wrap-login100 p-l-40 p-r-40 p-t-55 p-b-55" style="border-color: #64b5f6;">
-      <form class="login100-form validate-form flex-sb flex-w" enctype="multipart/form-data" method="post" id="staffs_form" novalidate>
-        <span class="login100-form-title p-b-32">
-          <img class="header_img" src="{% static 'oncl_app/images/whin.webp' %}" class="d-inline-block align-top img-fluid" alt="OnCl Logo">&nbsp;Add Faculty Info.
-        </span>
+		@media screen and (min-width: 280px) and (max-width: 320px) {
+			.g-recaptcha {
+			    transform: scale(0.84);
+				-webkit-transform: scale(0.65);
+				transform-origin: 0 0;
+				-webkit-transform-origin: 0 0;
+				width: 108px;
+				height: 78px;
+			}
+		}
+    </style>
+</head>
+<body class="form-v10">
+	<div class="page-content">
+		<div class="form-v10-content">
+        <form class="form-detail" action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <span class="txt1 p-b-11">
-          <i class="fas fa-id-badge"></i>&nbsp;Username
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="username" value="{{ staff.user.username }}" required id="id_username" placeholder="Username">
-          <span class="focus-input100"></span>
-        </div>
+			<div class="form-left">
+				<h2>User Registration</h2>
+				<div class="form-group">
+					<div class="form-row form-row-3">
+						<input type="text" name="first_name" id="id_first_name" class="input-text" placeholder="First Name" required>
+					</div>
+					<div class="form-row form-row-4">
+						<input type="text" name="last_name" id="last_name" class="input-text" placeholder="Last Name" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="form-row form-row-3">
+						<input type="date" name="dob" class="dob" id="id_dob" min="1999-01-01" max="2002-12-31" required>
+              <span class="help-text" style="margin-bottom: -24px; font-size: 11px; font-weight: 500;">*Please Provide Your Date of Birth</span>
+					</div>
+					<div class="form-row form-row-4">
+						<select name="gender">
+						{% for x,y in staff_form.fields.gender.choices %}
+						<option value="{{ x }}"{% if staff_form.fields.gender.value == x %} selected {% endif %}>{{ y }}</option>
+						{% endfor %}
+						</select>
+						<span class="select-btn">
+							<i class="zmdi zmdi-chevron-down"></i>
+						</span>
+					</div>
+				</div>
+        <div class="form-group">
+					<div class="form-row form-row-3">
+						<input type="text" name="father_name" class="father_name" id="id_father_name" placeholder="Father Name" required>
+					</div>
+					<div class="form-row form-row-4">
+            <input type="text" name="father_occ" class="father_occ" id="id_father_occ" placeholder="Occupation" required>
+					</div>
+				</div>
+	            <div class="form-group">
+					<div class="form-row form-row-3">
+						<input type="text" name="mother_name" class="mother_name" id="id_mother_name" placeholder="Mother Name" required>
+					</div>
+					<div class="form-row form-row-4">
+						<select name="mother_tounge">
+						{% for x,y in staff_form.fields.mother_tounge.choices %}
+						<option value="{{ x }}" {% if staff_form.fields.mother_tounge.value == x %} selected {% endif %}>{{ y }}</option>
+						{% endfor %}
+						</select>
+						<span class="select-btn">
+							<i class="zmdi zmdi-chevron-down"></i>
+						</span>
+					</div>
+				</div>
+				<div class="form-row">
+					<input type="text" name="username" class="username" id="id_username" placeholder="Username" required>
+				</div>
+		        <div class="form-group">
+					<div class="form-row form-row-1">
+            <input type="password" name="password1" autocomplete="new-password" id="new-password" class="password1" placeholder="Password" required>
+					</div>
+					<div class="form-row form-row-2">
+            <input type="password" name="password2" autocomplete="new-password" id="new-password" class="password2" placeholder="Confirm Password" required>
+					</div>
+				</div>
+        <div class="form-group">
+					<div class="form-row form-row-3">
+						<select name="branch">
+						{% for x,y in staff_form.fields.branch.choices %}
+						<option value="{{ x }}" {% if staff_form.fields.branch.value == x %} selected {% endif %}>{{ y }}</option>
+						{% endfor %}
+						</select>
+						<span class="select-btn">
+							<i class="zmdi zmdi-chevron-down"></i>
+						</span>
+					</div>
+					<div class="form-row form-row-4">
+						<select name="blood_group">
+							{% for x,y in staff_form.fields.blood_group.choices %}
+							<option value="{{ x }}" {% if staff_form.fields.blood_group.value == x %} selected {% endif %}>{{ y }}</option>
+							{% endfor %}
+						</select>
+						<span class="select-btn">
+							<i class="zmdi zmdi-chevron-down"></i>
+						</span>
+					</div>
+				</div>
+				<div class="form-row" style="display: flex; flex-direction: column; flex-wrap: wrap;">
+					<span style="font-weight: 500; margin-bottom: 14px;">
+						<i class="fas fa-image"></i>&nbsp;Upload Faculty Photo
+					</span>
+					<div>
+						<input type="file" name="profile_pic" id="id_profile_pic" hidden/>
+						<label for="id_profile_pic">Choose Image</label>
+						<span id="file-chosen"> No Image Chosen </span>
+					</div>
+				</div>
+			</div>
+			<div class="form-right">
+				<h2>Contact Details</h2>
+				<div class="form-row">
+					<input type="text" name="dno_sn" class="dno_sn" id="id_dno_sn" placeholder="Door No. & Street Name" required>
+				</div>
+				<div class="form-group">
+					<div class="form-row form-row-1">
+						<input type="number" name="zip_code" class="zip_code" id="id_zip_code" placeholder="Zip Code" required>
+					</div>
+					<div class="form-row form-row-2">
+						<input type="text" name="city_name" class="city_name" id="id_city_name" placeholder="Village/Town/City Name" required>
+					</div>
+				</div>
+				<div class="form-group">
+          <div class="form-row form-row-1">
+						<select name="country_name">
+							<option value="India">India</option>
+							<option value="Vietnam">Vietnam</option>
+							<option value="Malaysia">Malaysia</option>
+						</select>
+						<span class="select-btn">
+							<i class="zmdi zmdi-chevron-down"></i>
+						</span>
+          </div>
+					<div class="form-row form-row-2">
+						<select name="state_name">
+							<option value="Andhra Pradesh">Andhra Pradesh</option>
+							<option value="Kerala">Kerala</option>
+							<option value="Tamil Nadu">Tamil Nadu</option>
+						</select>
+						<span class="select-btn">
+							<i class="zmdi zmdi-chevron-down"></i>
+						</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="form-row form-row-1">
+						<input type="number" name="phone" class="phone" id="phone" placeholder="Phone Number" required>
+					</div>
+					<div class="form-row form-row-4">
+						<input type="number" name="father_phone" class="phone" id="id_father_phone" placeholder="Father's Phone No." required>
+					</div>
+				</div>
+				<div class="form-row">
+					<input type="email" name="email" id="id_email" class="input-text" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" placeholder="Your Email">
+				</div>
+        <div class="form-row">
+					<input type="text" name="qualification" id="id_qualification" class="input-text" required placeholder="Your Qualification">
+				</div>
+        <div class="form-row">
+					<input type="text" name="designation" id="id_designation" class="input-text" required placeholder="Designation">
+				</div>
+				<div class="form-row-last">
+					<input type="submit" value="Register User" name="submit" class="register">
+				</div>
+			</div>
+			</form>
+		</div>
+	</div>
 
-        <span class="txt1 p-b-11">
-          <i class="fas fa-envelope"></i>&nbsp;Email
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="email" value="{{ staff.user.email }}" required id="id_email" placeholder="E - Mail">
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-user"></i>&nbsp;First Name
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="first_name" value="{{ staff.user.first_name }}" required id="id_first_name" placeholder="First Name">
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-user"></i>&nbsp;Last Name
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="last_name" value="{{ staff.user.last_name }}" required id="id_last_name" placeholder="Last Name">
-          <input type="hidden" name="staff_id" value="{{ staff.user.id }}" />
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-user"></i>&nbsp;Password
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" type="password" name="password1" value="ONCLaccount@21" required autocomplete="new-password" id="new-password" placeholder="Password">
-          <input type="hidden" name="staff_id" value="{{ staff.user.id }}" />
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-user"></i>&nbsp;Confirm Password
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="password2" type="password" value="ONCLaccount@21" required autocomplete="new-password" id="new-password" placeholder="Confirm Password">
-          <input type="hidden" name="staff_id" value="{{ staff.user.id }}" />
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-venus-mars"></i>&nbsp;Gender
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <select class="input100" name="gender" id="id_gender" required>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-            <i class="fas fa-phone-square"></i>&nbsp;Phone
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-            <input class="input100" name="phone" value="{{ staff.phone }}" required id="id_phone" placeholder="Phone">
-            <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-map-marked-alt"></i>&nbsp;Address
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <textarea class="input100" name="address" maxlength="200" style="padding: 15px 25px 0 25px; height: 150px;"  placeholder="Address" id="id_address" required>{{ staff.address }}</textarea>
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-code-branch"></i>&nbsp;Branch
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="branch" value="{{ staff.branch }}" required id="id_branch" placeholder="Branch">
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-            <i class="fas fa-certificate"></i>&nbsp;Qualification
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-            <input class="input100" name="qualification" value="{{ staff.qualification }}" required id="id_qualification" placeholder="Qualification">
-            <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-stream"></i>&nbsp;Designation
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="designation" value="{{ staff.designation }}" required id="id_designation" placeholder="Designation">
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fab fa-github"></i>&nbsp;GitHub
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="git_link" value="{{ staff.git_link }}" required id="id_git_link" placeholder="GitHub">
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fab fa-linkedin"></i>&nbsp;LinkedIn
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="linkedin_link" value="{{ staff.linkedin_link }}" required id="id_linkedin_link" placeholder="LinkedIn">
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-            <i class="fab fa-orcid"></i>&nbsp;Orcid ID
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-            <input class="input100" name="orcid_link" value="{{ staff.orcid_link }}" required id="id_orcid_link" placeholder="Orcid ID">
-            <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-            <i class="fab fa-researchgate"></i>&nbsp;Researcher ID
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-            <input class="input100" name="researcher_link" value="{{ staff.researcher_link }}" required id="id_researcher_link" placeholder="Researcher ID">
-            <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-            <i class="fab fa-google"></i>&nbsp;Google Scholar ID
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-            <input class="input100" name="gscholar_link" value="{{ staff.gscholar_link }}" required id="id_gscholar_link" placeholder="Google Scholar ID">
-            <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-            <i class="fab fa-microsoft"></i>&nbsp;Microsoft Academic Search ID
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-            <input class="input100" name="microsoft_academic_link" value="{{ staff.microsoft_academic_link }}" required id="id_microsoft_academic_link" placeholder="Microsoft Academic Search ID">
-            <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-globe"></i>&nbsp;Portfolio
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input class="input100" name="website_link" value="{{ staff.website_link }}" required id="id_website_link" placeholder="Portfolio">
-          <span class="focus-input100"></span>
-        </div>
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-align-left"></i>&nbsp;Bio (About)
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <textarea class="input100" name="bio" maxlength="200" style="padding: 15px 25px 0 25px; height: 150px;"  placeholder="Write about yourself...!" id="id_bio" required>{{ staff.bio }}</textarea>
-          <span class="focus-input100"></span>
-        </div>      
-
-        <span class="txt1 p-b-11">
-          <i class="fas fa-image"></i>&nbsp;Upload Faculty Photo
-        </span>
-        <div class="wrap-input100 validate-input m-b-20">
-          <input type="file" name="profile_pic" accept="image/*" id="id_profile_pic" hidden/>
-          <label for="id_profile_pic">Choose Image</label>
-          <span id="file-chosen"><b>No Image Chosen</b></span>
-        </div>
-
-        <div class="container-login100-form-btn" style="justify-content: space-between">
-          <button class="login100-form-btn" style="border-radius: 6px; background-color: #ef5350;" type="submit" value="">
-            <i class="fas fa-user-plus"></i>&nbsp;Add Faculty Info.
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!--===============================================================================================-->
-<script src="{% static 'oncl_app/login_register/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/animsition/js/animsition.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/popper.js' %}"></script>
-	<script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/select2/select2.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/daterangepicker/moment.min.js' %}"></script>
-	<script src="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/countdowntime/countdowntime.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/js/main.js' %}"></script>
-
-
-<script>
-    const actualBtn = document.getElementById('id_profile_pic');    
-    const fileChosen = document.getElementById('file-chosen');
-    actualBtn.addEventListener('change', function(){
-      fileChosen.textContent = this.files[0].name
-    })
-</script>
+    <script>
+        const actualBtn = document.getElementById('id_profile_pic');    
+        const fileChosen = document.getElementById('file-chosen');
+        actualBtn.addEventListener('change', function(){
+          fileChosen.textContent = this.files[0].name
+        })
+    </script>
+</body>
 
 {% endblock %}
