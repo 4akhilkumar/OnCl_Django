@@ -1,5 +1,5 @@
 from oncl_app.models import *
-from django.forms import ModelForm
+from django.forms import ModelForm, fields
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
@@ -49,6 +49,11 @@ class StudentsForm(forms.ModelForm):
         mother_tounge = forms.ChoiceField(choices = MOTHER_TOUNGE_CHOICES)
         branch = forms.ChoiceField(choices = BRANCH_CHOICES)
         fields = ['gender','father_name','father_occ','father_phone','mother_name','mother_tounge','dob','blood_group','phone','dno_sn','zip_code','city_name','state_name','country_name','profile_pic','branch'] 
+
+class StudentSemRegForm(forms.ModelForm):
+    class Meta:
+        model = Student_Sem_Reg
+        fields = '__all__'
 
 class BookUploadForm(forms.Form):
     book_id = forms.CharField(widget=forms.TextInput())
