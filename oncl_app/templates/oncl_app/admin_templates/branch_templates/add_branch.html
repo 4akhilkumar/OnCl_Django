@@ -28,31 +28,16 @@ input, textarea, .rs-select2 .select2-container .select2-selection--single {
         <div class="wrapper wrapper--w680">
             <div class="card-4">
                 <div class="card-body">
-                    <h2 class="title">Create, Assign & Add Branch</h2>
+                    <h2 class="title">Create & Add Branch</h2>
                     <form method="POST" action="{% url 'add_branch_save' %}">
                     {% csrf_token %}
-                        <div class="input-group">
-                            <label class="label"><i class="fas fa-chalkboard-teacher"></i> Semester</label>
-                            <div class="input-group">
-                                <div class="rs-select2 js-select-simple select--no-search" style="width: 600px;">
-                                    <select name="semester">
-                                        <option disabled="disabled" selected="selected">Allocate Semester</option>
-                                        {% for x in semester %}
-                                        <option value="{{ x.id }}" {% if semester.id == x %} selected {% endif %}>{{ x }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <div class="select-dropdown"></div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="input-group">
                             <label class="label"><i class="fas fa-code-branch"></i> Branch</label>
                             <div class="input-group">
                                 <div class="rs-select2 js-select-simple select--no-search" style="width: 600px;">
-                                    <select name="branch">
-                                        <option disabled="disabled" selected="selected">Choose Branch</option>
-                                        {% for x,y in student_form.fields.branch.choices %}
-                                        <option value="{{ x }}" {% if student_form.fields.branch.value == x %} selected {% endif %}>{{ y }}</option>
+                                    <select name="branch" required>
+                                        {% for x,y in branch_form.fields.branch.choices %}
+                                        <option value="{{ x }}">{{ y }}</option>
                                         {% endfor %}
                                     </select>
                                     <div class="select-dropdown"></div>
