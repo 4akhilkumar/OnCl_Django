@@ -140,7 +140,7 @@ table th {
     <form method="POST" action="/search_faculty">
       <div class="search">
         {% csrf_token %}
-        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Faculty Info...">
+        <input type="text" class="search__input" aria-label="search" required name="search" placeholder="Search Faculty Info...">
         <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
       </div>
     </form>
@@ -151,7 +151,7 @@ table th {
     <div onclick="document.location='{% url 'add_staff' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
         <a href="#" style="text-decoration: none; font-size: 1rem; color: #000;"><i class="fas fa-chalkboard-teacher"></i> Add Faculty</a>
     </div>
-    <div onclick="exportTableToCSV('Faculty_Info.csv')" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+    <div onclick="document.location='{% url 'staff_info_csv' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
       <span style="text-decoration: none; font-size: 1rem; color: #000;"><b>Export <i class="fas fa-file-csv"></i> File</b></span>
     </div>
 </div>
@@ -175,9 +175,9 @@ table th {
           <tr>
             <td data-label="ID">{{ staff.user.username }}</td>
             <td data-label="First Name">{{staff.user.first_name}} {{ staff.user.last_name }}</td>
-            <td data-label="Email"><a href="mailto:{{ staff.user.email }}">{{ staff.user.email }}</a></td>
+            <td data-label="Email"><a href="mailto:{{ staff.user.email }}">{{ staff.user.email|truncatechars:18 }}</a></td>
             <td data-label="Gender">{{ staff.gender }}</td>
-            <td data-label="Address">{{ staff.address }}</td>
+            <td data-label="Address">{{ staff.city_name }}</td>
             <td data-label="Last Login"> {% if staff.user.last_login == None %} User Not Logged Yet! {% else %} {{ staff.user.last_login }} {% endif %}</td>
             <td data-label="Action" class="outlined">
               <a href="{% url 'view_staff' staff.user.id %}" target="_blank"><i class="fas fa-eye"></i> View</a> &nbsp; <br>
