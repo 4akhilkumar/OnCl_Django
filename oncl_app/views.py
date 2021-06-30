@@ -503,12 +503,15 @@ def add_subject_save(request):
         return redirect('add_subject')
     else:
         subject_name = request.POST.get('subject')
-        branch_id = request.POST.get('branch')
+        desc = request.POST.get('desc')
+        branch = request.POST.get('branch')
+        semester_id = request.POST.get('semester')
         staff_id = request.POST.get('staff')
         staff = User.objects.get(id=staff_id)
+        semester = Semester.objects.get(id=semester_id)
 
         try:
-            subject = Subjects(subject_name=subject_name, branch=branch_id, staff_id=staff)
+            subject = Subjects(subject_name=subject_name, desc=desc, branch=branch, staff_id=staff, semester=semester)
             subject.save()
             messages.success(request, "Subject Added Successfully.")
             return redirect('manage_subject')
