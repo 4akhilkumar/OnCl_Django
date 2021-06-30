@@ -927,6 +927,28 @@ def delete_student(request, student_id):
         messages.error(request, "Failed to Delete Student Record!")
         return redirect('manage_student')
 
+def student_sem_reg(request):
+    current_user  = request.user.id
+    ssr = Student_Sem_Reg.objects.filter(user = current_user)
+    user = User.objects.get(id=current_user)
+    student = Students.objects.get(user=user)
+    
+    branch = student.branch
+    semester = Semester.objects.filter(branch=branch)
+
+    # 
+    # branch_id = Branches.objects.get(branch=branch)
+    # branch_id_ = branch_id.id
+    # subject_list = Subjects.objects.filter(branch=branch_id_)
+    # branch_subjects = Subjects.objects.filter(branch=branch)
+    # print(branch_subjects)
+    # 
+
+    context = {
+        "ssr":ssr,
+        "semester":semester
+    }
+    return render(request, "oncl_app/Student_templates/Semester_Registration.html", context)
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
 def add_announcement(request):
