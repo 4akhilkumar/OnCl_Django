@@ -1,0 +1,20 @@
+{{subject.subject_name}}
+<br>
+{{subject.desc}}
+
+<form action="{% url 'student_course_reg_save' %}" method="POST">
+    {% csrf_token %}
+    <section>
+        <input type="text" name="course" value="{{subject.id}}" hidden/>
+    </section>
+    <section>
+        <select name="section" id="id_section">
+            {% for i in section %}
+            <option value="{{i.id}}">{{i}}</option>
+            {% endfor %}
+        </select>
+    </section>
+    <section>
+        <input type="submit" value="Enroll Course">
+    </section>
+</form>
