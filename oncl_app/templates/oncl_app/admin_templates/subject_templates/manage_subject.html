@@ -142,9 +142,9 @@ table th {
     <table>
         <thead>
           <tr>
-            <th scope="col">ID</th>
             <th scope="col">Subject Name</th>
             <th scope="col">Branch</th>
+            <th scope="col">Allocated Semester</th>
             <th scope="col">Faculty</th>
             <th scope="col">Action</th>
           </tr>
@@ -153,10 +153,10 @@ table th {
         {% endif %}
         {% for subject in subjects %}
         <tr>
-        <td data-label="ID">{{ subject.id }}</td>
-        <td data-label="Subject">{{ subject.subject_name }}</td>
+        <td data-label="Subject"><a href="{% url 'view_each_subject' subject.id %}">{{ subject.subject_name }}</a></td>
         <td data-label="Branch">{{ subject.branch }}</td>
-        <td data-label="Faculty">{{ subject.staff_id.first_name }} {{ subject.staff_id.last_name }}</td>
+        <td data-label="Allocated Branch">{{ subject.semester }}</td>
+        <td data-label="Faculty"><a href="{% url 'view_staff' subject.staff_id.id %}" target="_blank">{{ subject.staff_id.first_name }} {{ subject.staff_id.last_name }}</a></td>
         <td data-label="Action" class="outlined">
             <a class="edit_button" href="{% url 'edit_subject' subject.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp; <br>
             <a class="delete_button" href="{% url 'delete_subject' subject.id %}"><i class="fas fa-trash"></i> Delete</a>
