@@ -483,11 +483,15 @@ def delete_branch(request, branch_id):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def add_subject(request):
-    student_form = StudentsForm()
+    semester_form = SemesterForm()
     staffs = User.objects.filter(groups='2')
+    branches = Branches.objects.all()
+    semester = Semester.objects.all()
     context = {
-        "student_form": student_form,
-        "staffs": staffs
+        "semester_form": semester_form,
+        "staffs": staffs,
+        "branches":branches,
+        "semester":semester,
     }
     return render(request, 'oncl_app/admin_templates/subject_templates/add_subject.html', context)
 
