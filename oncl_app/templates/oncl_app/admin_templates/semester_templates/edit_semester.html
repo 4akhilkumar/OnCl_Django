@@ -36,9 +36,8 @@ input, textarea, .rs-select2 .select2-container .select2-selection--single {
                             <div class="input-group">
                                 <div class="rs-select2 js-select-simple select--no-search" style="width: 600px;">
                                     <select name="semester_mode" id="id_semester_mode" required>
-                                        <option value="{{semester_year.semester_mode}}">* {{semester_year.semester_mode}}</option>
                                         {% for x,y in semester_form.fields.semester_mode.choices %}
-                                        <option value="{{ x }}" {% if semester_form.fields.semester_mode.value == x %} selected {% endif %}>{{ y }}</option>
+                                        <option value="{{ x }}" {% if semester_year.semester_mode == x %} selected {% endif %}>{{ y }}</option>
                                         {% endfor %}
                                     </select> 
                                     <div class="select-dropdown"></div>
@@ -63,17 +62,17 @@ input, textarea, .rs-select2 .select2-container .select2-selection--single {
                             <div class="input-group">
                                 <div class="rs-select2 js-select-simple select--no-search" style="width: 600px;">
                                     <select name="branch" id="id_branch" required>
-                                        <option value="{{semester_year.branch}}">* {{semester_year.branch}}</option>
                                         {% for x,y in semester_form.fields.branch.choices %}
-                                        <option value="{{ x }}" {% if semester_form.fields.branch.value == x %} selected {% endif %}>{{ y }}</option>
+                                        <option value="{{ x }}" {% if semester_year.branch == x %} selected {% endif %}>{{ y }}</option>
                                         {% endfor %}
                                     </select> 
                                     <div class="select-dropdown"></div>
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div style="display: flex; flex-wrap: wrap; flex-direction: row; gap:10px">
                             <button class="btn btn--radius-2 btn--red" type="submit">Re-Plan Semester</button>
+                            <a href="{% url 'manage_semester' %}" style="color: #FFF; font-weight: 600; background-color: #757575; border-radius: 8px;" aria-label="back to manage semester" class="btn">Back</a>
                         </div>
                     </form>
                 </div>
