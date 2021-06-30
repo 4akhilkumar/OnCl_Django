@@ -17,6 +17,14 @@ BRANCH_CHOICES = [
     ("Mechanical Engineering","Mechanical Engineering"),
 ]
 
+class Branches(models.Model):
+    id = models.AutoField(primary_key=True)
+    branch = models.CharField(max_length=50, choices = BRANCH_CHOICES, default=1)
+    objects = models.Manager()
+
+    def __str__(self):
+        return '%s' % (self.branch)
+
 class Semester(models.Model):
     SEM_MODE = (
         ('EVEN','EVEN'),
@@ -30,30 +38,19 @@ class Semester(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return '%s %s-%s' % (self.semester_mode, self.semester_start_year.year, self.semester_end_year.year)
-
-class Branches(models.Model):
-    id = models.AutoField(primary_key=True)
-    semester = models.ForeignKey(Semester, on_delete=models.CASCADE, default=1)
-    branch = models.CharField(max_length=18, choices = BRANCH_CHOICES, default=1)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    objects = models.Manager()
-
-    def __str__(self):
-        return '%s %s' % (self.branch, self.semester)
+        return '%s %s %s-%s' % (self.branch, self.semester_mode, self.semester_start_year.year, self.semester_end_year.year)
 
 class Subjects(models.Model):
     id = models.AutoField(primary_key=True)
-    subject_name = models.CharField(max_length=50, unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    subject_name = models.CharField(max_length=50)
     branch = models.CharField(max_length=50, choices = BRANCH_CHOICES, default=1)
     semester = models.ForeignKey(Semester, on_delete=models.SET_NULL, blank=True, null=True, default=1)
+    staff_id = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    desc = models.TextField(blank=True, null=True)
     objects = models.Manager()
 
     def __str__(self):
-        return '%s %s %s' % (self.subject_name, self.staff_id, self.branch)
+        return '%s' % (self.subject_name)
 
 GENDER_CHOICES = [
     ("", "Select Gender"),
@@ -161,7 +158,34 @@ class Staff_Social_Profile(models.Model):
 
     def __str__(self):
         return '%s %s %s' % (self.user, self.linkedin, self.gscholar)
-    
+
+class Sections(models.Model):
+    id = models.AutoField(primary_key=True)
+    section_name = models.CharField(max_length=100)
+    room_no = models.CharField(max_length=100)
+    floor_no = models.CharField(max_length=100)
+    block_name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return 'Section %s, %s %s' % (self.section_name, self.room_no, self.block_name)
+
+class Student_Sem_Reg(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    semester = models.ForeignKey(Semester, on_delete=models.SET_NULL, blank=True, null=True)
+
+    def __str__(self):
+        return '%s %s' % (self.user, self.semester)
+
+class Student_Course_Reg(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    subject = models.ForeignKey(Subjects, on_delete=models.SET_NULL, blank=True, null=True)
+    section = models.ForeignKey(Sections, on_delete=models.SET_NULL, blank=True, null=True)
+
+    def __str__(self):
+        return '%s %s' % (self.user, self.subject)
+
 class user_login_details(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
@@ -189,6 +213,7 @@ class LeaveReportStudent(models.Model):
 
 class LeaveReportStaff(models.Model):
     id = models.AutoField(primary_key=True)
+    staff_id = models.ForeignKey(Staffs, on_delete=models.SET_NULL, blank=True, null=True)
     leave_date = models.CharField(max_length=50)
     leave_message = models.TextField()
     leave_status = models.IntegerField(default=0)
