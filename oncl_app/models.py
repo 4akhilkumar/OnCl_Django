@@ -6,11 +6,15 @@ from django.contrib.auth.models import User
 # Create your models here.
 BRANCH_CHOICES = [
     ("","Branch Name"),
-    ("CSE","Computer Science and Engineering"),
-    ("AE","Aerospace/aeronautical Engineering"),
-    ("ChE","Chemical Engineering"),
-    ("CE","Civil Engineering"),
-    ("ECE","Electronics and Communications Engineering"),
+    ("Computer Science and Engineering","Computer Science and Engineering"),
+    ("Aerospace/aeronautical Engineering","Aerospace/aeronautical Engineering"),
+    ("Chemical Engineering","Chemical Engineering"),
+    ("Civil Engineering","Civil Engineering"),
+    ("Electronics and Communications Engineering","Electronics and Communications Engineering"),
+    ("Electrical and Electronics Engineering","Electrical and Electronics Engineering"),
+    ("Petroleum Engineering","Petroleum Engineering"),
+    ("Bio Technology","Bio Technology"),
+    ("Mechanical Engineering","Mechanical Engineering"),
 ]
 
 class Semester(models.Model):
