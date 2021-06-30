@@ -639,12 +639,14 @@ def edit_staff(request, staff_id):
 @allowed_users(allowed_roles=['Admin','Faculty','Student'])
 def view_staff(request, staff_id):
     staff = Staffs.objects.get(user=staff_id)
-
+    ssp = Staff_Social_Profile.objects.filter(user=staff_id)
+    print("ssp", ssp)
     context = {
         "staff": staff,
-        "id": staff_id
+        "id": staff_id,
+        "ssp":ssp
     }
-    return render(request, "oncl_app/profile_templates/admin_faculty_view_profile.html", context)
+    return render(request, "oncl_app/profile_templates/faculty_profile.html", context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
