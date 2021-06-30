@@ -69,6 +69,7 @@ urlpatterns = [
     path('add_subject/', views.add_subject, name="add_subject"),
     path('add_subject_save/', views.add_subject_save, name="add_subject_save"),
     path('manage_subject/', views.manage_subject, name="manage_subject"),
+    path('view_each_subject/<subject_id>/', views.view_each_subject, name="view_each_subject"),
     path('edit_subject/<subject_id>/', views.edit_subject, name="edit_subject"),
     path('edit_subject_save/', views.edit_subject_save, name="edit_subject_save"),
     path('delete_subject/<subject_id>/', views.delete_subject, name="delete_subject"),
@@ -159,7 +160,20 @@ urlpatterns = [
     path('save_attendance/',views.save_attendance,name="save_attendance"),
     path('show_subject/',views.show_subject,name="show_subject"),
 
+    path('student_sem_reg/',views.student_sem_reg,name="student_sem_reg"),
+    path('student_sem_reg_save/',views.student_sem_reg_save,name="student_sem_reg_save"),
+
+    path('student_course_reg/',views.student_course_registration,name="student_course_reg"),
+    path('student_course_reg_save/',views.student_course_reg_save,name="student_course_reg_save"),
+
     path('student_info_csv/',views.student_info_csv,name='student_info_csv'),
+    path('staff_info_csv/',views.staff_info_csv,name='staff_info_csv'),
+
+    path('importstudent/', views.bulk_upload_students, name='importstudent'),
+    path('importstudent_save/', views.bulk_upload_students_save, name='importstudent_save'),
+
+    path('bulk_upload_staffs/', views.bulk_upload_staffs, name='bulk_upload_staffs'),
+    path('bulk_upload_staffs_save/', views.bulk_upload_staffs_save, name='bulk_upload_staffs_save'),
 
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     # re_path(r'^.*\.*', views.pages, name='pages'),
