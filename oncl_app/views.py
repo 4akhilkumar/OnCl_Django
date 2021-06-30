@@ -2045,9 +2045,11 @@ def bulk_upload_students_save(request):
                         branch=row['Branch']
                     )
                 ])
-        return HttpResponse('Bulk Upload Done.')
+        messages.success(request, "Student Record(s) Imported Successfully.")
+        return redirect('manage_student')
     else:
-        return HttpResponse('Something Went Wrong!')
+        messages.success(request, "Failed to Import Bulk Records!.")
+        return redirect('manage_student')
 
 def bulk_upload_staffs(request):
     return render(request, 'oncl_app/testing2.html')
@@ -2060,7 +2062,7 @@ def bulk_upload_staffs_save(request):
             staff_user.append(i.username)
             staff_user.append(i.email)
 
-        paramFile = io.TextIOWrapper(request.FILES['studentfile'].file)
+        paramFile = io.TextIOWrapper(request.FILES['staff_file'].file)
         data = pd.read_csv(paramFile)
         data.drop_duplicates(subset ="Username", keep = 'first', inplace = True)
 
@@ -2068,8 +2070,8 @@ def bulk_upload_staffs_save(request):
             if str(row['Username']) not in staff_user and str(row['Email']) not in staff_user:
                 newuser = User.objects.create_user(
                     username=row['Username'],
-                    first_name=row['First_Name'],
-                    last_name=row['Last_Name'],
+                    first_name=row['First Name'],
+                    last_name=row['Last Name'],
                     email=row['Email'],
                     password=row['Password'],
                 )
@@ -2100,6 +2102,8 @@ def bulk_upload_staffs_save(request):
                         qualification=row['Qualification']
                     )
                 ])
-        return HttpResponse('Bulk Upload Done.')
+        messages.success(request, "Faculty Record(s) Imported Successfully.")
+        return redirect('manage_staff')
     else:
-        return HttpResponse('Something Went Wrong!')
+        messages.success(request, "Failed to Import Bulk Records!.")
+        return redirect('manage_staff')
