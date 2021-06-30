@@ -991,6 +991,29 @@ def student_course_registration(request):
     }
     return render(request, "oncl_app/Student_templates/my_courses.html", context)
 
+def student_course_reg_save(request):
+    if request.method != "POST":
+        messages.error(request, "Method Not Allowed!")
+        return redirect('student_sem_reg')
+    else:
+        course_id = request.POST.get('course')
+        student_id = request.user.id
+        student = User.objects.get(id=student_id)
+        course = Subjects.objects.get(id=course_id)
+        section_id = request.POST.get('section')
+        section = Sections.objects.get(id=section_id)
+
+        try:
+            ssr = Student_Course_Reg(user=student, subject=course, section=section)
+            ssr.save()
+            messages.success(request, "Course Registration Successfully.")
+            print("Course Registration Successfully.")
+            return redirect('student_course_reg')
+        except:
+            messages.error(request, "Course Registration Failed!")
+            print("Course Registration Failed!")
+            return redirect('student_course_reg')
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
 def add_announcement(request):
