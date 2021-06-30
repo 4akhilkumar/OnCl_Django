@@ -1,0 +1,13 @@
+<h4>Semester Registration</h4>
+<form action="{% url 'student_sem_reg_save' %}" method="POST">
+    {% csrf_token %}
+    <section>
+        <label for="Semester">Semester</label>
+        <select name="semester" id="id_semester">
+            {% for i in semester %}
+            <option value="{{i.id}}">{{i}}</option>
+            {% endfor %}
+        </select>
+    </section>
+    <input type="submit" name="submit" id="id_submit">
+</form>
