@@ -971,6 +971,26 @@ def student_sem_reg_save(request):
             print("Semester Registration Failed!")
             return redirect('student_sem_reg')
 
+def student_course_registration(request):
+    current_user  = request.user.id
+    ssr = Student_Sem_Reg.objects.filter(user = current_user)
+    user = User.objects.get(id=current_user)
+    student = Students.objects.get(user=user)
+    student_semester = Student_Sem_Reg.objects.get(user=user)
+
+    registered_courses = Student_Course_Reg.objects.filter(user = request.user.id)
+    
+    branch = student.branch
+    semester = student_semester.semester
+    branch_semester_subjects = Subjects.objects.filter(branch=branch, semester=semester)
+
+    context = {
+        "ssr":ssr,
+        "branch_semester_subjects":branch_semester_subjects,
+        "registered_courses":registered_courses
+    }
+    return render(request, "oncl_app/Student_templates/my_courses.html", context)
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
 def add_announcement(request):
