@@ -532,13 +532,15 @@ def manage_subject(request):
 @allowed_users(allowed_roles=['Admin'])
 def edit_subject(request, subject_id):
     subject = Subjects.objects.get(id=subject_id)
-    student_form = StudentsForm()
+    semester = Semester.objects.all()
+    semester_form = SemesterForm()
     staffs = User.objects.filter(groups='2')
     context = {
         "subject": subject,
         "staffs": staffs,
         "id": subject_id,
-        "student_form": student_form,
+        "semester_form": semester_form,
+        "semester":semester
     }
     return render(request, 'oncl_app/admin_templates/subject_templates/edit_subject.html', context)
 
