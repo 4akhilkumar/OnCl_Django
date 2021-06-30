@@ -51,7 +51,7 @@
         <form class="form-detail" action="{% url 'edit_student_save' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 			<div class="form-left">
-				<h2>User Registration</h2>
+				<h2>User Info. Modification</h2>
 				<div class="form-group">
 					<div class="form-row form-row-3">
 						<input type="text" name="first_name" value="{{student.user.first_name}}" id="id_first_name" class="input-text" placeholder="First Name" required>
@@ -104,7 +104,7 @@
 					<div class="form-row form-row-3">
 						<select name="branch" required>
 							{% for x,y in student_form.fields.branch.choices %}
-							<option value="{{ x }}" {% if x == student.branch.id %} selected {% endif %}>{{ y }}</option>
+							<option value="{{ x }}" {% if x == student.branch %} selected {% endif %}>{{ y }}</option>
 							{% endfor %}
 						</select>
 						<span class="select-btn">
