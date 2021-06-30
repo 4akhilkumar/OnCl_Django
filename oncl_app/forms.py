@@ -32,8 +32,10 @@ class ContactForm(forms.Form):
 class StaffsForm(forms.ModelForm):
     class Meta:
         model = Staffs
+        blood_group = forms.ChoiceField(choices = BLOOD_GROUP_CHOICES)
+        mother_tounge = forms.ChoiceField(choices = MOTHER_TOUNGE_CHOICES)
         branch = forms.ChoiceField(choices = BRANCH_CHOICES)
-        fields = ('gender','phone','address','branch','qualification','designation','profile_pic')
+        fields = ('gender','father_name','father_occ','father_phone','mother_name','mother_tounge','dob','blood_group','phone','dno_sn','zip_code','city_name','state_name','country_name','profile_pic','branch','qualification','designation')
 
 class StudentsForm(forms.ModelForm):
     class Meta:
