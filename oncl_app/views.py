@@ -14,9 +14,9 @@ from django import template
 import json
 import datetime as pydt
 import requests
-import csv
 import csv, io
 import pandas as pd
+import socket
 
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -198,10 +198,10 @@ def save_login_details(request, user_name, ip_addr):
 
     res = re.findall(r'\(.*?\)', user_agent)
     OS_Details = res[0][1:-1]
-
+    device_name = socket.gethostname()
     uid = User.objects.get(username=user_name)
     try:
-        sld = user_login_details(ip_addr=ip_addr, user=uid, os_details=OS_Details, browser_details=browser)
+        sld = user_login_details(ip_addr=ip_addr, user=uid, os_details=OS_Details, browser_details=browser, device_name=device_name)
         sld.save()
     except:
         return #
