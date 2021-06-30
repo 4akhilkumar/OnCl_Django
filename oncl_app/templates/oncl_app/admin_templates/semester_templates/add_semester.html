@@ -68,8 +68,9 @@ input, textarea, .rs-select2 .select2-container .select2-selection--single {
                                 </div>
                             </div>
                         </div>
-                        <div>
+                        <div style="display: flex; flex-wrap: wrap; flex-direction: row; gap:10px">
                             <button class="btn btn--radius-2 btn--red" type="submit">Create Semester</button>
+                            <a href="{% url 'manage_semester' %}" style="color: #FFF; font-weight: 600; background-color: #757575; border-radius: 8px;" aria-label="back to manage semester" class="btn">Back</a>
                         </div>
                     </form>
                 </div>
