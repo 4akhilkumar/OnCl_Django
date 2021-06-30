@@ -550,12 +550,17 @@ def edit_subject_save(request):
     else:
         subject_id = request.POST.get('subject_id')
         subject_name = request.POST.get('subject')
+        desc = request.POST.get('desc')
         branch = request.POST.get('branch')
+        semester_id = request.POST.get('semester')
+        semester = Semester.objects.get(id=semester_id)
         staff_id = request.POST.get('staff')
 
         try:
             subject = Subjects.objects.get(id=subject_id)
             subject.subject_name = subject_name
+            subject.desc = desc
+            subject.semester = semester
             subject.branch = branch
             staff = User.objects.get(id=staff_id)
             subject.staff_id = staff
