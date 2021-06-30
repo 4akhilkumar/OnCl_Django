@@ -404,9 +404,9 @@ def manage_semester(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def add_branch(request):
-    branches = Branches.objects.all()
+    branch_form = BranchForm()
     context = {
-        "branches":branches
+        "branch_form":branch_form
     }
     return render(request, "oncl_app/admin_templates/branch_templates/add_branch.html", context)
 
