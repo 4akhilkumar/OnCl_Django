@@ -846,8 +846,8 @@ def edit_student_save(request):
         city_name = request.POST.get('city_name')
         state_name = request.POST.get('state_name')
         country_name = request.POST.get('country_name')
-        branch = Branches.objects.get(id=branch)
         branch = request.POST.get('branch')
+        # branch = Branches.objects.get(branch=branch)
 
         if 'profile_pic' in request.FILES:
             print("YES")
