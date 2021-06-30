@@ -528,6 +528,16 @@ def manage_subject(request):
     }
     return render(request, 'oncl_app/admin_templates/subject_templates/manage_subject.html', context)
 
+def view_each_subject(request, subject_id):
+    subject = Subjects.objects.get(id=subject_id)
+    section = Sections.objects.all()
+
+    context = {
+        "subject":subject,
+        "section":section
+    }
+    return render(request, 'oncl_app/admin_templates/subject_templates/view_each_subject.html', context)
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def edit_subject(request, subject_id):
