@@ -653,43 +653,57 @@ def edit_staff_save(request):
         return HttpResponse("<h2>Method Not Allowed</h2>")
     else:
         staff_id = request.POST.get('staff_id')
-        username = request.POST.get('username')
         email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         gender = request.POST.get('gender')
+        father_name = request.POST.get('father_name')
+        father_occ = request.POST.get('father_occ')
+        father_phone = request.POST.get('father_phone')
+        mother_name = request.POST.get('mother_name')
+        mother_tounge = request.POST.get('mother_tounge')
+        dob = request.POST.get('dob')
+        blood_group = request.POST.get('blood_group')
         phone = request.POST.get('phone')
-        qualification = request.POST.get('qualification')
+        dno_sn = request.POST.get('dno_sn')
+        zip_code = request.POST.get('zip_code')
+        city_name = request.POST.get('city_name')
+        state_name = request.POST.get('state_name')
+        country_name = request.POST.get('country_name')
         branch = request.POST.get('branch')
+        qualification = request.POST.get('qualification')
         desgination = request.POST.get('desgination')
-        address = request.POST.get('address')
+
 
         if 'profile_pic' in request.FILES:
-            print("YES")
             profile_pic = request.FILES['profile_pic']
-            print("If part",profile_pic)
         else:
-            print("Else Part")
             profile_pic = 'avatar.webp'
-            print("Else part",profile_pic)
-            print("NO")
 
         try:
-            # INSERTING into User Model
             user = User.objects.get(id=staff_id)
             user.first_name = first_name
             user.last_name = last_name
             user.email = email
-            user.username = username
             user.save()
             
-            # INSERTING into Staff Model
             staff_model = Staffs.objects.get(user=staff_id)
             staff_model.gender = gender
+            staff_model.father_name = father_name
+            staff_model.father_occ = father_occ
+            staff_model.father_phone = father_phone
+            staff_model.mother_name = mother_name
+            staff_model.mother_tounge = mother_tounge
+            staff_model.dob = dob
+            staff_model.blood_group = blood_group
             staff_model.phone = phone
+            staff_model.dno_sn = dno_sn
+            staff_model.zip_code = zip_code
+            staff_model.city_name = city_name
+            staff_model.state_name = state_name
+            staff_model.country_name = country_name
             staff_model.branch = branch
             staff_model.desgination = desgination
-            staff_model.address = address
             staff_model.qualification = qualification
             if profile_pic == 'avatar.webp':
                 pass
@@ -697,7 +711,6 @@ def edit_staff_save(request):
                 staff_model.profile_pic = profile_pic
             staff_model.save()
 
-            # return redirect('/edit_staff/'+staff_id)
             messages.success(request, "Faculty Info. Updated Successfully.")
             return redirect('manage_staff')
 
