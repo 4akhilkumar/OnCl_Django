@@ -46,10 +46,10 @@ class Branches(models.Model):
 class Subjects(models.Model):
     id = models.AutoField(primary_key=True)
     subject_name = models.CharField(max_length=50, unique=True)
-    branch = models.CharField(max_length=18, choices = BRANCH_CHOICES, default=1)
-    staff_id = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    branch = models.CharField(max_length=50, choices = BRANCH_CHOICES, default=1)
+    semester = models.ForeignKey(Semester, on_delete=models.SET_NULL, blank=True, null=True, default=1)
     objects = models.Manager()
 
     def __str__(self):
@@ -128,7 +128,7 @@ class Students(models.Model):
     city_name = models.CharField(max_length=50, default="Vijayawada")
     state_name = models.CharField(max_length=50, default="Andhra Pradesh")
     country_name = models.CharField(max_length=50, default="India")
-    branch = models.CharField(max_length=18, choices = BRANCH_CHOICES, default=1)
+    branch = models.CharField(max_length=50, choices = BRANCH_CHOICES, default=1)
     profile_pic = models.ImageField(null=True, blank=True, default="avatar.webp", upload_to='student/')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
