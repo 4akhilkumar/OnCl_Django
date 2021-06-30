@@ -17,3 +17,4 @@ whitenoise==5.2.0
 requests==2.25.1
 Pillow==8.2.0
 httpagentparser==1.9.1
+pandas==1.2.5
