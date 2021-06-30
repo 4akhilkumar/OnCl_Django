@@ -1,65 +1,84 @@
-{% extends "oncl_app/base.html" %}
+{% extends "oncl_app/admin_base.html" %}
 
 {% block content %}
 
 {% load static %}
 
+{% load humanize %}
+
 <title>View Faculty Info.</title>
 
 <style>  
+
+{% if staff.gender == 'Male' %}
+
+:root {
+  --light_color: #e0f2f1;
+  --dark_color: #b2dfdb;
+}
+
+{% else %}
+
+:root {
+  --light_color: #e1f5fe;
+  --dark_color: #b3e5fc;
+}
+
+{% endif %}
+
+body {
+  background-color: var(--light_color);
+}
+
+.card {
+  box-shadow: 6px 6px 0px -2px var(--dark_color);
+  border-radius: 10px;
+}
+
 .card:hover {
  transform: None;
 }
+
+.hidden{
+  display : none;
+}
+
+div.ex3 {
+  max-height: 315px;
+  overflow-y: auto;
+}
+
+@media only screen and (max-width: 992px) {
+  .custome_img {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+div.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 138px;
+}
 </style>
 
-<div class="container" style="margin-top: 40px;">
+<div class="container" style="margin-top: 50px;">
     <div class="main-body">  
           <div class="row gutters-sm">
             <div class="col-md-4 mb-3">
+              <div class="sticky">
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="{{ staff.profile_pic.url }}" alt="Staff_Profile Pic" style="border-radius: 15px;" width="200" height="200">
+                    <img class="custome_img" src="{{ staff.profile_pic.url }}" alt="staff_Profile Pic" style="border-radius: 5px; border: 2px solid #bdbdbd;" width="180" height="180">
                     <div class="mt-3">
-                      <h4>{{staff.user.first_name}}</h4>
-                      <p class="text-secondary mb-1"> Faculty </p>
-                      <p class="text-secondary mb-1"> {{staff.bio}} </p>
-                      <p class="text-muted font-size-sm"><span><a style="text-decoration: none; color: #6c757d!important;" href="https://www.google.com/maps/place/{{staff.address}}" target="_blank"><i class="fas fa-map-marked-alt"></i> {{ staff.address }}</a></span></p>
+                      <h4>{% if staff.qualification == 'Ph.D' or staff.qualification == 'PH.D' %} Dr. {% else %} {% if staff.gender == 'Male' %} Mr. {% else %} Ms. {% endif %} {% endif %} {{staff.user.last_name}} {{staff.user.first_name}}</h4>
+                      <p class="text-secondary mb-1"> {{ staff.designation|title }} </p>
+                      <p class="text-muted font-size-sm"><span><a style="text-decoration: none; color: #6c757d!important;" href="https://www.google.com/maps/place/{{staff.city_name}}" rel="noreferrer" target="_blank"><i class="fas fa-map-marked-alt"></i> {{staff.city_name}} - {{staff.zip_code}}</a></span></p>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="card mt-3">
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>Website</h6>
-                    <span class="text-secondary"><a style="text-decoration: none; color: #6c757d!important;" href="https://www.{{ staff.website_link }}">{{ staff.website_link }}</a></span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github mr-2 icon-inline"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>Github</h6>
-                    <span class="text-secondary"><a style="text-decoration: none; color: #6c757d!important;" href="https://www.github.com/{{ staff.git_link }}">{{ staff.git_link }}</a></span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 class="mb-0"><i class="fab fa-linkedin" style="font-size: 24px;"></i> &nbsp; LinkedIn</h6>
-                    <span class="text-secondary"><a style="text-decoration: none; color: #6c757d!important;" href="https://www.linkedin.com/in/{{staff.linkedin_link}}">{{staff.linkedin_link}}</a></span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 class="mb-0"><i class="fab fa-orcid" style="font-size: 24px;"></i> &nbsp; Orcid ID</h6>
-                    <span class="text-secondary"><a style="text-decoration: none; color: #6c757d!important;" href="http://www.orcid.org/{{staff.orcid_link}}">{{staff.orcid_link}}</a></span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 class="mb-0"><i class="fab fa-researchgate" style="font-size: 24px;"></i> &nbsp; Researcher ID</h6>
-                    <span class="text-secondary"><a style="text-decoration: none; color: #6c757d!important;" href="http://www.researcherid.com/rid/{{staff.researcher_link}}">{{staff.researcher_link}}</a></span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 class="mb-0"><i class="fab fa-google" style="font-size: 24px;"></i> &nbsp; Google Scholar ID</h6>
-                    <span class="text-secondary"><a style="text-decoration: none; color: #6c757d!important;" href="http://scholar.google.co.in/citations?user={{staff.gscholar_link}}">{{staff.gscholar_link}}</a></span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 class="mb-0"><i class="fab fa-microsoft" style="font-size: 24px;"></i> &nbsp; Microsoft Academic Search ID</h6>
-                    <span class="text-secondary"><a style="text-decoration: none; color: #6c757d!important;" href="https://academic.microsoft.com/#/detail/{{staff.microsoft_academic_link}}">{{staff.microsoft_academic_link}}</a></span>
-                  </li>
-                </ul>
               </div>
             </div>
             <div class="col-md-8">
@@ -88,7 +107,7 @@
                       <h6 class="mb-0">Email</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                        <a style="text-decoration: none; color: #6c757d!important;" href="mailto:{{staff.user.email}}">{{staff.user.email}}</a>
+                        <a style="text-decoration: none; color: #6c757d!important;" aria-label="staff Email Address" href="mailto:{{staff.user.email}}">{{staff.user.email}}</a>
                     </div>
                   </div>
                   <hr>
@@ -103,15 +122,6 @@
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Branch</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      {{ staff.branch }}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
                       <h6 class="mb-0">Qualification</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
@@ -121,16 +131,104 @@
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Designation</h6>
+                      <h6 class="mb-0">Branch</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      {{ staff.designation }}
+                      {{ staff.branch }}
                     </div>
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Phone</h6>
+                      <h6 class="mb-0">Social Profile</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {% for i in ssp %}
+                      <a href="https://linkedin.com/in/{{ i.linkedin }}/" style="color: #0277bd; font-weight: 600;" aria-label="staff LinkedIn Profile Link" rel="noreferrer" target="_blank"><i class="fab fa-linkedin" style="font-size: 24px;"></i></a>
+                      |
+                      <a href="https://github.com/{{ i.github }}/" style="color: #0277bd; font-weight: 600;" aria-label="staff Github Profile Link" rel="noreferrer" target="_blank"><i class="fab fa-github-square" style="font-size: 24px;"></i> </a>
+                      |
+                      <a href="http://www.orcid.org/{{ i.orcid }}/" style="color: #0277bd; font-weight: 600;" aria-label="staff Orcid Profile Link" rel="noreferrer" target="_blank"><i class="fab fa-orcid" style="font-size: 24px;"></i> </a>
+                      |
+                      <a href="http://www.researcherid.com/rid/{{ i.researcher }}/" style="color: #0277bd; font-weight: 600;" aria-label="staff Researcher Profile Link" rel="noreferrer" target="_blank"><i class="fab fa-researchgate" style="font-size: 24px;"></i> </a>
+                      |
+                      <a href="https://scholar.google.co.in/citations?user={{ i.gscholar }}/" style="color: #0277bd; font-weight: 600;" aria-label="staff Gscholar Profile Link" rel="noreferrer" target="_blank"><i class="fab fa-google" style="font-size: 24px;"></i> </a>
+                      |
+                      <a href="https://academic.microsoft.com/#/detail/{{ i.microsoft_academic }}/" style="color: #0277bd; font-weight: 600;" aria-label="staff Microsoft Academic Profile Link" rel="noreferrer" target="_blank"><i class="fab fa-microsoft" style="font-size: 24px;"></i> </a>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Father Name</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ staff.father_name }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Father Occupation</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{staff.father_occ}}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Father Ph.no</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <a style="text-decoration: none; color: #6c757d!important;" href="tel:Mobile : +91{{staff.father_phone}}">{{staff.father_phone}}</a>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Mother Name</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ staff.mother_name }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Mother Tounge</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{ staff.mother_tounge }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Your DOB</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{ staff.dob|date:"jS F, Y" }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Blood Group</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{ staff.blood_group }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Your Ph.no</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
                       <a style="text-decoration: none; color: #6c757d!important;" href="tel:Mobile : +91{{staff.phone}}">{{staff.phone}}</a>
@@ -142,33 +240,58 @@
                       <h6 class="mb-0">Address</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <span><a style="text-decoration: none; color: #6c757d!important;" href="https://www.google.com/maps/place/{{staff.address}}" target="_blank">{{ staff.address }}</a></span>
+                      <span><a style="text-decoration: none; color: #6c757d!important;" href="https://www.google.com/maps/place/{{staff.city_name}}" rel="noreferrer" target="_blank">{{ staff.dno_sn }}, {{ staff.city_name }}, {{staff.state_name}}, {{staff.country_name}} - {{staff.zip_code}}</a></span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row gutters-sm" style="justify-content: center">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h6 class="d-flex align-items-center mb-3"><i class="fab fa-github"></i> &nbsp;GitHub Status</h6>
-                    <a href="https://github.com/{{ staff.git_link }}">
-                      <img align="center" src="https://github-readme-stats.vercel.app/api?username={{ staff.git_link }}&show_icons=true" />
-                    </a>
-                  </div>
-                </div>
+
+              <div class="row gutters-sm" style="justify-content: start">
                 
-                <div class="card h-100" style="margin-top: 20px; margin-bottom: 40px;">
+                <div class="card h-100" style="margin-bottom: 40px;">
                   <div class="card-body">
-                    <h6 class="d-flex align-items-center mb-3"><i class="fas fa-code"></i> &nbsp;Coding Skills</h6>
-                    <a href="https://github.com/{{ staff.git_link }}">
-                      <img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username={{ staff.git_link }}" />
-                    </a>
+                    <h5 class="d-flex align-items-center mb-3"><i class="fas fa-flag-checkered"></i> &nbsp;Recent Login Activity</h5>
+                    <p>
+                      {% if staff.user.last_login == None %} Not Logged In Yet!
+                    </p>
+                      {% else %} 
+                    <p>Your recent login is <b>{{ staff.user.last_login|naturaltime }}.</b> </p>
+                    <p>                      
+                       You have logged in on <b>{{ staff.user.last_login|date:"l, dS F, Y" }}</b> at <b>{{ staff.user.last_login|date:"H:i:s A" }}</b>
+                    </p>
+                    <span style="color: #ec407a; cursor: pointer;" onclick="showhide()"><b>Check Complete Login Activity</b></span>
+                    <br><br>
+                    <div id="newpost" class="hidden">
+                      <div class="ex3">
+                      {% for i in sld %}
+                      <div style="margin: 0; padding: 0;">
+                       <div style="background-color: #b3e5fc; padding: 20px; border-radius: 10px; margin: 0;">
+                       <p style="margin: 0; padding: 0;">From <b>{{ i.ip_addr }}</b></p>
+                       <p style="margin: 0; padding: 0;">
+                       You have logged in on <b>{{ i.created_at|date:"l, dS F, Y" }}</b> at <b>{{ i.created_at|date:"H:i:s A" }}</b>
+                       </p>
+                      </div>
+                       <br>
+                       </div>
+                      {% endfor %}
+                      </div>
+                      </div>
+                      
+                      {% endif %}                    
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
         </div>
     </div>
+
+    <script>
+      function showhide() {
+        var div = document.getElementById("newpost");
+        div.classList.toggle('hidden');
+      }
+    </script>
 
 {% endblock %}
