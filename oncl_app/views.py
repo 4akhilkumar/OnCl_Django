@@ -634,7 +634,7 @@ def manage_staff(request):
     staffs_all = Staffs.objects.all()
     page = request.GET.get('page', 1)
     
-    paginator = Paginator(staffs_all, 11)
+    paginator = Paginator(staffs_all, 25)
     try:
         staffs = paginator.page(page)
     except PageNotAnInteger:
@@ -795,7 +795,7 @@ def manage_student(request):
     students_all = Students.objects.all()
     page = request.GET.get('page', 1)
     
-    paginator = Paginator(students_all, 11)
+    paginator = Paginator(students_all, 25)
     try:
         students = paginator.page(page)
     except PageNotAnInteger:
@@ -1060,7 +1060,7 @@ def manage_announcement(request):
     announcements_all = Announcements_news.objects.order_by('-created_at')
     page = request.GET.get('page', 1)
     
-    paginator = Paginator(announcements_all, 11)
+    paginator = Paginator(announcements_all, 25)
     try:
         announcements = paginator.page(page)
     except PageNotAnInteger:
