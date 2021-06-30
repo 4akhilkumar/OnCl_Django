@@ -635,10 +635,11 @@ def manage_staff(request):
 @allowed_users(allowed_roles=['Admin'])
 def edit_staff(request, staff_id):
     staff = Staffs.objects.get(user=staff_id)
-
+    staff_form = StaffsForm()
     context = {
         "staff": staff,
-        "id": staff_id
+        "id": staff_id,
+        "staff_form":staff_form
     }
     return render(request, "oncl_app/admin_templates/faculty_templates/edit_faculty.html", context)
 
