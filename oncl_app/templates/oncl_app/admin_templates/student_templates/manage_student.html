@@ -5,6 +5,7 @@
 {% load static %}
 
 <title>Manage Student Info.</title>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
 <style>
 a {
@@ -151,10 +152,54 @@ img {
 .img-container {
   text-align: center;
 }
+
+label {
+  background-color: #e0e0e0;
+  color: #555555;
+  padding: 0.6rem;
+  font-family: sans-serif;
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+#file-chosen {
+  margin-left: 0.3rem;
+}
 </style>
 
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body" style="text-align: center;">
+
+        <p>To import/add more number of records using a CSV File you can use <b>Bulk Upload Feature</b>
+          <div style="display: flex;justify-content: space-around;">
+            <form method="post" action="{% url 'importstudent_save' %}" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="file" name="studentfile" id="id_studentfile" required hidden/>
+              <label for="id_studentfile">Upload Bulk Student Records</label>
+              <br>
+              <span id="file-chosen"> No File Chosen </span>
+              <p style="margin-bottom: 0.5rem;"></p>
+              <button type="submit" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #000; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;"><i class="fas fa-file-csv"></i>&nbsp;<b>Import</b></button>
+            </form>
+          </div>
+          <p style="margin-bottom: 0.5rem;"></p>
+          Or to upload a few or single record without CSV File you can 
+          <p style="margin-bottom: 0.5rem;"></p>
+          <div onclick="document.location='{% url 'add_student' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+            <a href="#" style="text-decoration: none; font-size: 1rem; color: #000;"><i class="fas fa-user-graduate"></i> Add Student</a>
+          </div>
+        </p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 {% if students_all.count == 0 %}
-<div class="img-container" onclick="document.location='{% url 'add_student' %}'" style="cursor: pointer; padding-top: 40px;">
+<div class="img-container" class="img-container"  data-toggle="modal" data-target="#exampleModalCenter" style="cursor: pointer; padding-top: 40px;">
   <img src="{% static 'oncl_app/no_students.jpg' %}" style="max-height: 30rem;" alt="no_students" class="img-fluid">
 </div> 
 <div style="text-align: center; font-weight: bold; font-size: 1.4rem;">
@@ -178,8 +223,11 @@ img {
 </div>
 
 <div style="padding: 30px 10px 10px 10px; display: flex; justify-content: space-between;">
-    <div onclick="document.location='{% url 'add_student' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+    <!-- <div onclick="document.location='{% url 'add_student' %}'" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
         <a href="#" style="text-decoration: none; font-size: 1rem; color: #000;"><i class="fas fa-user-graduate"></i> Add Student</a>
+    </div> -->
+    <div data-toggle="modal" data-target="#exampleModalCenter" class="login_button" style="border-style: solid; border-width: 2px; border-color: #F1615C #4285f4 #fcc834 #76e989; cursor: pointer;color: #ffffff; display: inline-flex; background-color: #ffffff; padding: 10px; border-radius: 5px;">
+      <a href="#" style="text-decoration: none; font-size: 1rem; color: #000;"><i class="fas fa-user-graduate"></i> Add Student</a>
     </div>
     <div>
       {% include 'oncl_app/messages.html' %}
@@ -284,6 +332,14 @@ img {
       }
     });
   } );
+</script>
+
+<script>
+  const actualBtn = document.getElementById('id_studentfile');    
+  const fileChosen = document.getElementById('file-chosen');
+  actualBtn.addEventListener('change', function(){
+    fileChosen.textContent = this.files[0].name
+  })
 </script>
 
 {% endblock %}

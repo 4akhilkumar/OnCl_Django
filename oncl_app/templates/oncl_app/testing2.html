@@ -1,5 +1,0 @@
-<form method="post" action="{% url 'bulk_upload_staffs_save' %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="file" name="staff_file">
-    <button type="submit">Upload</button>
-</form>

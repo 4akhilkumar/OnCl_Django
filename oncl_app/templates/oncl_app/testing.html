@@ -1,5 +1,0 @@
-<form method="post" action="{% url 'importstudent_save' %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="file" name="studentfile">
-    <button type="submit">Upload</button>
-</form>
