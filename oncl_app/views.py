@@ -15,6 +15,7 @@ import json
 import datetime as pydt
 import requests
 import csv
+import csv, io
 import pandas as pd
 
 from django.template.loader import render_to_string
@@ -1841,6 +1842,24 @@ def student_info_csv(request):
         writer.writerow([i.user.username, i.user.first_name, i.user.last_name, i.user.email,
                         i.gender, i.father_name, i.father_occ, i.father_phone, i.mother_name, i.mother_tounge,
                         i.dob, i.blood_group, i.phone, i.dno_sn, i.zip_code, i.city_name, i.state_name, i.country_name, i.branch, i.user.last_login])
+    return response
+
+def staff_info_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=staff_info_record' + \
+        str(pydt.datetime.now()) + '.csv'
+
+    writer = csv.writer(response)
+    writer.writerow(['Username', 'First Name', 'Last Name', 'Email', 
+                    'Gender', 'Father Name', 'Father Occupation', 'Father Phone', 'Mother Name', 'Mother Tounge', 'Date of Birth',
+                    'Blood Group', 'Phone', 'Door No.', 'Zip Code', 'City Name', 'State Name', 'Country', 'Branch', 'Qualification', 'Desgination', 'Last Login'])
+    
+    staff = Staffs.objects.all()
+
+    for i in staff:
+        writer.writerow([i.user.username, i.user.first_name, i.user.last_name, i.user.email,
+                        i.gender, i.father_name, i.father_occ, i.father_phone, i.mother_name, i.mother_tounge,
+                        i.dob, i.blood_group, i.phone, i.dno_sn, i.zip_code, i.city_name, i.state_name, i.country_name, i.branch, i.qualification, i.designation, i.user.last_login])
     return response
 
 def bulk_upload_students(request):
