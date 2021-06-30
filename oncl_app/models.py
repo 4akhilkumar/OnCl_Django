@@ -24,7 +24,7 @@ class Semester(models.Model):
     )
     id = models.AutoField(primary_key=True)
     semester_mode = models.CharField(max_length=4, choices=SEM_MODE)
-    branch = models.CharField(max_length=18, choices = BRANCH_CHOICES, default=1)
+    branch = models.CharField(max_length=50, choices = BRANCH_CHOICES, default=1)
     semester_start_year = models.DateField()
     semester_end_year = models.DateField()
     objects = models.Manager()
@@ -56,7 +56,7 @@ class Subjects(models.Model):
         return '%s %s %s' % (self.subject_name, self.staff_id, self.branch)
 
 GENDER_CHOICES = [
-    ("Select Gender", "Select Gender"),
+    ("", "Select Gender"),
     ("Male", "Male"),
     ("Female", "Female"),
 ]
@@ -84,10 +84,21 @@ class Staffs(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete = models.CASCADE)
     gender = models.CharField(max_length=14, choices = GENDER_CHOICES, default=1)
+    father_name = models.CharField(max_length=100, default="Not Provided")
+    father_occ = models.CharField(max_length=100, default="Not Provided")
+    father_phone = models.CharField(max_length=10, default="9999999999")
+    mother_name = models.CharField(max_length=100, default="Not Provided")
+    mother_tounge = models.CharField(max_length=50, choices = MOTHER_TOUNGE_CHOICES, default=1)
+    dob = models.DateField(default='2000-01-01')
+    blood_group = models.CharField(max_length=18, choices = BLOOD_GROUP_CHOICES, default=1)
     phone = models.CharField(max_length=10, default="9999999999")
-    address = models.TextField(default="India")
+    dno_sn = models.CharField(max_length=100, default="A-BCD, On Earth")
+    zip_code = models.CharField(max_length=8, default="123456")
+    city_name = models.CharField(max_length=50, default="Vijayawada")
+    state_name = models.CharField(max_length=50, default="Andhra Pradesh")
+    country_name = models.CharField(max_length=50, default="India")
     qualification = models.CharField(max_length=50, default="M.Tech")
-    branch = models.CharField(max_length=18, choices = BRANCH_CHOICES, default=1)
+    branch = models.CharField(max_length=50, choices = BRANCH_CHOICES, default=1)
     designation = models.CharField(max_length=50, default="Assistant Professor")
     profile_pic = models.ImageField(null=True, blank=True, default='avatar.webp', upload_to='staffs/')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -153,7 +164,7 @@ class Staff_Social_Profile(models.Model):
     
 class user_login_details(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     ip_addr = models.CharField(max_length=100)
     os_details = models.CharField(max_length=100)
     browser_details = models.CharField(max_length=100)
@@ -165,7 +176,7 @@ class user_login_details(models.Model):
 
 class LeaveReportStudent(models.Model):
     id = models.AutoField(primary_key=True)
-    student_id = models.ForeignKey(Students, on_delete=models.CASCADE)
+    student_id = models.ForeignKey(Students, on_delete=models.SET_NULL, blank=True, null=True)
     leave_date = models.CharField(max_length=50)
     leave_message = models.TextField()
     leave_status = models.IntegerField(default=0)
@@ -178,7 +189,6 @@ class LeaveReportStudent(models.Model):
 
 class LeaveReportStaff(models.Model):
     id = models.AutoField(primary_key=True)
-    staff_id = models.ForeignKey(Staffs, on_delete=models.CASCADE)
     leave_date = models.CharField(max_length=50)
     leave_message = models.TextField()
     leave_status = models.IntegerField(default=0)
@@ -242,7 +252,7 @@ class PCS_Cloud(models.Model):
 
 class Exam(models.Model):
     id = models.AutoField(primary_key=True)
-    student_id = models.ForeignKey(Students, on_delete=models.CASCADE)
+    student_id = models.ForeignKey(Students, on_delete=models.SET_NULL, blank=True, null=True)
     exam_sub = models.CharField(max_length=50)
     ans_file = models.FileField(upload_to='answers/')
     exam_marks = models.IntegerField(default=0)
@@ -251,7 +261,7 @@ class Exam(models.Model):
 
 class Exam_ques(models.Model):
     id = models.AutoField(primary_key=True)
-    subject_id = models.ForeignKey(Subjects, on_delete=models.DO_NOTHING)
+    subject_id = models.ForeignKey(Subjects, on_delete=models.SET_NULL, blank=True, null=True)
     exam_file = models.FileField(upload_to='question/')
     objects = models.Manager()
 
@@ -259,8 +269,8 @@ class OnlineClassRoom(models.Model):
     id=models.AutoField(primary_key=True)
     room_name=models.CharField(max_length=255)
     room_pwd=models.CharField(max_length=255)
-    subject=models.ForeignKey(Subjects,on_delete=models.CASCADE)
-    started_by=models.ForeignKey(Staffs,on_delete=models.CASCADE)
+    subject=models.ForeignKey(Subjects,on_delete=models.SET_NULL, blank=True, null=True)
+    started_by=models.ForeignKey(Staffs,on_delete=models.SET_NULL, blank=True, null=True)
     is_active=models.BooleanField(default=True)
     created_on=models.DateTimeField(auto_now_add=True)
     objects=models.Manager()
