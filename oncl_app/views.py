@@ -15,6 +15,7 @@ import json
 import datetime as pydt
 import requests
 import csv
+import pandas as pd
 
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -1841,3 +1842,111 @@ def student_info_csv(request):
                         i.gender, i.father_name, i.father_occ, i.father_phone, i.mother_name, i.mother_tounge,
                         i.dob, i.blood_group, i.phone, i.dno_sn, i.zip_code, i.city_name, i.state_name, i.country_name, i.branch, i.user.last_login])
     return response
+
+def bulk_upload_students(request):
+    return render(request, 'oncl_app/testing.html')
+
+def bulk_upload_students_save(request):
+    if request.method == 'POST':
+        student_from_db = User.objects.all()
+        student_user=[]
+        for i in student_from_db:
+            student_user.append(i.username)
+            student_user.append(i.email)
+
+        paramFile = io.TextIOWrapper(request.FILES['studentfile'].file)
+        data = pd.read_csv(paramFile)
+        data.drop_duplicates(subset ="Username", keep = 'first', inplace = True)
+
+        for index, row in data.iterrows():
+            if str(row['Username']) not in student_user and str(row['Email']) not in student_user:
+                newuser = User.objects.create_user(
+                    username=row['Username'],
+                    first_name=row['First Name'],
+                    last_name=row['Last Name'],
+                    email=row['Email'],
+                    password=row['Password'],
+                )
+                Student=Group.objects.get(name='Student')
+                if row['Group'] == 'Student':
+                    Student.user_set.add(newuser)
+                    newuser.groups.add(Student)
+
+                student = Students.objects.bulk_create([
+                    Students(
+                        user_id = newuser.id,
+                        gender=row['Gender'],
+                        father_name=row['Father Name'],
+                        father_occ=row['Father Occupation'],
+                        father_phone=row['Father Phone'],
+                        mother_name=row['Mother Name'],
+                        mother_tounge=row['Mother Tounge'],
+                        dob=(row['Date of Birth'] if row['Date of Birth'] != '' else '1998-12-01'),
+                        blood_group=row['Blood Group'],
+                        phone=row['Phone'],
+                        dno_sn=row['Door No.'],
+                        zip_code=row['Zip Code'],
+                        city_name=row['City Name'],
+                        state_name=row['State Name'],
+                        country_name=row['Country'],
+                        branch=row['Branch']
+                    )
+                ])
+        return HttpResponse('Bulk Upload Done.')
+    else:
+        return HttpResponse('Something Went Wrong!')
+
+def bulk_upload_staffs(request):
+    return render(request, 'oncl_app/testing2.html')
+
+def bulk_upload_staffs_save(request):
+    if request.method == 'POST':
+        staff_from_db = User.objects.all()
+        staff_user=[]
+        for i in staff_from_db:
+            staff_user.append(i.username)
+            staff_user.append(i.email)
+
+        paramFile = io.TextIOWrapper(request.FILES['studentfile'].file)
+        data = pd.read_csv(paramFile)
+        data.drop_duplicates(subset ="Username", keep = 'first', inplace = True)
+
+        for index, row in data.iterrows():
+            if str(row['Username']) not in staff_user and str(row['Email']) not in staff_user:
+                newuser = User.objects.create_user(
+                    username=row['Username'],
+                    first_name=row['First_Name'],
+                    last_name=row['Last_Name'],
+                    email=row['Email'],
+                    password=row['Password'],
+                )
+                Faculty=Group.objects.get(name='Faculty')
+                if row['Group'] == 'Faculty':
+                    Faculty.user_set.add(newuser)
+                    newuser.groups.add(Faculty)
+
+                staff = Staffs.objects.bulk_create([
+                    Staffs(
+                        user_id = newuser.id,
+                        gender=row['Gender'],
+                        father_name=row['Father Name'],
+                        father_occ=row['Father Occupation'],
+                        father_phone=row['Father Phone'],
+                        mother_name=row['Mother Name'],
+                        mother_tounge=row['Mother Tounge'],
+                        dob=(row['Date of Birth'] if row['Date of Birth'] != '' else '1998-12-01'),
+                        blood_group=row['Blood Group'],
+                        phone=row['Phone'],
+                        dno_sn=row['Door No.'],
+                        zip_code=row['Zip Code'],
+                        city_name=row['City Name'],
+                        state_name=row['State Name'],
+                        country_name=row['Country'],
+                        branch=row['Branch'],
+                        designation=row['Desgination'],
+                        qualification=row['Qualification']
+                    )
+                ])
+        return HttpResponse('Bulk Upload Done.')
+    else:
+        return HttpResponse('Something Went Wrong!')
