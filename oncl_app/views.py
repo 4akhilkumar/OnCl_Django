@@ -949,6 +949,28 @@ def student_sem_reg(request):
         "semester":semester
     }
     return render(request, "oncl_app/Student_templates/Semester_Registration.html", context)
+
+def student_sem_reg_save(request):
+    if request.method != "POST":
+        messages.error(request, "Method Not Allowed!")
+        return redirect('student_sem_reg')
+    else:
+        semester_id = request.POST.get('semester')
+        student_id = request.user.id
+        student = User.objects.get(id=student_id)
+        semester = Semester.objects.get(id=semester_id)
+
+        try:
+            ssr = Student_Sem_Reg(user=student, semester=semester)
+            ssr.save()
+            messages.success(request, "Semester Registration Successfully.")
+            print("Semester Registration Successfully.")
+            return redirect('student_course_reg')
+        except:
+            messages.error(request, "Semester Registration Failed!")
+            print("Semester Registration Failed!")
+            return redirect('student_sem_reg')
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
 def add_announcement(request):
