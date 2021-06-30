@@ -8,7 +8,7 @@
 <link href="{% static 'oncl_app/colorlib-regform-4/css/main.css' %}" rel="stylesheet" media="all">
 <link href="{% static 'oncl_app/colorlib-regform-4/vendor/mdi-font/css/material-design-iconic-font.min.css' %}" rel="stylesheet" media="all">
 
-<title>Add Subject | OnCl - Edu. Cloud</title>
+<title>Edit Subject Info. | OnCl - Edu. Cloud</title>
 
 <style>
 input, textarea, .rs-select2 .select2-container .select2-selection--single {
@@ -39,13 +39,31 @@ input, textarea, .rs-select2 .select2-container .select2-selection--single {
                             </div>
                         </div>
                         <div class="input-group">
+                            <div class="input-group">
+                                <label class="label"><i class="fas fa-align-left"></i> Description</label>
+                                <textarea class="input--style" name="desc" placeholder="Describe about the course..." id="id_desc" style="width: 100%; min-height: 150px;" required>{{ subject.desc }}</textarea>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="label"><i class="fas fa-school"></i> Semester</label>
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search" style="width: 600px;">
+                                    <select name="semester" required>
+                                        {% for i in semester %}
+                                        <option value="{{ i.id }}" {% if i.id == subject.semester.id %} selected {% endif %}>{{ i }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
                             <label class="label"><i class="fas fa-code-branch"></i> Branch</label>
                             <div class="input-group">
                                 <div class="rs-select2 js-select-simple select--no-search" style="width: 600px;">
                                     <select name="branch" id="id_branch" required>
-                                        <option value="{{subject.branch}}">* {{subject.branch}}</option>
-                                        {% for x,y in student_form.fields.branch.choices %}
-                                        <option value="{{ x }}" {% if student_form.fields.branch.value == x %} selected {% endif %}>{{ y }}</option>
+                                        {% for x,y in semester_form.fields.branch.choices %}
+                                        <option value="{{ x }}" {% if x == subject.branch %} selected {% endif %}>{{ y }}</option>
                                         {% endfor %}
                                     </select> 
                                     <div class="select-dropdown"></div>
@@ -57,9 +75,8 @@ input, textarea, .rs-select2 .select2-container .select2-selection--single {
                             <div class="input-group">
                                 <div class="rs-select2 js-select-simple select--no-search" style="width: 600px;">
                                     <select name="staff">
-                                        <option value="{{subject.staff_id.id}}">* {{subject.staff_id.first_name}} {{subject.staff_id.last_name}}</option>
                                         {% for x in staffs %}
-                                        <option value="{{ x.id }}" {% if staffs.id == x %} selected {% endif %}>{{ x.first_name }} {{ x.last_name }}</option>
+                                        <option value="{{ x.id }}" {% if subject.staff_id.id == x.id %} selected {% endif %}>{{ x.username }} {{ x.first_name }} {{ x.last_name }}</option>
                                         {% endfor %}
                                     </select>
                                     <div class="select-dropdown"></div>
