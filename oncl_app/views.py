@@ -884,7 +884,7 @@ def edit_student_save(request):
             student_model.city_name = city_name
             student_model.state_name = state_name
             student_model.country_name = country_name
-            student_model.branch = branch            
+            student_model.branch = branch
 
             if profile_pic == 'avatar.webp':
                 pass
