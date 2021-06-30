@@ -13,6 +13,11 @@ class CreateUserForm(UserCreationForm):
 class PositionForm(forms.Form):
     position = forms.CharField()
 
+class BranchForm(forms.Form):
+    model = Branches
+    branch = forms.ChoiceField(choices = BRANCH_CHOICES)
+    fields = ['branch']
+
 class SemesterForm(forms.Form):
     SEM_MODE = (
         ('ODD','ODD'),
