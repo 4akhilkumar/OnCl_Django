@@ -2048,7 +2048,7 @@ def bulk_upload_students_save(request):
         messages.success(request, "Student Record(s) Imported Successfully.")
         return redirect('manage_student')
     else:
-        messages.success(request, "Failed to Import Bulk Records!.")
+        messages.error(request, "Failed to Import Bulk Records!.")
         return redirect('manage_student')
 
 def bulk_upload_staffs(request):
@@ -2105,5 +2105,5 @@ def bulk_upload_staffs_save(request):
         messages.success(request, "Faculty Record(s) Imported Successfully.")
         return redirect('manage_staff')
     else:
-        messages.success(request, "Failed to Import Bulk Records!.")
+        messages.error(request, "Failed to Import Bulk Records!.")
         return redirect('manage_staff')
