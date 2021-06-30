@@ -207,7 +207,7 @@ img {
       {% for student in students %}
       <tr ondblclick="document.location='{% url 'view_student' student.user.id %}'">
         <td data-label="ID" class="inlined">{{ student.user.username }}</td>
-        <td data-label="Full Name">{{ student.user.first_name }} {{ student.user.last_name }}</td>
+        <td data-label="Full Name">{{ student.user.first_name|title }} {{ student.user.last_name|title }}</td>
         <td data-label="Gender">{{ student.gender }}</td>
         <td data-label="Branch">{{ student.branch }}</td>
         <td data-label="Email"><a class="a_tags" href="mailto:{{ student.user.email }}">{{ student.user.email }}</a></td>
