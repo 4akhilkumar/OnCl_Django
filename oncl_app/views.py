@@ -149,8 +149,16 @@ def login_page(request):
         #     messages.warning(request, 'You must enable your GPS inorder to login.')
         #     return redirect('login')
 
-        user_name = username
-        save_login_details(request, user_name, ip_addr)
+        existing_user_records = User.objects.all()
+        list_existing_user_records = []
+        for i in existing_user_records:
+            list_existing_user_records.append(i.username)
+
+        if username not in list_existing_user_records:
+            messages.error(request, 'No Such Account Exist!')
+            return redirect('login')
+        else:
+            save_login_details(request, username, ip_addr)
 
         if user is not None:
             login(request, user)
@@ -171,8 +179,7 @@ def login_page(request):
         else:
             messages.warning(request, 'Username or Password is Incorrect!')
 
-    context = {}
-    return render(request, 'oncl_app/login_register/login.html', context)
+    return render(request, 'oncl_app/login_register/login.html')
 
 def logoutUser(request):
     logout(request)
