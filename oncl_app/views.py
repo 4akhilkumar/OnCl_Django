@@ -200,13 +200,12 @@ def save_login_details(request, user_name, ip_addr):
 
     res = re.findall(r'\(.*?\)', user_agent)
     OS_Details = res[0][1:-1]
-    device_name = socket.gethostname()
     uid = User.objects.get(username=user_name)
     try:
-        sld = user_login_details(ip_addr=ip_addr, user=uid, os_details=OS_Details, browser_details=browser, device_name=device_name)
+        sld = user_login_details(ip_addr=ip_addr, user=uid, os_details=OS_Details, browser_details=browser)
         sld.save()
-    except:
-        return #
+    except Exception as e:
+        return e
 
 @unauthenticated_user
 def dashboard_page(request):
@@ -1998,9 +1997,6 @@ def staff_info_csv(request):
                         i.dob, i.blood_group, i.phone, i.dno_sn, i.zip_code, i.city_name, i.state_name, i.country_name, i.branch, i.qualification, i.designation, i.user.last_login])
     return response
 
-def bulk_upload_students(request):
-    return render(request, 'oncl_app/testing.html')
-
 def bulk_upload_students_save(request):
     if request.method == 'POST':
         student_from_db = User.objects.all()
@@ -2052,9 +2048,6 @@ def bulk_upload_students_save(request):
     else:
         messages.error(request, "Failed to Import Bulk Records!.")
         return redirect('manage_student')
-
-def bulk_upload_staffs(request):
-    return render(request, 'oncl_app/testing2.html')
 
 def bulk_upload_staffs_save(request):
     if request.method == 'POST':
