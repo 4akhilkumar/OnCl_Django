@@ -42,7 +42,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 def te_page(request):
-    return render(request, 'oncl_app/password_reset/password_reset_email.html')
     import socket
     import platform
     print(platform.node())
