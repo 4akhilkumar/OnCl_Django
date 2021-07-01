@@ -169,10 +169,7 @@ urlpatterns = [
     path('student_info_csv/',views.student_info_csv,name='student_info_csv'),
     path('staff_info_csv/',views.staff_info_csv,name='staff_info_csv'),
 
-    path('importstudent/', views.bulk_upload_students, name='importstudent'),
     path('importstudent_save/', views.bulk_upload_students_save, name='importstudent_save'),
-
-    path('bulk_upload_staffs/', views.bulk_upload_staffs, name='bulk_upload_staffs'),
     path('bulk_upload_staffs_save/', views.bulk_upload_staffs_save, name='bulk_upload_staffs_save'),
 
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
