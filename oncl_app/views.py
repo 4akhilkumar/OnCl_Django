@@ -48,8 +48,11 @@ def te_page(request):
     platform_name = platform.node()
     socket_name = socket.gethostname()
     socket_name2 = socket.getfqdn()
+    import os.path
+    homedir = os.path.expanduser("~")
+    print(homedir)
     context = {
-        'platform_name':platform_name,
+        'platform_name':homedir,
         'socket_name':socket_name,
         'socket_name2':socket_name2,
     }
