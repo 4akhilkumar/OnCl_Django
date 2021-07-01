@@ -121,7 +121,8 @@ def login_page(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        ip_addr = request.META['HTTP_X_FORWARDED_FOR']
+        # ip_addr = request.META['HTTP_X_FORWARDED_FOR']
+        ip_addr = request.POST.get('ip_addr')
         longitude = request.POST.get('longitude')
         latitude = request.POST.get('latitude')
         location = request.POST.get('location')
