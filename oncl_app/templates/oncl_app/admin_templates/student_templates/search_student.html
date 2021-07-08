@@ -191,7 +191,7 @@ img {
   <table>
       <thead>
         <tr>
-          <th scope="col">ID</th>
+          <th scope="col">University ID</th>
           <th scope="col">Full Name</th>            
           <th scope="col">Gender</th>
           <th scope="col">Branch</th>
@@ -205,9 +205,9 @@ img {
       <tbody>
       {% endif %}
       {% for student in students %}
-      <tr ondblclick="document.location='{% url 'view_student' student.user.id %}'">
-        <td data-label="ID" class="inlined">{{ student.user.username }}</td>
-        <td data-label="Full Name">{{ student.user.first_name|title }} {{ student.user.last_name|title }}</td>
+      <tr>
+        <td data-label="University ID" class="inlined">{{ student.user.username }}</td>
+        <td data-label="Full Name">{{ student.user.last_name|title }} {{ student.user.first_name|title }}</td>
         <td data-label="Gender">{{ student.gender }}</td>
         <td data-label="Branch">{{ student.branch }}</td>
         <td data-label="Email"><a class="a_tags" href="mailto:{{ student.user.email }}">{{ student.user.email }}</a></td>
