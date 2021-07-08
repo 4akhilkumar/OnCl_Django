@@ -205,7 +205,7 @@ label {
     <table>
         <thead>
           <tr>
-            <th scope="col">ID</th>
+            <th scope="col">University ID</th>
             <th scope="col">Full Name</th>
             <th scope="col">Email</th>
             <th scope="col">Gender</th>
@@ -218,8 +218,8 @@ label {
         {% endif %}
         {% for staff in staffs %}
           <tr>
-            <td data-label="ID">{{ staff.user.username }}</td>
-            <td data-label="First Name">{{staff.user.first_name}} {{ staff.user.last_name }}</td>
+            <td data-label="University ID">{{ staff.user.username }}</td>
+            <td data-label="First Name">{{ staff.user.last_name|title }} {{staff.user.first_name|title}}</td>
             <td data-label="Email"><a href="mailto:{{ staff.user.email }}">{{ staff.user.email|truncatechars:18 }}</a></td>
             <td data-label="Gender">{{ staff.gender }}</td>
             <td data-label="Address">{{ staff.city_name }}</td>
