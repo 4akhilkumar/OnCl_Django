@@ -151,7 +151,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = '4projtest@gmail.com'
-EMAIL_HOST_PASSWORD = 'gsfwjlthbinuvkda'
+EMAIL_HOST_PASSWORD = 'nhevnvnhhfejbzyn'
 
 from django.contrib.messages import constants as messages
 from django.contrib.messages import constants as message_constants
