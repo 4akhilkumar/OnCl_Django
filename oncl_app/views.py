@@ -1381,7 +1381,7 @@ def search_announcements(request):
         now = pydt.datetime.now()
         query = request.POST['search']
         announcements = Announcements_news.objects.filter(
-            Q(sub_an__contains=query) | Q(what_an__contains=query) | Q(an_by__contains=query) | 
+            Q(sub_an__contains=query) | Q(what_an__contains=query) | Q(user__first_name__contains=query) | 
             Q(created_at__contains=query) | Q(updated_at__contains=query))
         now1 = pydt.datetime.now()
         cal_time = (now1 - now).total_seconds()
