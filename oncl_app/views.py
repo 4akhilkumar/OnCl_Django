@@ -1395,14 +1395,26 @@ def search_faculty(request):
         now = pydt.datetime.now()
         query = request.POST['search']
         staff = Staffs.objects.filter(
-             Q(user__first_name__contains=query) | Q(user__last_name__contains=query) |
+            Q(user__first_name__contains=query) | Q(user__last_name__contains=query) |
             Q(user__email__contains=query) | Q(user__username__contains=query) |
-            Q(gender__contains=query) | Q(address__contains=query))
+            Q(gender__contains=query) | Q(father_name__contains=query) |
+            Q(father_occ__contains=query) | Q(father_phone__contains=query) |
+            Q(mother_name__contains=query) | Q(mother_tounge__contains=query) |
+            Q(dob__contains=query) | Q(blood_group__contains=query) |
+            Q(phone__contains=query) | Q(dno_sn__contains=query) |
+            Q(zip_code__contains=query) | Q(city_name__contains=query) |
+            Q(state_name__contains=query) | Q(country_name__contains=query) |
+            Q(designation__contains=query) | Q(qualification__contains=query) |
+            Q(branch__contains=query))
 
         now1 = pydt.datetime.now()
         cal_time = (now1 - now).total_seconds()
-
-        return render(request, 'oncl_app/admin_templates/faculty_templates/search_faculty.html', {'staffs': staff, 'cal_time':cal_time, 'query':query})
+        context = {
+            'staffs': staff,
+            'cal_time':cal_time,
+            'query':query,
+        }
+        return render(request, 'oncl_app/admin_templates/faculty_templates/search_faculty.html', context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
