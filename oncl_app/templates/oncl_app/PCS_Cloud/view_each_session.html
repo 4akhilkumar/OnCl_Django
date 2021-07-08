@@ -1,29 +1,467 @@
-{{session.session_id}}
-<br>
-{{session.session_name}}
-<br>
-{{session.session_author}}
-<br>
-{{session.session_pub_date|date:"Y-m-d"}}
-<br>
-{{session.session_desc}}
-<br>
-{{session.session_pic.url}}
-<br>
-{{session.session_file.url}}
+{% extends "oncl_app/admin_base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block content %}
+
+{% load static %}
+
+{% load humanize %}
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testing Webpage</title>
+<style>
+  .main_section {
+    display: flex;
+    justify-content: center;
+  }
+
+  .main_section {
+    padding-top: 1%;
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+
+  .video_panel {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .inside_video_panel {
+    display: flex; 
+    flex-direction: column; 
+    flex-wrap: nowrap;
+    width: 140%;
+  }
+
+  .session_details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .session_name {
+    font-family: 'Rubik', sans-serif;
+    margin-top: 1rem;
+  }
+
+  .session_time_period {
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0000008a;
+  }
+
+  #upload_user_avatar {
+    border-radius: 50%;
+    width: 50px;
+  }
+
+  .about_upload_user {
+    display: flex;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    flex-direction: column;
+  }
+
+  .about_current_user {
+    display: flex;
+    gap: 10px;
+  }
+
+  .user_designation {
+    font-size: 1rem;
+  }
+
+  .user_avatar {
+    display: flex;
+  }
+
+  .about_current_session_user {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .current_session_description {
+    font-size: 1rem;
+  }
+
+  .about_user {
+    font-size: 1rem;
+    font-family: 'Rubik', sans-serif;
+    cursor: pointer;
+  }
+
+  .about_user:hover {
+    color: #6c757d;
+  }
+
+  .current_session_details {
+    display: flex;
+    margin-top: 10px;
+    padding-left: 3.5rem;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .session_tags {
+    font-size: 0.8rem;
+    color: #007bff;
+    font-weight: 600;
+  }
+
+  .other_options {
+    margin-top: 10px;
+  }
+
+  .other_options, .other_options_a {
+    font-size: 1rem;
+    color: #03030391;
+    font-weight: 600;
+  }
+
+  .recommend_videos {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .recommend_video {
+    display: flex;
+    gap: 10px;
+  }
+
+  :root {
+    --yt-link-line-height: 2rem;
+    --yt-link-letter-spacing: .25px;
+  }
+
+  .session_title {
+    font-family: 'Quicksand';
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: #030303;
+    /* max-height: calc(2 * var(--yt-link-line-height, 1.6rem));
+    line-height: var(--yt-link-line-height, 1.6rem); */
+    letter-spacing: var(--yt-link-letter-spacing, normal);
+  }
+
+  .session_description {
+    font-family: 'Quicksand';
+    font-size: 0.9rem;
+  }
+
+  .space_line {
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+    border: 0;
+    border-top: 1px solid rgba(0,0,0,.1);
+  }
+
+  .pub_date, .upload_date {
+    font-weight: 600;
+    color: #0000008a;
+    font-size: 0.8rem;
+  }
+
+  .details_of_session {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: stretch;
+    align-content: flex-start;
+  }
+
+  video {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    outline: none;
+  }
+
+  #session_pic {
+    border-radius: 5px;
+  }
+
+  h1, h2, h3 ,p {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: start;
+  }
+
+  button {
+    background: #6c757d2e;
+    outline: none;
+    border: 0;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+  } 
+
+  @media only screen and (max-width: 1441px) {
+    video {
+      width: 100%;
+      height: 100%;
+    }
+    .main_section {
+      padding-top: 1%;
+      padding-left: 4%;
+      padding-right: 4%;
+    }
+    .video_panel {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-start;
+    }
+    #session_pic {
+      height: 150px;
+      width: 200px;
+    }
+  }
+
+  @media only screen and (max-width: 769px) {
+    video {
+      width: 100%;
+      height: 100%;
+    }
+    .main_section {
+      padding-top: 1%;
+      padding-left: 1%;
+      padding-right: 1%;
+    }
+    .video_panel {
+      display: flex;
+      justify-content: flex-start;
+    }
+    #session_pic {
+      height: 150px;
+      width: 200px;
+    }
+  } 
+
+  @media only screen and (max-width: 426px) {
+    video {
+      width: 100%;
+      height: 100%;
+    }
+    .main_section {
+      padding-top: 1%;
+      padding-left: 1%;
+      padding-right: 1%;
+    }
+    .video_panel {
+      display: flex;
+      justify-content: flex-start;
+    }
+    .session_title {
+      font-size: 0.8rem;
+    }
+    .pub_date, .upload_date {
+      font-size: 0.6rem;
+    }
+    #session_pic {
+      height: 100px;
+      width: 125px;
+    }
+    .session_name {
+      font-size: 1.2rem;
+    }
+    .session_time_period {
+      font-size: 0.8rem;
+    }
+    .hide_session_description {
+      font-size: 0.6rem;
+    }
+    .other_options_a {
+      font-size: 0.8rem;
+    }
+    .current_session_description {
+      font-size: 0.8rem;
+    }
+  } 
+</style>
 </head>
+  
 <body>
-    <video width="400" controls>
-        <source src="{{session.session_file.url}}" type="video/mp4">
-        Your browser does not support HTML video.
-    </video>
+
+<div class="main_section">
+  <div class="video_section">
+    <div class="video_panel">
+      <div class="inside_video_panel">
+        <video
+        controls
+        width="320"
+        preload="auto">
+        <source src="{{session.session_file.url}}" type="video/mp4" />
+        </video>
+        <div class="session_details">
+          <h1 class="session_name">{{session.session_name}}</h1>
+          <h3 class="session_time_period">Held on {{session.session_pub_date}} • Uploaded {{session.created_at|naturaltime}}</h3>
+          <h4 class="other_options">
+            <a href="" class="other_options_a"><i class="fas fa-th-list"></i> Add to List</a>&nbsp;&nbsp;&nbsp;
+            <a href="" class="other_options_a"><i class="fas fa-share-square"></i> Share</a>&nbsp;&nbsp;&nbsp;
+            <button class="other_options_a clipboard"><i class="fas fa-copy"></i> Copy URL</button>
+          </h4>
+          <div class="space_line"></div>
+          <div class="about_upload_user">
+            <div class="about_current_user">
+              <div class="user_avatar">
+                <img src="{{session.user.profile_pic.url}}" id="upload_user_avatar" alt="">
+              </div>
+              <div class="about_current_session_user">
+                <h1 class="about_user" onclick="document.location='{% url 'view_staff' session.user.user.id %}'">
+                  {{session.user.user.last_name|title}} {{session.user.user.first_name|title}} 
+                </h1>
+                <h2 class="user_designation">{{session.user.designation|title}}</h2>
+              </div>
+            </div>
+            <div class="current_session_details">
+              <h3 class="current_session_description">{{session.session_desc}}</h3>
+              <h4 class="session_tags">#{{session.session_tag1|title}} #{{session.session_tag2|title}} #{{session.session_tag3|title}} #{{session.session_tag4|title}}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="recommend_videos">
+        <div class="recommend_video">
+          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+          <div class="details_of_session">
+            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <div class="space_line"></div>
+            <p class="pub_date">Held on {{session.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+          </div>
+        </div>
+        <div class="recommend_video">
+          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+          <div class="details_of_session">
+            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <div class="space_line"></div>
+            <p class="pub_date">Held on {{session.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+          </div>
+        </div>
+        <div class="recommend_video">
+          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+          <div class="details_of_session">
+            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <div class="space_line"></div>
+            <p class="pub_date">Held on {{session.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+          </div>
+        </div>
+        <div class="recommend_video">
+          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+          <div class="details_of_session">
+            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <div class="space_line"></div>
+            <p class="pub_date">Held on {{session.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+          </div>
+        </div>
+        <div class="recommend_video">
+          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+          <div class="details_of_session">
+            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <div class="space_line"></div>
+            <p class="pub_date">Held on {{session.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+          </div>
+        </div>
+        <div class="recommend_video">
+          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+          <div class="details_of_session">
+            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <div class="space_line"></div>
+            <p class="pub_date">Held on {{session.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+          </div>
+        </div>
+        <div class="recommend_video">
+          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+          <div class="details_of_session">
+            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <div class="space_line"></div>
+            <p class="pub_date">Held on {{session.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+          </div>
+        </div>
+        <div class="recommend_video">
+          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+          <div class="details_of_session">
+            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <div class="space_line"></div>
+            <p class="pub_date">Held on {{session.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+          </div>
+        </div>
+        <div class="recommend_video">
+          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+          <div class="details_of_session">
+            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <div class="space_line"></div>
+            <p class="pub_date">Held on {{session.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+          </div>
+        </div>
+        <div class="recommend_video">
+          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+          <div class="details_of_session">
+            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <div class="space_line"></div>
+            <p class="pub_date">Held on {{session.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+          </div>
+        </div>
+        <div class="recommend_video">
+          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+          <div class="details_of_session">
+            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <div class="space_line"></div>
+            <p class="pub_date">Held on {{session.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+          </div>
+        </div>
+        <div class="recommend_video">
+          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+          <div class="details_of_session">
+            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <div class="space_line"></div>
+            <p class="pub_date">Held on {{session.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var $temp = $("<input>");
+  var $url = $(location).attr('href');
+
+  $('.clipboard').on('click', function() {
+    $("body").append($temp);
+    $temp.val($url).select();
+    document.execCommand("copy");
+    $temp.remove();
+  })
+</script>
 </body>
-</html>
+{% endblock %}
