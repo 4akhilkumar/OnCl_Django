@@ -1082,8 +1082,7 @@ def add_announcement_save(request):
     else:
         announcement = request.POST.get('announcement')
         sub_an = request.POST.get('sub_an')
-        an_by = request.POST.get('an_by')
-        an_user = request.POST.get('an_user')
+        user = request.user
         if 'an_image' in request.FILES:
             print("YES")
             an_image = request.FILES['an_image']
@@ -1094,7 +1093,7 @@ def add_announcement_save(request):
             print(an_image)
  
         try:
-            announcement_model = Announcements_news(what_an=announcement,sub_an=sub_an,an_by=an_by,an_user=an_user,an_image=an_image)
+            announcement_model = Announcements_news(what_an=announcement,sub_an=sub_an,user=user,an_image=an_image)
             announcement_model.save()
             messages.success(request, "Announcement Made Successfully.")
             return redirect('manage_announcement')
@@ -1141,8 +1140,7 @@ def edit_announcement_save(request):
         announcement_id = request.POST.get('announcement_id')
         sub_an = request.POST.get('sub_an')
         what_an = request.POST.get('announcement')
-        an_by = request.POST.get('an_by')
-        an_user = request.POST.get('an_user')
+        user = request.user
         if 'an_image' in request.FILES:
             print("YES")
             an_image = request.FILES['an_image']
@@ -1156,8 +1154,7 @@ def edit_announcement_save(request):
             announcement = Announcements_news.objects.get(id=announcement_id)
             announcement.what_an = what_an
             announcement.sub_an = sub_an
-            announcement.an_by = an_by
-            announcement.an_user = an_user
+            announcement.user = user
             if an_image == False:
                 pass
             else:
