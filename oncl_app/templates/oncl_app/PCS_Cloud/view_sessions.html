@@ -98,11 +98,11 @@ a:hover {
   font-size: 14px;
 }
 
-h1 {
+/* h1 {
   font-size: 20px;
   margin-bottom: 10px;
   color: rgb(3, 3, 3);
-}
+} */
 </style>
 
 <link rel="stylesheet" href="{% static 'oncl_app/main.css' %}">
@@ -153,18 +153,23 @@ style="cursor: pointer;">
     <div class="videos">
       <div class="videos__container">
         {% for session in data %}
-        <div class="video" style="cursor: pointer;" onclick="document.location='{% url 'view_each_session' session.id %}'">
-          <div class="video__thumbnail">
+        <div class="video">
+          <div class="video__thumbnail" style="cursor: pointer;" onclick="document.location='{% url 'view_each_session' session.id %}'">
             <img src="{{session.session_pic.url}}" alt="Session Cover" />
           </div>
           <div class="video__details">
             <div class="author">
-              <img alt="avatar" letters="{{session.session_author|first}}" />
+              <img alt="avatar" letters="{{session.user.user.first_name|first}}" />
             </div>
             <div class="title">
               <h3><b>{{session.session_name}}</b></h3>
-              <a href="https://www.google.com/search?q={{session.session_author}}" target="_blank"> {{session.session_author}} </a>
-              <span class="cu_span">{{session.session_pub_date}} • {{ session.created_at|naturaltime|title }}</span>
+              <a 
+              {% if staffs_count == 0 %}
+              {% else %}
+              href="{% url 'view_staff' session.user.user.id %}" 
+              {% endif %}
+              target="_blank">{{session.user.user.last_name}} {{session.user.user.first_name}} </a>
+              <span class="cu_span">{{session.session_pub_date}} • Uploaded {{ session.created_at|naturalday|title }}</span>              
             </div>
           </div>
           <!-- <div style="display: flex; justify-content: space-between; background-color: #000;">
