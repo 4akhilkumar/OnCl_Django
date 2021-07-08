@@ -106,6 +106,7 @@ urlpatterns = [
     path('search_book',views.search,name="search_book"),
 
     path('upload_session/',views.upload_session,name="upload_session"),
+    path('upload_session_save/',views.upload_session_save,name="upload_session_save"),
     path('view_session/',views.view_session,name="view_session"),
     path('view_each_session/<session_id>/', views.view_each_session, name="view_each_session"),
     path('edit_session/<session_id>/', views.edit_session, name="edit_session"),
@@ -171,6 +172,10 @@ urlpatterns = [
 
     path('importstudent_save/', views.bulk_upload_students_save, name='importstudent_save'),
     path('bulk_upload_staffs_save/', views.bulk_upload_staffs_save, name='bulk_upload_staffs_save'),
+
+    path('add_social_profile/', views.add_social_profile, name='add_social_profile'),
+    path('edit_social_profile_save/', views.edit_social_profile_save, name='edit_social_profile_save'),
+    path('delete_social_profile/<str:delete_social_profile_id>', views.delete_social_profile, name='delete_social_profile'),
 
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     # re_path(r'^.*\.*', views.pages, name='pages'),
