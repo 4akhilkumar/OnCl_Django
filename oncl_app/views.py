@@ -1013,6 +1013,55 @@ def student_course_reg_save(request):
             print("Course Registration Failed!")
             return redirect('student_course_reg')
 
+def add_social_profile(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method!")
+        return redirect('student_profile')
+    else:
+        user = request.user
+        linkedin = request.POST.get('linkedin')
+        github = request.POST.get('github')
+ 
+        try:
+            ssp = Student_Social_Profile(user=user,linkedin=linkedin,github=github)
+            ssp.save()
+            messages.success(request, "Social Profile(s) Added Successfully.")
+            return redirect('student_profile')
+        except:
+            messages.error(request, "Failed to Add Social Profile(s)!")
+            return redirect('student_profile')
+
+def edit_social_profile_save(request):
+    if request.method != "POST":
+        HttpResponse("Invalid Method")
+    else:
+        ssp_id = request.POST.get('ssp_id')
+        linkedin = request.POST.get('linkedin')
+        github = request.POST.get('github')
+
+        try:
+            ssp = Student_Social_Profile.objects.get(id=ssp_id)
+            ssp.linkedin = linkedin
+            ssp.github = github
+            ssp.save()
+
+            messages.success(request, "Social Profile(s) Updated Successfully!")
+            return redirect('student_profile')
+
+        except:
+            messages.error(request, "Failed to Update Social Profile(s)!")
+            return redirect('student_profile')
+
+def delete_social_profile(request, delete_social_profile_id):
+    ssp = Student_Social_Profile.objects.get(id=delete_social_profile_id)
+    try:
+        ssp.delete()
+        messages.info(request, "Social Profile(s) Deleted Successfully.")
+        return redirect('student_profile')
+    except:
+        messages.error(request, "Failed to Delete Social Profile(s)!")
+        return redirect('student_profile')
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
 def add_announcement(request):
