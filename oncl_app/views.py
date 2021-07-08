@@ -122,7 +122,7 @@ def login_page(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         # ip_addr = request.META['HTTP_X_FORWARDED_FOR']
-        ip_addr = request.POST.get('ip_addr')
+        user_ip_address = request.POST.get('ip_addr')
         longitude = request.POST.get('longitude')
         latitude = request.POST.get('latitude')
         location = request.POST.get('location')
@@ -161,13 +161,13 @@ def login_page(request):
             messages.error(request, 'No Such Account Exist!')
             return redirect('login')
         else:
-            save_login_details(request, username, ip_addr)
+            save_login_details(request, username, user_ip_address)
 
         if user is not None:
             login(request, user)
             messages.success(request, 'You Logged In Successfully.')
-            template = render_to_string('oncl_app/login_register/login_mail.html', {'email':request.user.email, 'ip_addr':ip_addr, 'latitude':latitude, 'longitude':longitude})
             send_mail('OnCl Account Login Alert', template, settings.EMAIL_HOST_USER, [request.user.email], html_message=template)
+            template = render_to_string('oncl_app/login_register/login_mail.html', {'email':request.user.email, 'ip_addr':user_ip_address, 'latitude':latitude, 'longitude':longitude})
             
             group = None
             if request.user.groups.exists():
@@ -191,7 +191,7 @@ def logoutUser(request):
 
 import re
 import httpagentparser
-def save_login_details(request, user_name, ip_addr):
+def save_login_details(request, user_name, user_ip_address):
     user_agent = request.META['HTTP_USER_AGENT']
     browser = httpagentparser.detect(user_agent)
     if not browser:
@@ -203,7 +203,7 @@ def save_login_details(request, user_name, ip_addr):
     OS_Details = res[0][1:-1]
     uid = User.objects.get(username=user_name)
     try:
-        sld = user_login_details(ip_addr=ip_addr, user=uid, os_details=OS_Details, browser_details=browser)
+        sld = user_login_details(user_ip_address=user_ipaddress, user=uid, os_details=OS_Details, browser_details=browser)
         sld.save()
     except Exception as e:
         return e
