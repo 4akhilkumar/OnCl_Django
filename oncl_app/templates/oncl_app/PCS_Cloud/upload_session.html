@@ -24,13 +24,13 @@
           <div class="card-4">
               <div class="card-body">
                   <h2 class="title"><i class="fab fa-chromecast"></i> Upload Session</h2>
-                  <form method="POST" action="" enctype="multipart/form-data">
+                  <form method="POST" action="{% url 'upload_session_save' %}" enctype="multipart/form-data">
                   {% csrf_token %}
                       <div class="row row-space">
                         <div class="col-2">
                           <div class="input-group">
                             <label class="label"><i class="fab fa-ideal"></i> Session ID</label>
-                            <input class="input--style-4" type="text" name="session_id" id="id_session_id" placeholder="Session ID" required>
+                            <input class="input--style-4" type="text" name="session_ref_no" id="id_session_ref_no" placeholder="Session Ref. No." required>
                           </div>
                         </div>
                         <div class="col-2">
@@ -43,7 +43,6 @@
                           <div class="input-group">
                             <label class="label"><i class="fas fa-feather-alt"></i> Session Faculty</label>
                             <input class="input--style-4" type="text" name="session_author" value="{{request.user.first_name}} {{request.user.last_name}}" id="id_session_author" placeholder="Session Faculty" readonly>
-                            <input type="text" name="session_author_uid" id="id_session_author_uid" value="{{request.user.id}}" hidden/>
                           </div>
                         </div>
                         <div class="col-2">
