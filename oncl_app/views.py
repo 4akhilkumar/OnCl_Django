@@ -1584,7 +1584,7 @@ def edit_session_save(request):
 
         except:
             messages.error(request, "Failed to Update Session Info.!")
-            return redirect('/edit_session/'+main_session_id+'/')
+            return redirect('/edit_session/'+session_id+'/')
 
 def delete_session(request, session_id):
     session = PCS_Cloud.objects.get(id=session_id)
