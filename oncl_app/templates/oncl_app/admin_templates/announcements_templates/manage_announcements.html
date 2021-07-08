@@ -192,11 +192,11 @@ hr {
             <div class="panel-heading">
                 <div class="media" style="gap: 10px;">
                     <a class="pull-left" href="#">
-                        <img alt="avatar" letters="{{announcement.an_by|first}}" alt="profile_pic" class="img-circle avatar">
+                        <img alt="avatar" letters="{{ announcement.user.first_name|first}}" alt="profile_pic" class="img-circle avatar">
                     </a>
                     <div class="media-body">
-                        <h4 class="media-heading">{{ announcement.an_by }} 
-                          {% if announcement.an_user > '1' %}
+                        <h4 class="media-heading">{{ announcement.user.first_name }} 
+                          {% if announcement.user > '1' %}
                           <a class="view_button" href="{% url 'view_staff' announcement.an_user %}" target="_blank"><i class="fas fa-external-link-alt"></i></a>
                           {% endif %}
                           
@@ -206,7 +206,7 @@ hr {
                           <a class="edit_button" href="{% url 'edit_announcement' announcement.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp;
                           <a class="delete_button" href="{% url 'delete_announcement' announcement.id %}"><i class="fas fa-trash"></i> Delete</a>
                           {% elif group_for.name == 'Faculty' %}
-                          {% if request.user.id == announcement.an_user|add:"0" %}
+                          {% if request.user.id == announcement.user.id|add:"0" %}
                           |
                           <a class="edit_button" href="{% url 'edit_announcement' announcement.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp;
                           <a class="delete_button" href="{% url 'delete_announcement' announcement.id %}"><i class="fas fa-trash"></i> Delete</a>

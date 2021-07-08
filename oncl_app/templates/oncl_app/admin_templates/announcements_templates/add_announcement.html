@@ -26,8 +26,6 @@
                     <h2 class="title"><i class="fas fa-bullhorn"></i> Make Announcements From Here!</h2>
                     <form method="POST" action="{% url 'add_announcement_save' %}" enctype="multipart/form-data">
                     {% csrf_token %}
-                        <input type="text" name="an_by" value="{{user.first_name}} {{user.last_name}}" hidden/>
-                        <input type="text" name="an_user" value="{{user.id}}" hidden/>
                         <div class="input-group">
                             <div class="input-group">
                                 <label class="label"><i class="fas fa-feather-alt"></i> Subject</label>
