@@ -814,7 +814,7 @@ def manage_student(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def edit_student(request, student_id):
-    student = Students.objects.get(user=student_id)
+    student = Students.objects.get(user__username=student_id)
     student_form = StudentsForm()
     context = {
         "student": student,
@@ -904,14 +904,11 @@ def edit_student_save(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def view_student(request, student_id):
-    student = Students.objects.get(user=student_id)
-    sld = user_login_details.objects.filter(user=student_id)
-    ssp = Student_Social_Profile.objects.filter(user=student_id)
-    print(sld)
+    student = Students.objects.get(user__username=student_id)
+    ssp = Student_Social_Profile.objects.filter(user__username=student_id)
     context = {
         "student": student,
         "id": student_id,
-        "sld":sld,
         "ssp":ssp,
     }
     return render(request, "oncl_app/profile_templates/student_profile.html", context)
@@ -919,7 +916,7 @@ def view_student(request, student_id):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def delete_student(request, student_id):
-    student = Students.objects.get(user=student_id)
+    student = Students.objects.get(user__username=student_id)
     try:
         student.delete()
         student.user.delete()
