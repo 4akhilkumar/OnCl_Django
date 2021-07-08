@@ -1442,28 +1442,40 @@ def search_student(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
 def upload_session(request):
-    if request.method == 'POST':
-        form = SessionUploadForm(request.POST,request.FILES)
-        if form.is_valid():
-            session_id = form.cleaned_data['session_id']
-            session_name = form.cleaned_data['session_name']
-            session_author = form.cleaned_data['session_author']
-            session_author_uid = form.cleaned_data['session_author_uid']
-            session_desc = form.cleaned_data['session_desc']
-            session_pub_date = form.cleaned_data['session_pub_date']
-            session_pic = form.cleaned_data['session_pic']
-            session_file = form.cleaned_data['session_file']
-            session_tag1 = form.cleaned_data['session_tag1']
-            session_tag2 = form.cleaned_data['session_tag2']
-            session_tag3 = form.cleaned_data['session_tag3']
-            session_tag4 = form.cleaned_data['session_tag4']
+    return render(request, "oncl_app/PCS_Cloud/upload_session.html")
 
-            PCS_Cloud(session_id = session_id,
-                        session_name = session_name, 
-                        session_author = session_author,
-                        session_author_uid = session_author_uid,
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin','Faculty'])
+def upload_session_save(request):
+    if request.method != 'POST':
+        messages.error(request, "Something Went Wrong, Please Try Again!")
+        return redirect('upload_session')
+    else:
+        session_ref_no = request.POST.get('session_ref_no')
+        session_name = request.POST.get('session_name')
+        session_desc = request.POST.get('session_desc')
+        session_pub_date = request.POST.get('session_pub_date')
+        user = request.user
+        session_tag1 = request.POST.get('session_tag1')
+        session_tag2 = request.POST.get('session_tag2')
+        session_tag3 = request.POST.get('session_tag3')
+        session_tag4 = request.POST.get('session_tag4')
+        if 'session_pic' in request.FILES:
+            session_pic = request.FILES['session_pic']
+        else:
+            session_pic = False
+
+        if 'session_file' in request.FILES:
+            session_file = request.FILES['session_file']
+        else:
+            session_file = False
+        
+        try:
+            PCS_Cloud(session_ref_no = session_ref_no,
+                        session_name = session_name,
                         session_desc = session_desc,
                         session_pub_date = session_pub_date,
+                        user = user,
                         session_pic = session_pic,
                         session_file = session_file,
                         session_tag1 = session_tag1,
@@ -1472,14 +1484,10 @@ def upload_session(request):
                         session_tag4 = session_tag4).save()
             messages.success(request, "Session Info. Uploaded Successfully.")
             return redirect('view_session')
-        else:
+        except Exception as e:
+            print(e)
             messages.error(request, "Failed to Upload Session Info.!")
             return redirect('upload_session')
-    else:
-        context={
-            'form': SessionUploadForm()
-        }
-        return render(request, "oncl_app/PCS_Cloud/upload_session.html",context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
