@@ -1199,7 +1199,6 @@ def student_profile(request):
     student = Students.objects.get(user=user)
     sld = user_login_details.objects.filter(user=user)
     ssp = Student_Social_Profile.objects.filter(user=request.user.id)
-    print(ssp, sld)
     context = {
             'username':username,
             'student':student, 
@@ -1493,7 +1492,7 @@ def upload_session_save(request):
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
 def view_session(request):
     all_data_all = PCS_Cloud.objects.all()
-
+    staffs_count = Staffs.objects.all().count()
     page = request.GET.get('page', 1)    
     paginator = Paginator(all_data_all, 20)
     try:
@@ -1506,6 +1505,7 @@ def view_session(request):
     context = {
         'data':all_data,
         'all_data_all':all_data_all,
+        'staffs_count':staffs_count,
     }
     return render(request,'oncl_app/PCS_Cloud/view_sessions.html', context)
 
@@ -1529,12 +1529,12 @@ def edit_session_save(request):
     if request.method != "POST":
         HttpResponse("Invalid Method")
     else:
-        main_session_id = request.POST.get('main_session_id')
         session_id = request.POST.get('session_id')
+        session_ref_no = request.POST.get('session_ref_no')
         session_name = request.POST.get('session_name')
-        session_author = request.POST.get('session_author')
         session_pub_date = request.POST.get('session_pub_date')
         session_desc = request.POST.get('session_desc')
+        user = request.user
         session_tag1 = request.POST.get('session_tag1')
         session_tag2 = request.POST.get('session_tag2')
         session_tag3 = request.POST.get('session_tag3')
@@ -1558,12 +1558,12 @@ def edit_session_save(request):
             print(session_file)
 
         try:
-            session = PCS_Cloud.objects.get(id=main_session_id)
-            session.session_id = session_id
+            session = PCS_Cloud.objects.get(id=session_id)
+            session.session_ref_no = session_ref_no
             session.session_name = session_name
-            session.session_author = session_author
             session.session_pub_date = session_pub_date
             session.session_desc = session_desc
+            session.user = user
             session.session_tag1 = session_tag1
             session.session_tag2 = session_tag2
             session.session_tag3 = session_tag3
