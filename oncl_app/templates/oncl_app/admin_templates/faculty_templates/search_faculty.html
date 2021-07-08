@@ -4,6 +4,8 @@
 
 {% load static %}
 
+{% load humanize %}
+
 <title>Search Result - Faculty Info.</title>
 
 <style>
@@ -127,7 +129,7 @@ table th {
     <form method="POST" action="/search_faculty">
       <div class="search">
         {% csrf_token %}
-        <input type="text" class="search__input" aria-label="search" name="search" placeholder="Search Faculty Info...">
+        <input type="text" class="search__input" aria-label="search" name="search" required placeholder="Search Faculty Info...">
         <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
       </div>
     </form>
@@ -139,7 +141,7 @@ table th {
     <p>It looks like there aren't many great matches for your search</p>
     <p>Tip: Try using words that might appear on the book that you’re looking for. For example, 'Faculty Name', 'Any related keywords of the Faculty'.</p>
     {% else %}
-    <p>About {{ staffs.count}} result{{ staffs.count|pluralize:"s" }} found for "{{query}}" in ({{cal_time}}) seconds </p>
+    <p>About {{ staffs.count|intcomma }} result{{ staffs.count|pluralize:"s" }} ({{cal_time}}) seconds </p>
     {% endif %}
 </div>
 
@@ -159,7 +161,7 @@ table th {
     <table>
         <thead>
           <tr>
-            <th scope="col">ID</th>
+            <th scope="col">University ID</th>
             <th scope="col">Full Name</th>
             <th scope="col">Email</th>
             <th scope="col">Gender</th>
@@ -172,11 +174,11 @@ table th {
         {% for staff in staffs %}
         <tbody>
           <tr>
-            <td data-label="ID">{{ staff.user.username }}</td>
-            <td data-label="First Name">{{staff.user.first_name}} {{ staff.user.last_name }}</td>
+            <td data-label="University ID">{{ staff.user.username }}</td>
+            <td data-label="First Name">{{ staff.user.last_name|title }} {{staff.user.first_name|title }}</td>
             <td data-label="Email"><a href="mailto:{{ staff.user.email }}">{{ staff.user.email }}</a></td>
             <td data-label="Gender">{{ staff.gender }}</td>
-            <td data-label="Address">{{ staff.address }}</td>
+            <td data-label="Address">{{ staff.city_name }}</td>
             <td data-label="Last Login"> {% if staff.user.last_login == None %} User Not Logged Yet! {% else %} {{ staff.user.last_login }} {% endif %}</td>
             <td data-label="Action" class="outlined">
               <a href="{% url 'view_staff' staff.user.id %}" target="_blank"><i class="fas fa-eye"></i> View</a> &nbsp; <br>
