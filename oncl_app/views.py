@@ -607,6 +607,15 @@ def add_staff(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         staff_form = StaffsForm(request.POST,request.FILES)
+        staff_from_db = User.objects.all()
+        staff_user=[]
+        for i in staff_from_db:
+            staff_user.append(i.username)
+            staff_user.append(i.email)
+        username = request.POST.get('username')
+        if username in staff_user:
+            messages.info(request, "A user already exist with "+ username)
+            return redirect('add_staff')
 
         if form.is_valid() and staff_form.is_valid():
             user = form.save()
@@ -622,6 +631,7 @@ def add_staff(request):
             group = Group.objects.get(name='Faculty')
             user.groups.add(group)
 
+            messages.success(request, "Faculty Registered Successfully.")
             return redirect('manage_staff')
         else:
             form = CreateUserForm()
