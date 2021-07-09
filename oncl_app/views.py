@@ -630,7 +630,6 @@ def add_staff(request):
 
             group = Group.objects.get(name='Faculty')
             user.groups.add(group)
-
             messages.success(request, "Faculty Registered Successfully.")
             return redirect('manage_staff')
         else:
@@ -1522,11 +1521,15 @@ def view_session(request):
 
 def edit_session(request, session_id):
     session = PCS_Cloud.objects.get(id=session_id)
-    context = {
-        "session": session,
-        "id": session_id
-    }
-    return render(request, 'oncl_app/PCS_Cloud/edit_session.html', context)
+    if session.user.user == request.user:
+        context = {
+            "session": session,
+            "id": session_id
+        }
+        return render(request, 'oncl_app/PCS_Cloud/edit_session.html', context)
+    else:
+        messages.warning(request, "You are not authorized to allow here!")
+        return redirect('view_session')
 
 def view_each_session(request, session_id):
     session = PCS_Cloud.objects.get(id=session_id)
