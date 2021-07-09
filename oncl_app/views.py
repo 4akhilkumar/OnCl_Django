@@ -1690,8 +1690,8 @@ def search_session(request):
         query = request.POST['search']
         
         sessions = PCS_Cloud.objects.filter(
-            Q(session_id__contains=query) | Q(session_name__contains=query) | 
-            Q(session_author__contains=query) | Q(session_desc__contains=query) | 
+            Q(session_ref_no__contains=query) | Q(session_name__contains=query) | 
+            Q(user__user__first_name__contains=query) | Q(session_desc__contains=query) | 
             Q(session_pub_date__contains=query) | Q(session_tag1__contains=query) | 
             Q(session_tag2__contains=query) | Q(session_tag3__contains=query) | 
             Q(session_tag4__contains=query))
