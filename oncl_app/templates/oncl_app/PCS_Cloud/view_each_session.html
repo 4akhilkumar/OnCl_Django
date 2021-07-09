@@ -7,6 +7,7 @@
 {% load humanize %}
 
 <head>
+<title>{{session.session_name}} | {{session.user.user.first_name}}</title>
 <style>
   .main_section {
     display: flex;
@@ -308,7 +309,17 @@
           <h4 class="other_options">
             <a href="" class="other_options_a"><i class="fas fa-th-list"></i> Add to List</a>&nbsp;&nbsp;&nbsp;
             <a href="" class="other_options_a"><i class="fas fa-share-square"></i> Share</a>&nbsp;&nbsp;&nbsp;
-            <button class="other_options_a clipboard"><i class="fas fa-copy"></i> Copy URL</button>
+            <button class="other_options_a clipboard"><i class="fas fa-copy"></i> Copy URL</button>&nbsp;&nbsp;
+            {% for group_for in request.user.groups.all %} 
+            {% if group_for.name == 'Faculty' %}
+            {% if request.user.id == session.user.user.id|add:"0" %}
+            <a href="{% url 'edit_session' session.id %}"><i class="fas fa-edit"></i></a>
+            <a href="{% url 'delete_session' session.id %}" style="color: #f44336;"><i class="far fa-trash-alt"></i></a>
+            {% else %}
+            {% endif %}
+            {% else %}
+            {% endif %}
+            {% endfor %}
           </h4>
           <div class="space_line"></div>
           <div class="about_upload_user">

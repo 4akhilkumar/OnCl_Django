@@ -172,26 +172,6 @@ style="cursor: pointer;">
               <span class="cu_span">{{session.session_pub_date}} • Uploaded {{ session.created_at|naturalday|title }}</span>              
             </div>
           </div>
-          <!-- <div style="display: flex; justify-content: space-between; background-color: #000;">
-            <div>
-              <a href="{{session.session_file.url}}"><i class="fas fa-download"></i> Session</a>
-            </div>
-            <div>
-              {% for group_for in request.user.groups.all %} 
-              {% if group_for.name == 'Admin' %}
-              <a href="{% url 'edit_session' session.id %}"><i class="fas fa-edit"></i></a>
-              <a href="{% url 'delete_session' session.id %}" style="color: #f44336;"><i class="far fa-trash-alt"></i></a>
-              {% elif group_for.name == 'Faculty' %}
-              {% if request.user.id == session.session_author_uid|add:"0" %}
-              <a href="{% url 'edit_session' session.id %}"><i class="fas fa-edit"></i></a>
-              <a href="{% url 'delete_session' session.id %}" style="color: #f44336;"><i class="far fa-trash-alt"></i></a>
-              {% else %}
-              {% endif %}
-              {% else %}
-              {% endif %}
-              {% endfor %}
-            </div>
-          </div> -->
         </div>
         {% endfor %}
       </div>
