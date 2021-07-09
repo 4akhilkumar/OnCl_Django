@@ -1572,7 +1572,7 @@ def upload_session_save(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
 def view_session(request):
-    all_data_all = PCS_Cloud.objects.all()
+    all_data_all = PCS_Cloud.objects.order_by('-created_at')
     staffs_count = Staffs.objects.all().count()
     page = request.GET.get('page', 1)    
     paginator = Paginator(all_data_all, 20)
