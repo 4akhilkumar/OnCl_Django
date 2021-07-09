@@ -6,7 +6,7 @@
 
 <head>
     <link href="{% static 'oncl_app/colorlib-regform-4/css/main.css' %}" rel="stylesheet" media="all">
-    <title>Upload Sessions | OnCl - Edu. Cloud</title>
+    <title>Modify Session Info. | OnCl - Edu. Cloud</title>
     <style>
     #file-chosen, #file-chosen2{
       margin-left: 0.3rem;
@@ -43,7 +43,7 @@
                         <div class="col-2">
                           <div class="input-group">
                             <label class="label"><i class="fas fa-feather-alt"></i> Session Faculty</label>
-                            <input class="input--style-4" type="text" value="{{session.session_author}}" name="session_author" value="{{request.user.first_name}} {{request.user.last_name}}" id="id_session_author" placeholder="Session Faculty" readonly>
+                            <input class="input--style-4" type="text" value="{{session.user.user}}" name="session_author" value="{{request.user.first_name}} {{request.user.last_name}}" id="id_session_author" placeholder="Session Faculty" readonly>
                           </div>
                         </div>
                         <div class="col-2">
@@ -109,8 +109,9 @@
                           </div>
                         </div>
                       </div>
-                      <div>
-                        <button class="btn btn--radius-2 btn--blue" type="submit">Upload Session</button>
+                      <div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px;">
+                        <button class="btn btn--radius-2 btn--blue" type="submit">Update Session Info.</button>
+                        <a class="btn btn--radius-2 btn--black" style="color: #FFF;" onclick="window.history.back();" >Back</a>
                       </div>
                   </form>
               </div>
