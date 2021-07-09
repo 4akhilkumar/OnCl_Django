@@ -177,6 +177,10 @@ urlpatterns = [
     path('edit_social_profile_save/', views.edit_social_profile_save, name='edit_social_profile_save'),
     path('delete_social_profile/<str:delete_social_profile_id>', views.delete_social_profile, name='delete_social_profile'),
 
+    path('add_social_profile_staff/', views.add_social_profile_staff, name='add_social_profile_staff'),
+    path('edit_social_profile_save_staff/', views.edit_social_profile_save_staff, name='edit_social_profile_save_staff'),
+    path('delete_social_profile_staff/<str:delete_social_profile_id>', views.delete_social_profile_staff, name='delete_social_profile_staff'),
+
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
     # re_path(r'^.*\.*', views.pages, name='pages'),
 ]

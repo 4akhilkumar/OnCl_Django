@@ -1071,6 +1071,75 @@ def delete_social_profile(request, delete_social_profile_id):
         messages.error(request, "Failed to Delete Social Profile(s)!")
         return redirect('student_profile')
 
+def add_social_profile_staff(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method!")
+        return redirect('student_profile')
+    else:
+        user = request.user
+        linkedin = request.POST.get('linkedin')
+        github = request.POST.get('github')
+        orcid = request.POST.get('orcid')
+        gscholar = request.POST.get('gscholar')
+        researcher = request.POST.get('researcher')
+        microsoft_academic = request.POST.get('microsoft_academic')
+ 
+        try:
+            ssp = Staff_Social_Profile(
+                user=user,
+                linkedin=linkedin,
+                github=github,
+                orcid=orcid,
+                gscholar=gscholar,
+                researcher=researcher,
+                microsoft_academic=microsoft_academic)
+            ssp.save()
+            messages.success(request, "Social Profile(s) Added Successfully.")
+            return redirect('faculty_profile')
+        except Exception as e:
+            print(e)
+            messages.error(request, "Failed to Add Social Profile(s)!")
+            return redirect('faculty_profile')
+
+def edit_social_profile_save_staff(request):
+    if request.method != "POST":
+        HttpResponse("Invalid Method")
+    else:
+        ssp_id = request.POST.get('ssp_id')
+        linkedin = request.POST.get('linkedin')
+        github = request.POST.get('github')
+        orcid = request.POST.get('orcid')
+        gscholar = request.POST.get('gscholar')
+        researcher = request.POST.get('researcher')
+        microsoft_academic = request.POST.get('microsoft_academic')
+
+        try:
+            ssp = Staff_Social_Profile.objects.get(id=ssp_id)
+            ssp.linkedin = linkedin
+            ssp.github = github
+            ssp.orcid=orcid
+            ssp.gscholar=gscholar
+            ssp.researcher=researcher
+            ssp.microsoft_academic=microsoft_academic
+            ssp.save()
+
+            messages.success(request, "Social Profile(s) Updated Successfully!")
+            return redirect('faculty_profile')
+
+        except:
+            messages.error(request, "Failed to Update Social Profile(s)!")
+            return redirect('faculty_profile')
+
+def delete_social_profile_staff(request, delete_social_profile_id):
+    ssp = Staff_Social_Profile.objects.get(id=delete_social_profile_id)
+    try:
+        ssp.delete()
+        messages.info(request, "Social Profile(s) Deleted Successfully.")
+        return redirect('faculty_profile')
+    except:
+        messages.error(request, "Failed to Delete Social Profile(s)!")
+        return redirect('faculty_profile')
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
 def add_announcement(request):
@@ -1194,9 +1263,11 @@ def delete_announcement(request, announcement_id):
 def faculty_profile(request):
     username = request.user.get_username()
     user = User.objects.get(id=request.user.id)
+    sld = user_login_details.objects.filter(user=user)
     staff = Staffs.objects.get(user=user)
+    ssp = Staff_Social_Profile.objects.filter(user=request.user.id)
     context={
-            'username':username, 'staff':staff, "user": user
+            'username':username, 'staff':staff, "user": user, "sld":sld, "ssp":ssp
         }
     return render(request, 'oncl_app/profile_templates/faculty_profile.html', context)
 
