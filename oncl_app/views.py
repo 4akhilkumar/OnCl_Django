@@ -1548,7 +1548,8 @@ def edit_session_save(request):
         session_name = request.POST.get('session_name')
         session_pub_date = request.POST.get('session_pub_date')
         session_desc = request.POST.get('session_desc')
-        user = request.user
+        user = request.user.id
+        staff = Staffs.objects.get(user=user)
         session_tag1 = request.POST.get('session_tag1')
         session_tag2 = request.POST.get('session_tag2')
         session_tag3 = request.POST.get('session_tag3')
@@ -1577,7 +1578,7 @@ def edit_session_save(request):
             session.session_name = session_name
             session.session_pub_date = session_pub_date
             session.session_desc = session_desc
-            session.user = user
+            session.user = staff
             session.session_tag1 = session_tag1
             session.session_tag2 = session_tag2
             session.session_tag3 = session_tag3
