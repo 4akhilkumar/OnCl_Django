@@ -131,6 +131,12 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease-out;
+  }
+
+  .recommend_video:hover {
+    transform: translateY(-5px) scale(1.04) translateZ(0);
   }
 
   :root {
@@ -342,126 +348,33 @@
         </div>
       </div>
       <div class="recommend_videos">
-        <div class="recommend_video">
-          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+
+        {% for i in recommend_session_tag1 %}
+        <div class="recommend_video" style="cursor: pointer;" onclick="document.location='{% url 'view_each_session' i.id %}'">
+          <img id="session_pic" src="{{i.session_pic.url}}" width="300" height="150" alt="">
           <div class="details_of_session">
-            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
-            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <h3><span class="session_title">{{i.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{i.session_desc|truncatewords:18}}</p>
             <div class="space_line"></div>
-            <p class="pub_date">Held on {{session.session_pub_date}}</p>
-            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+            <p class="pub_date">Held on {{i.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ i.created_at|naturaltime }}</p>
           </div>
         </div>
-        <div class="recommend_video">
-          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
+        {% endfor %}
+
+        {% for i in recommend_session_faculty %}
+        <div class="recommend_video" style="cursor: pointer;" onclick="document.location='{% url 'view_each_session' i.id %}'">
+          <img id="session_pic" src="{{i.session_pic.url}}" width="300" height="150" alt="">
           <div class="details_of_session">
-            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
-            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
+            <h3><span class="session_title">{{i.session_name|truncatechars:25}}</span></h3>
+            <p class="session_description hide_session_description">{{i.session_desc|truncatewords:18}}</p>
             <div class="space_line"></div>
-            <p class="pub_date">Held on {{session.session_pub_date}}</p>
-            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
+            <p class="pub_date">Held on {{i.session_pub_date}}</p>
+            <p class="upload_date">Uploaded {{ i.created_at|naturaltime }}</p>
           </div>
         </div>
-        <div class="recommend_video">
-          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
-          <div class="details_of_session">
-            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
-            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
-            <div class="space_line"></div>
-            <p class="pub_date">Held on {{session.session_pub_date}}</p>
-            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
-          </div>
-        </div>
-        <div class="recommend_video">
-          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
-          <div class="details_of_session">
-            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
-            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
-            <div class="space_line"></div>
-            <p class="pub_date">Held on {{session.session_pub_date}}</p>
-            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
-          </div>
-        </div>
-        <div class="recommend_video">
-          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
-          <div class="details_of_session">
-            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
-            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
-            <div class="space_line"></div>
-            <p class="pub_date">Held on {{session.session_pub_date}}</p>
-            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
-          </div>
-        </div>
-        <div class="recommend_video">
-          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
-          <div class="details_of_session">
-            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
-            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
-            <div class="space_line"></div>
-            <p class="pub_date">Held on {{session.session_pub_date}}</p>
-            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
-          </div>
-        </div>
-        <div class="recommend_video">
-          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
-          <div class="details_of_session">
-            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
-            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
-            <div class="space_line"></div>
-            <p class="pub_date">Held on {{session.session_pub_date}}</p>
-            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
-          </div>
-        </div>
-        <div class="recommend_video">
-          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
-          <div class="details_of_session">
-            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
-            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
-            <div class="space_line"></div>
-            <p class="pub_date">Held on {{session.session_pub_date}}</p>
-            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
-          </div>
-        </div>
-        <div class="recommend_video">
-          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
-          <div class="details_of_session">
-            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
-            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
-            <div class="space_line"></div>
-            <p class="pub_date">Held on {{session.session_pub_date}}</p>
-            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
-          </div>
-        </div>
-        <div class="recommend_video">
-          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
-          <div class="details_of_session">
-            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
-            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
-            <div class="space_line"></div>
-            <p class="pub_date">Held on {{session.session_pub_date}}</p>
-            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
-          </div>
-        </div>
-        <div class="recommend_video">
-          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
-          <div class="details_of_session">
-            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
-            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
-            <div class="space_line"></div>
-            <p class="pub_date">Held on {{session.session_pub_date}}</p>
-            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
-          </div>
-        </div>
-        <div class="recommend_video">
-          <img id="session_pic" src="{{session.session_pic.url}}" width="300" height="150" alt="">
-          <div class="details_of_session">
-            <h3><span class="session_title">{{session.session_name|truncatechars:25}}</span></h3>
-            <p class="session_description hide_session_description">{{session.session_desc|truncatewords:18}}</p>
-            <div class="space_line"></div>
-            <p class="pub_date">Held on {{session.session_pub_date}}</p>
-            <p class="upload_date">Uploaded {{ session.created_at|naturaltime }}</p>
-          </div>
-        </div>
+        {% endfor %}
+
       </div>
     </div>
   </div>
