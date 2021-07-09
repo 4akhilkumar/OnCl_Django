@@ -1454,7 +1454,8 @@ def upload_session_save(request):
         session_name = request.POST.get('session_name')
         session_desc = request.POST.get('session_desc')
         session_pub_date = request.POST.get('session_pub_date')
-        user = request.user
+        user = request.user.id
+        staff = Staffs.objects.get(user=user)
         session_tag1 = request.POST.get('session_tag1')
         session_tag2 = request.POST.get('session_tag2')
         session_tag3 = request.POST.get('session_tag3')
@@ -1474,7 +1475,7 @@ def upload_session_save(request):
                         session_name = session_name,
                         session_desc = session_desc,
                         session_pub_date = session_pub_date,
-                        user = user,
+                        user = staff,
                         session_pic = session_pic,
                         session_file = session_file,
                         session_tag1 = session_tag1,
