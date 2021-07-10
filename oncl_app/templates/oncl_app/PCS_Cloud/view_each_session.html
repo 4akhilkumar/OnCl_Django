@@ -126,6 +126,7 @@
     flex-wrap: nowrap;
     gap: 10px;
     margin-bottom: 20px;
+    align-items: flex-start;
   }
 
   .recommend_video {
@@ -138,6 +139,11 @@
 
   .recommend_video:hover {
     transform: translateY(-5px) scale(1.04) translateZ(0);
+  }
+
+  .session_thumnail {
+    width: fit-content;
+    height: max-content;
   }
 
   :root {
@@ -191,7 +197,7 @@
 
   #session_pic {
     width: 200px;
-    height: 100px;
+    height: 110px;
     border-radius: 5px;
   }
 
@@ -203,6 +209,16 @@
     text-align: start;
   }
 
+  .SessionFromUser {
+    font-weight: 600;
+    font-family: system-ui;
+    margin-top: 10px;
+    background-color: #cfd8dc;
+    padding: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
   button {
     background: #6c757d2e;
     outline: none;
@@ -210,7 +226,11 @@
     padding: 5px;
     border-radius: 5px;
     cursor: pointer;
-  } 
+  }
+  
+  .hidden{
+    display : none;
+  }
 
   @media only screen and (max-width: 1441px) {
     video {
@@ -311,12 +331,14 @@
         <source src="{{session.session_file.url}}" type="video/mp4" />
         </video>
         <div class="session_details">
-          <h1 class="session_name">{{session.session_name}}</h1>
+          <h1 class="session_name">{{session.session_name}} | {{session.session_ref_no}}</h1>
           <h3 class="session_time_period">Held on {{session.session_pub_date}} • Uploaded {{session.created_at|naturaltime}}</h3>
           <h4 class="other_options">
-            <a href="" class="other_options_a"><i class="fas fa-th-list"></i> Add to List</a>&nbsp;&nbsp;&nbsp;
-            <a href="" class="other_options_a"><i class="fas fa-share-square"></i> Share</a>&nbsp;&nbsp;&nbsp;
-            <button class="other_options_a clipboard"><i class="fas fa-copy"></i> Copy URL</button>&nbsp;&nbsp;
+            <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: center; gap: 10px;">
+              <button class="other_options_a"><i class="fas fa-chalkboard-teacher"></i> Ask a doubt</button>
+              <button class="other_options_a"><i class="fas fa-clock"></i> Watch Later</button>
+              <button class="other_options_a clipboard"><i class="fas fa-copy"></i> Copy URL</button>
+            </div>
             {% for group_for in request.user.groups.all %} 
             {% if group_for.name == 'Faculty' %}
             {% if request.user.id == session.user.user.id|add:"0" %}
@@ -351,8 +373,10 @@
       <div class="recommend_videos">
 
         {% for i in recommend_session_tag1 %}
-        <div class="recommend_video" style="cursor: pointer;" onclick="document.location='{% url 'view_each_session' i.id %}'">
-          <img id="session_pic" src="{{i.session_pic.url}}" width="300" height="150" alt="">
+        {% if i.session_ref_no == session.session_ref_no %}
+        {% else %}
+        <div class="recommend_video" id="One" style="cursor: pointer;" onclick="document.location='{% url 'view_each_session' i.id %}'">
+          <div class="session_thumnail"><img id="session_pic" src="{{i.session_pic.url}}"  alt=""></div>
           <div class="details_of_session">
             <h3><span class="session_title">{{i.session_name|truncatechars:25}}</span></h3>
             <p class="session_description hide_session_description">{{i.session_desc|truncatewords:18}}</p>
@@ -361,11 +385,16 @@
             <p class="upload_date">Uploaded {{ i.created_at|naturaltime }}</p>
           </div>
         </div>
+        {% endif %}
         {% endfor %}
 
+        <h4 class="SessionFromUser" onclick="showhide()">Sessions from {{session.user.user.first_name|title|truncatechars:15}}</h4>
+        <div id="newpost" class="hidden">
         {% for i in recommend_session_faculty %}
-        <div class="recommend_video" style="cursor: pointer;" onclick="document.location='{% url 'view_each_session' i.id %}'">
-          <img id="session_pic" src="{{i.session_pic.url}}" width="300" height="150" alt="">
+        {% if i.session_ref_no == session.session_ref_no %}
+        {% else %}
+        <div class="recommend_video" id="Two" style="cursor: pointer; margin-top: 10px;" onclick="document.location='{% url 'view_each_session' i.id %}'">
+          <div class="session_thumnail"><img id="session_pic" src="{{i.session_pic.url}}"  alt=""></div>
           <div class="details_of_session">
             <h3><span class="session_title">{{i.session_name|truncatechars:25}}</span></h3>
             <p class="session_description hide_session_description">{{i.session_desc|truncatewords:18}}</p>
@@ -374,7 +403,9 @@
             <p class="upload_date">Uploaded {{ i.created_at|naturaltime }}</p>
           </div>
         </div>
+        {% endif %}
         {% endfor %}
+        </div>
 
       </div>
     </div>
@@ -391,5 +422,13 @@
     $temp.remove();
   })
 </script>
+
+<script>
+  function showhide() {
+    var div = document.getElementById("newpost");
+    div.classList.toggle('hidden');
+  }
+</script>
+
 </body>
 {% endblock %}

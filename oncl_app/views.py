@@ -1623,18 +1623,12 @@ def view_each_session(request, session_id):
     tag = session.session_tag1
     faculty_name = session.user.user.first_name
     recommend_session_tag1 = PCS_Cloud.objects.filter(
-            Q(session_ref_no__contains=tag) | Q(session_name__contains=tag) | 
+            Q(session_name__contains=tag) | 
             Q(user__user__first_name__contains=tag) | Q(session_desc__contains=tag) | 
-            Q(session_pub_date__contains=tag) | Q(session_tag1__contains=tag) | 
-            Q(session_tag2__contains=tag) | Q(session_tag3__contains=tag) | 
-            Q(session_tag4__contains=tag))
+            Q(session_tag1__contains=tag) | Q(session_tag2__contains=tag) | 
+            Q(session_tag3__contains=tag) | Q(session_tag4__contains=tag))
 
-    recommend_session_faculty = PCS_Cloud.objects.filter(
-            Q(session_ref_no__contains=faculty_name) | Q(session_name__contains=faculty_name) | 
-            Q(user__user__first_name__contains=faculty_name) | Q(session_desc__contains=faculty_name) | 
-            Q(session_pub_date__contains=faculty_name) | Q(session_tag1__contains=faculty_name) | 
-            Q(session_tag2__contains=faculty_name) | Q(session_tag3__contains=faculty_name) | 
-            Q(session_tag4__contains=faculty_name))
+    recommend_session_faculty = PCS_Cloud.objects.filter(Q(user__user__first_name__contains=faculty_name))
     context = {
         "session": session,
         "id": session_id,
