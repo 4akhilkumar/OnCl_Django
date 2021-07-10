@@ -1305,7 +1305,7 @@ def upload(request):
             book_id = form.cleaned_data['book_id']
             book_name = form.cleaned_data['book_name']
             book_author = form.cleaned_data['book_author']
-            book_author_uid = form.cleaned_data['book_author_uid']
+            user = request.user
             book_desc = form.cleaned_data['book_desc']
             book_pub_date = form.cleaned_data['book_pub_date']
             book_pic = form.cleaned_data['book_pic']
@@ -1318,7 +1318,7 @@ def upload(request):
             E_Books(book_id = book_id,
                         book_name = book_name, 
                         book_author = book_author, 
-                        book_author_uid = book_author_uid,
+                        user = user,
                         book_desc = book_desc,
                         book_pub_date = book_pub_date,
                         book_pic = book_pic,
