@@ -107,11 +107,11 @@ style="cursor: pointer;">
                            </div>
                            <div>
                             {% for group_for in request.user.groups.all %} 
-                            {% if group_for.name == 'Admin' %}
+                            {% if group_for.name == 'Admin' and request.user.id == book.user.id %}
                             <a href="{% url 'edit_book' book.id %}"><i class="fas fa-edit"></i></a>
                             <a href="{% url 'delete_book' book.id %}" style="color: #f44336;"><i class="far fa-trash-alt"></i></a>
                             {% elif group_for.name == 'Faculty' %}
-                            {% if request.user.id == book.book_author_uid|add:"0" %}
+                            {% if request.user.id == book.user.id|add:"0" %}
                             <a href="{% url 'edit_book' book.id %}"><i class="fas fa-edit"></i></a>
                             <a href="{% url 'delete_book' book.id %}" style="color: #f44336;"><i class="far fa-trash-alt"></i></a>
                             {% else %}

@@ -202,9 +202,12 @@ hr {
                           
                           {% for group_for in request.user.groups.all %} 
                           {% if group_for.name == 'Admin' %}
+                          {% if request.user.id == announcement.user.id|add:"0" %}
                           |
                           <a class="edit_button" href="{% url 'edit_announcement' announcement.id %}"><i class="fas fa-edit"></i> Edit</a> &nbsp;
                           <a class="delete_button" href="{% url 'delete_announcement' announcement.id %}"><i class="fas fa-trash"></i> Delete</a>
+                          {% else %}
+                          {% endif %}
                           {% elif group_for.name == 'Faculty' %}
                           {% if request.user.id == announcement.user.id|add:"0" %}
                           |

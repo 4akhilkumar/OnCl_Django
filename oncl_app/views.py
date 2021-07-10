@@ -1203,11 +1203,15 @@ def manage_announcement(request):
 @allowed_users(allowed_roles=['Admin','Faculty'])
 def edit_announcement(request, announcement_id):
     announcement = Announcements_news.objects.get(id=announcement_id)
-    context = {
-        "announcement": announcement,
-        "id": announcement_id
-    }
-    return render(request, 'oncl_app/admin_templates/announcements_templates/edit_announcement.html', context)
+    if announcement.user.username == request.user.username:
+        context = {
+            "announcement": announcement,
+            "id": announcement_id
+        }
+        return render(request, 'oncl_app/admin_templates/announcements_templates/edit_announcement.html', context)
+    else:
+        messages.warning(request, "You are not authorized to allow here!")
+        return redirect('manage_announcement')
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin','Faculty'])
@@ -1250,12 +1254,16 @@ def edit_announcement_save(request):
 @allowed_users(allowed_roles=['Admin','Faculty'])
 def delete_announcement(request, announcement_id):
     announcement = Announcements_news.objects.get(id=announcement_id)
-    try:
-        announcement.delete()
-        messages.info(request, "Announcement Deleted Successfully.")
-        return redirect('manage_announcement')
-    except:
-        messages.error(request, "Failed to Delete Announcement!")
+    if announcement.user.username == request.user.username:
+        try:
+            announcement.delete()
+            messages.info(request, "Announcement Deleted Successfully.")
+            return redirect('manage_announcement')
+        except:
+            messages.error(request, "Failed to Delete Announcement!")
+            return redirect('manage_announcement')
+    else:
+        messages.warning(request, "You are not authorized to perform the action!")
         return redirect('manage_announcement')
 
 @login_required(login_url='login')
@@ -1353,11 +1361,15 @@ def view_books(request):
 
 def edit_book(request, book_id):
     e_book = E_Books.objects.get(id=book_id)
-    context = {
-        "e_book": e_book,
-        "id": book_id
-    }
-    return render(request, 'oncl_app/E-Library/edit_book.html', context)
+    if e_book.user == request.user:
+        context = {
+            "e_book": e_book,
+            "id": book_id
+        }
+        return render(request, 'oncl_app/E-Library/edit_book.html', context)
+    else:
+        messages.warning(request, "You are not authorized to allow here!")
+        return redirect('view_book')
 
 def edit_book_save(request):
     if request.method != "POST":
@@ -1422,12 +1434,16 @@ def edit_book_save(request):
 
 def delete_book(request, book_id):
     e_book = E_Books.objects.get(id=book_id)
-    try:
-        e_book.delete()
-        messages.info(request, "E-Book Deleted Successfully.")
-        return redirect('view_book')
-    except:
-        messages.error(request, "Failed to Delete E-Book!")
+    if e_book.user == request.user:
+        try:
+            e_book.delete()
+            messages.info(request, "E-Book Deleted Successfully.")
+            return redirect('view_book')
+        except:
+            messages.error(request, "Failed to Delete E-Book!")
+            return redirect('view_book')
+    else:
+        messages.warning(request, "You are not authorized to allow here!")
         return redirect('view_book')
 
 @login_required(login_url='login')
@@ -1691,12 +1707,16 @@ def edit_session_save(request):
 
 def delete_session(request, session_id):
     session = PCS_Cloud.objects.get(id=session_id)
-    try:
-        session.delete()
-        messages.info(request, "Session Deleted Successfully.")
-        return redirect('view_session')
-    except:
-        messages.error(request, "Failed to Delete Session!")
+    if session.user.user == request.user:
+        try:
+            session.delete()
+            messages.info(request, "Session Deleted Successfully.")
+            return redirect('view_session')
+        except:
+            messages.error(request, "Failed to Delete Session!")
+            return redirect('view_session')
+    else:
+        messages.warning(request, "You are not authorized to perform the action!")
         return redirect('view_session')
 
 @login_required(login_url='login')
