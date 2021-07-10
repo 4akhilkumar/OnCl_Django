@@ -236,7 +236,7 @@ class LeaveReportStaff(models.Model):
         return '%s %s' % (self.staff_id, self.leave_date)
 
 class Announcements_news(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     sub_an = models.CharField(max_length=100, default="")
     what_an = models.TextField()
     an_image = models.FileField(null=True, blank=True, default='False',upload_to='announcements/')
