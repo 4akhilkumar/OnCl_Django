@@ -60,7 +60,7 @@
   padding: 10px;
 }
 
-@media screen and (max-width: 769px) {
+@media only screen and (max-width: 769px) {
 	.header_img {
 		height: 30px;
 		width: 30px;
@@ -72,7 +72,7 @@
   }
 }
 
-@media screen and (max-width: 426px) {
+@media only screen and (max-width: 426px) {
 	.header_img {
 		height: 30px;
 		width: 30px;
@@ -84,14 +84,26 @@
   }
 }
 
-@media screen and (max-width: 376px) {
+@media only screen and (max-width: 376px) {
   .login_button {
     padding: 8px;
     font-size: 1rem;
   }
+  .header_img {
+		height: 27.5px;
+		width: 27.5px;
+		margin-bottom: 4px;
+	}
+	.hidden_text {
+		font-size: 1.4rem;
+  }
 }
 
-@media screen and (max-width: 321px) {
+@media only screen and (max-width: 351px) {
+  .login_button {
+    padding: 8px;
+    font-size: 1rem;
+  }
 	.header_img {
 		height: 27.5px;
 		width: 27.5px;
@@ -105,10 +117,28 @@
   }
 }
 
-@media screen and (max-width: 281px) {
+@media only screen and (max-width: 321px) {
   .login_button {
     padding: 8px;
     font-size: 1rem;
+  }
+	.header_img {
+		height: 27.5px;
+		width: 27.5px;
+		margin-bottom: 4px;
+	}
+	.hidden_text {
+		font-size: 1.4rem;
+  }
+  .hide_login_or_logout {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 301px) {
+  .login_button {
+    padding: 8px;
+    font-size: 1.25rem;
   }
   .header_img {
 		height: 25px;
