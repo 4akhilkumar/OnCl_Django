@@ -182,5 +182,5 @@ urlpatterns = [
     path('delete_social_profile_staff/<str:delete_social_profile_id>', views.delete_social_profile_staff, name='delete_social_profile_staff'),
 
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
-    # re_path(r'^.*\.*', views.pages, name='pages'),
+    re_path(r'^.*\.*', views.pages, name='pages'),
 ]
