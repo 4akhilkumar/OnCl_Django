@@ -39,19 +39,12 @@ class Semester(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return '%s %s %s-%s' % (self.branch, self.semester_mode, self.semester_start_year.year, self.semester_end_year.year)
-
-class Subjects(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    subject_name = models.CharField(max_length=50, unique=True,)
-    branch = models.CharField(max_length=50, choices = BRANCH_CHOICES, default=1)
-    semester = models.ManyToManyField(Semester)
-    staff_id = models.ManyToManyField(User)
-    desc = models.TextField(blank=True, null=True)
-    objects = models.Manager()
-
-    def __str__(self):
-        return '%s' % (self.subject_name)
+        branch_split = self.branch.split(" ")
+        branch_split.remove('and')
+        str_branch_split = ""
+        for i in branch_split:
+            str_branch_split += i[0]
+        return '%s %s %s-%s' % (str_branch_split, self.semester_mode, self.semester_start_year.year, self.semester_end_year.year)
 
 GENDER_CHOICES = [
     ("", "Select Gender"),
@@ -108,6 +101,18 @@ class Staffs(models.Model):
     
     class Meta:
         ordering = ["user__username"]
+
+class Subjects(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    subject_name = models.CharField(max_length=50, unique=True)
+    branch = models.CharField(max_length=50, choices = BRANCH_CHOICES, default=1)
+    semester = models.ManyToManyField(Semester)
+    staff_id = models.ManyToManyField(Staffs)
+    desc = models.TextField(blank=True, null=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return '%s' % (self.subject_name)
 
 class Students(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
