@@ -914,7 +914,7 @@ def edit_student_save(request):
 @allowed_users(allowed_roles=['Admin'])
 def view_student(request, student_id):
     student = Students.objects.get(user__username=student_id)
-    ssp = Student_Social_Profile.objects.filter(user__username=student_id)
+    ssp = Student_Social_Profile.objects.filter(user__user__username=student_id)
     context = {
         "student": student,
         "id": student_id,
