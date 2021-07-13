@@ -97,7 +97,7 @@ class Staffs(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return '%s %s %s' % (self.user, self.user.first_name, self.user.last_name)
+        return '%s %s %s' % (self.user, self.user.first_name.title(), self.user.last_name.title())
     
     class Meta:
         ordering = ["user__username"]
@@ -138,7 +138,7 @@ class Students(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return '%s %s %s' % (self.user, self.user.first_name, self.user.last_name)
+        return '%s %s %s' % (self.user, self.user.first_name.title(), self.user.last_name.title())
 
     class Meta:
         ordering = ["user__username"]
