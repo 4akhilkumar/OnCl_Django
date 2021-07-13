@@ -145,16 +145,16 @@ class Students(models.Model):
     
 class Student_Social_Profile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Students, on_delete=models.CASCADE)
     linkedin = models.CharField(max_length=100, default="no_linkedin")
     github = models.CharField(max_length=100, default="no_github")
 
     def __str__(self):
-        return '%s %s %s' % (self.user, self.linkedin, self.github)
+        return '%s %s %s' % (self.user.user.username, self.linkedin, self.github)
 
 class Staff_Social_Profile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(Staffs, on_delete=models.CASCADE)
     linkedin = models.CharField(max_length=100, default="no_linkedin")
     github = models.CharField(max_length=100, default="no_github")
     orcid = models.CharField(max_length=100, default="no_orcid")
@@ -163,7 +163,7 @@ class Staff_Social_Profile(models.Model):
     microsoft_academic = models.CharField(max_length=100, default="no_microsoft_academic")
 
     def __str__(self):
-        return '%s %s %s' % (self.user, self.linkedin, self.gscholar)
+        return '%s %s %s' % (self.user.user.username, self.linkedin, self.gscholar)
 
 FLOORS = [
     ("","Select Floor"),
@@ -195,12 +195,12 @@ class Student_Sem_Reg(models.Model):
 
 class Student_Course_Reg(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    user = models.ForeignKey(Staffs, on_delete=models.SET_NULL, blank=True, null=True)
     subject = models.ForeignKey(Subjects, on_delete=models.SET_NULL, blank=True, null=True)
     section = models.ForeignKey(Sections, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
-        return '%s %s' % (self.user, self.subject)
+        return '%s %s' % (self.user.user, self.subject)
 
 class user_login_details(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
