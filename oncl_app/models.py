@@ -191,7 +191,7 @@ class Student_Sem_Reg(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
-        return '%s %s' % (self.user, self.semester)
+        return '%s %s' % (self.user, self.semester.all().count())
 
 class Student_Course_Reg(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
