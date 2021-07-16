@@ -139,10 +139,15 @@
     gap: 10px;
     overflow: hidden;
     transition: all 0.3s ease-out;
+    /* background-color: #eeeeee; */
+    padding-bottom: 8px;
+    padding-left: 4px;
+    padding-right: 4px;
   }
 
   .recommend_video:hover {
-    transform: translateY(-5px) scale(1.04) translateZ(0);
+    background-color: #eeeeee;
+    border-radius: 5px;
   }
 
   .session_thumnail {
@@ -188,7 +193,7 @@
   video {
     width: 100%;
     height: auto;
-    border-radius: 10px;
+    border-radius: 5px;
     outline: none;
   }
 
@@ -224,10 +229,6 @@
     border-radius: 5px;
     cursor: pointer;
   }
-  
-  .hidden{
-    display : none;
-  }
 
   @media only screen and (max-width: 1441px) {
     video {
@@ -254,8 +255,10 @@
 
   @media only screen and (max-width: 769px) {
     video {
+      /* width: 100%;
+      height: 100%; */
       width: 100%;
-      height: 100%;
+      height: 45%;
     }
     .main_section {
       padding-top: 1%;
@@ -311,7 +314,7 @@
     .current_session_description {
       font-size: 0.8rem;
     }
-  } 
+  }
 </style>
 </head>
   
@@ -365,6 +368,7 @@
               <h4 class="session_tags">#{{session.session_tag1|title}} #{{session.session_tag2|title}} #{{session.session_tag3|title}} #{{session.session_tag4|title}}</h4>
             </div>
           </div>
+          <div class="space_line"></div>
         </div>
       </div>
       <div class="recommend_videos">
@@ -384,26 +388,6 @@
         </div>
         {% endif %}
         {% endfor %}
-
-        <h4 class="SessionFromUser" onclick="showhide()">Sessions from {{session.user.user.first_name|title|truncatechars:15}}</h4>
-        <div id="newpost" class="hidden">
-        {% for i in recommend_session_faculty %}
-        {% if i.session_ref_no == session.session_ref_no %}
-        {% else %}
-        <div class="recommend_video" id="Two" style="cursor: pointer; margin-top: 10px;" onclick="document.location='{% url 'view_each_session' i.id %}'">
-          <div class="session_thumnail"><img id="session_pic" src="{{i.session_pic.url}}"  alt=""></div>
-          <div class="details_of_session">
-            <h3><span class="session_title">{{i.session_name|truncatechars:25}}</span></h3>
-            <p class="session_description hide_session_description">{{i.session_desc|truncatewords:18}}</p>
-            <div class="space_line"></div>
-            <p class="pub_date">Held on {{i.session_pub_date}}</p>
-            <p class="upload_date">Uploaded {{ i.created_at|naturaltime }}</p>
-          </div>
-        </div>
-        {% endif %}
-        {% endfor %}
-        </div>
-
       </div>
     </div>
   </div>
@@ -418,13 +402,6 @@
     document.execCommand("copy");
     $temp.remove();
   })
-</script>
-
-<script>
-  function showhide() {
-    var div = document.getElementById("newpost");
-    div.classList.toggle('hidden');
-  }
 </script>
 
 </body>
