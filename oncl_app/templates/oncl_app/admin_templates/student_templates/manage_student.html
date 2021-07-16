@@ -269,7 +269,7 @@ label {
           <td data-label="Address"><a class="a_tag_address" href="https://www.google.com/maps/place/{{student.city_name}}" target="_blank">{{ student.city_name }}</a></td>
           <td data-label="Last Login"> {% if student.user.last_login == None %} User Not Logged Yet! {% else %} {{ student.user.last_login }} {% endif %}</td>
           <td data-label="Action" class="outlined">
-              <a href="{% url 'view_student' student.user %}" target="_blank"><i class="fas fa-eye"></i> View</a> &nbsp; <br>
+              <a href="{% url 'view_student' student.user.username %}" target="_blank"><i class="fas fa-eye"></i> View</a> &nbsp; <br>
               <a class="edit_button" href="{% url 'edit_student' student.user %}"><i class="fas fa-edit"></i> Edit</a> &nbsp; <br>
               <a class="delete_button" href="{% url 'delete_student' student.user %}"><i class="fas fa-trash"></i> Delete</a>
           </td>
