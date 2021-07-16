@@ -47,9 +47,8 @@ style="cursor: pointer;">
 <script src="https://kit.fontawesome.com/f64de7b412.js" crossorigin="anonymous"></script>
 <div class="search_bar_custom">
     <div class="content">
-    <form method="POST" action="/search_book">
+    <form method="GET" action="/search_book">
       <div class="search">
-        {% csrf_token %}
         <input type="text" class="search__input" aria-label="search" id="tags" name="search" placeholder="Search Books...">
         <button type="submit" class="search__btn" aria-label="submit search"><i class="fas fa-search"></i></button>
       </div>

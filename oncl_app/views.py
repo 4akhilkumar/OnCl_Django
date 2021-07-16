@@ -34,6 +34,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from django.db import transaction
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
 from .forms import *
@@ -1447,6 +1448,7 @@ def delete_book(request, book_id):
         return redirect('view_book')
 
 @login_required(login_url='login')
+@csrf_exempt
 @allowed_users(allowed_roles=['Admin','Faculty','Student','Librarian'])
 def search(request):
     if request.method == 'POST':
