@@ -676,7 +676,7 @@ def edit_staff(request, staff_id):
 @allowed_users(allowed_roles=['Admin','Faculty','Student'])
 def view_staff(request, staff_id):
     staff = Staffs.objects.get(user=staff_id)
-    ssp = Staff_Social_Profile.objects.filter(user=staff_id)
+    ssp = Staff_Social_Profile.objects.filter(user__user=staff_id)
     print("ssp", ssp)
     context = {
         "staff": staff,
@@ -1029,11 +1029,12 @@ def add_social_profile(request):
         return redirect('student_profile')
     else:
         user = request.user
+        student_user = Students.objects.get(user=user)
         linkedin = request.POST.get('linkedin')
         github = request.POST.get('github')
  
         try:
-            ssp = Student_Social_Profile(user=user,linkedin=linkedin,github=github)
+            ssp = Student_Social_Profile(user=student_user,linkedin=linkedin,github=github)
             ssp.save()
             messages.success(request, "Social Profile(s) Added Successfully.")
             return redirect('student_profile')
@@ -1287,7 +1288,7 @@ def student_profile(request):
     user = User.objects.get(id=request.user.id)
     student = Students.objects.get(user=user)
     sld = user_login_details.objects.filter(user=user)
-    ssp = Student_Social_Profile.objects.filter(user=request.user.id)
+    ssp = Student_Social_Profile.objects.filter(user=student)
     context = {
             'username':username,
             'student':student, 
