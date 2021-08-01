@@ -128,7 +128,7 @@ def login_page(request):
         latitude = request.POST.get('latitude')
         location = request.POST.get('location')
 
-        user = authenticate(request, username=username, password=password)
+#         user = authenticate(request, username=username, password=password)
 
         captcha_token=request.POST.get("g-recaptcha-response")
         cap_url="https://www.google.com/recaptcha/api/siteverify"
@@ -157,6 +157,8 @@ def login_page(request):
         list_existing_user_records = []
         for i in existing_user_records:
             list_existing_user_records.append(i.username)
+            
+        user = authenticate(request, username=username, password=password)
 
         if username not in list_existing_user_records:
             messages.error(request, 'No Such Account Exist!')
