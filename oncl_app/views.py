@@ -2327,7 +2327,7 @@ def student_sem_reg(request):
     return render(request, 'oncl_app/Student Registration/student_sem_reg.html')
 
 def ssl(request):
-    return render(request, 'oncl_app/.well-known/pki-validation/DE297C62500D172EC0E20BEEF2E4465C.txt.')
+    return render(request, 'oncl_app/.well-known/pki-validation/DE297C62500D172EC0E20BEEF2E4465C.txt')
 
 
 
