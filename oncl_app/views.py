@@ -128,22 +128,20 @@ def login_page(request):
         latitude = request.POST.get('latitude')
         location = request.POST.get('location')
 
-#         user = authenticate(request, username=username, password=password)
+        # captcha_token=request.POST.get("g-recaptcha-response")
+        # cap_url="https://www.google.com/recaptcha/api/siteverify"
+        # cap_secret="6LeJoakaAAAAACuq-D-kikqlQezY0ct5bs-OG6_b"
+        # cap_data={"secret":cap_secret,"response":captcha_token}
+        # cap_server_response=requests.post(url=cap_url,data=cap_data)
+        # cap_json=json.loads(cap_server_response.text)
 
-        captcha_token=request.POST.get("g-recaptcha-response")
-        cap_url="https://www.google.com/recaptcha/api/siteverify"
-        cap_secret="6LeJoakaAAAAACuq-D-kikqlQezY0ct5bs-OG6_b"
-        cap_data={"secret":cap_secret,"response":captcha_token}
-        cap_server_response=requests.post(url=cap_url,data=cap_data)
-        cap_json=json.loads(cap_server_response.text)
-
-        if cap_json['success']==False:
-            messages.error(request,"Invalid Captcha Try Again!")
-            # return render(request,"oncl_app/login_register/recaptcha_message.html")
-            return redirect('login')
-        else:
-            # messages.success(request, "Recaptcha Verified.")
-            pass
+        # if cap_json['success']==False:
+        #     messages.error(request,"Invalid Captcha Try Again!")
+        #     # return render(request,"oncl_app/login_register/recaptcha_message.html")
+        #     return redirect('login')
+        # else:
+        #     # messages.success(request, "Recaptcha Verified.")
+        #     pass
         
         # if latitude == '5' and longitude == '5':
         #     messages.warning(request, 'You must enable your GPS inorder to login.')
@@ -157,7 +155,7 @@ def login_page(request):
         list_existing_user_records = []
         for i in existing_user_records:
             list_existing_user_records.append(i.username)
-            
+
         user = authenticate(request, username=username, password=password)
 
         if username not in list_existing_user_records:
@@ -170,7 +168,7 @@ def login_page(request):
             login(request, user)
             messages.success(request, 'You Logged In Successfully.')
             template = render_to_string('oncl_app/login_register/login_mail.html', {'email':request.user.email, 'ip_addr':user_ip_address, 'latitude':latitude, 'longitude':longitude})
-            send_mail('OnCl Account Login Alert', template, settings.EMAIL_HOST_USER, [request.user.email], html_message=template)
+            # send_mail('OnCl Account Login Alert', template, settings.EMAIL_HOST_USER, [request.user.email], html_message=template)
             
             group = None
             if request.user.groups.exists():
@@ -179,6 +177,8 @@ def login_page(request):
                 return redirect('student_dashboard')
             elif group == 'Faculty':
                 return redirect('faculty_dashboard')
+            elif group == 'Head of the Department':
+                return redirect('hod_dashboard')
             else:
                 return redirect('admin_dashboard')
 
@@ -233,6 +233,22 @@ def dashboard_faculty_page(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['Admin'])
 def dashboard_admin_page(request):
+    username = request.user.get_username()
+    count_LeaveReportStudent = LeaveReportStudent.objects.all().count()
+    count_LeaveReportStaff = LeaveReportStaff.objects.all().count()
+    count_Task = Task.objects.filter(user=request.user.id).count()
+
+    context = {
+        'username':username,
+        'count_LeaveReportStudent':count_LeaveReportStudent,
+        'count_LeaveReportStaff':count_LeaveReportStaff,
+        'count_Task':count_Task,
+    }
+    return render(request, 'oncl_app/dashboard_admin.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Head of the Department'])
+def dashboard_hod_page(request):
     username = request.user.get_username()
     count_LeaveReportStudent = LeaveReportStudent.objects.all().count()
     count_LeaveReportStaff = LeaveReportStaff.objects.all().count()
@@ -520,7 +536,8 @@ def add_subject_save(request):
             subject.save()
             messages.success(request, "Subject Added Successfully.")
             return redirect('manage_subject')
-        except:
+        except Exception as e:
+            print(e)
             messages.error(request, "Failed to Add Subject!")
             return redirect('add_subject')
 
@@ -643,7 +660,7 @@ def add_staff(request):
     return render(request, "oncl_app/admin_templates/faculty_templates/add_faculty.html", context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin', 'Head of the Department'])
 def manage_staff(request):
     staffs_all = Staffs.objects.all()
     page = request.GET.get('page', 1)
@@ -663,7 +680,7 @@ def manage_staff(request):
     return render(request, "oncl_app/admin_templates/faculty_templates/manage_faculty.html", context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin', 'Head of the Department'])
 def edit_staff(request, staff_id):
     staff = Staffs.objects.get(user=staff_id)
     staff_form = StaffsForm()
@@ -804,9 +821,15 @@ def add_student(request):
     return render(request, "oncl_app/admin_templates/student_templates/add_student.html", context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin', 'Head of the Department'])
 def manage_student(request):
-    students_all = Students.objects.all()
+    current_user = request.user
+    if request.user.groups.filter(name__in=['Head of the Department']).exists():
+        faculty_user = Staffs.objects.get(user=current_user)
+        students_all = Students.objects.filter(branch=faculty_user.branch)
+    else:
+        students_all = Students.objects.all()
+
     page = request.GET.get('page', 1)
     
     paginator = Paginator(students_all, 25)
@@ -824,7 +847,7 @@ def manage_student(request):
     return render(request, "oncl_app/admin_templates/student_templates/manage_student.html", context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin', 'Head of the Department'])
 def edit_student(request, student_id):
     student = Students.objects.get(user__username=student_id)
     student_form = StudentsForm()
@@ -836,7 +859,7 @@ def edit_student(request, student_id):
     return render(request, "oncl_app/admin_templates/student_templates/edit_student.html", context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin', 'Head of the Department'])
 def edit_student_save(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -914,7 +937,7 @@ def edit_student_save(request):
             return redirect('/edit_student/'+student_id+"/")
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin', 'Head of the Department'])
 def view_student(request, student_id):
     student = Students.objects.get(user__username=student_id)
     ssp = Student_Social_Profile.objects.filter(user__user__username=student_id)
@@ -926,7 +949,7 @@ def view_student(request, student_id):
     return render(request, "oncl_app/profile_templates/student_profile.html", context)
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Admin'])
+@allowed_users(allowed_roles=['Admin', 'Head of the Department'])
 def delete_student(request, student_id):
     student = Students.objects.get(user__username=student_id)
     try:
@@ -1586,7 +1609,7 @@ def upload_session_save(request):
             messages.success(request, "Session Info. Uploaded Successfully.")
             return redirect('view_session')
         except Exception as e:
-            print(e)
+            print("Error",e)
             messages.error(request, "Failed to Upload Session Info.!")
             return redirect('upload_session')
 
@@ -2287,11 +2310,25 @@ def bulk_upload_staffs_save(request):
         return redirect('manage_staff')
     else:
         messages.error(request, "Failed to Import Bulk Records!.")
-<<<<<<< Updated upstream
         return redirect('manage_staff')
-=======
-        return redirect('manage_staff')def ssl(request):
+    
+def student_sem_reg(request):
+    current_user = request.user.id
+    faculty_user = Staffs.objects.get(user=current_user)
+    try:
+        ssr = Counsellor_Student.objects.filter(faculty=faculty_user)
+        context = {
+            "ssr":ssr
+        }
+        return render(request, 'oncl_app/Student Registration/student_sem_reg.html', context)
+    except Exception as e:
+        print(e)
+        messages.error(request, "No Students have been allocated to you!")
+    return render(request, 'oncl_app/Student Registration/student_sem_reg.html')
+
+def ssl(request):
     return render(request, 'oncl_app/.well-known/pki-validation/DE297C62500D172EC0E20BEEF2E4465C.txt.')
 
 
->>>>>>> Stashed changes
+
+    
