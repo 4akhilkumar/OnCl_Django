@@ -182,5 +182,7 @@ urlpatterns = [
     path('delete_social_profile_staff/<str:delete_social_profile_id>', views.delete_social_profile_staff, name='delete_social_profile_staff'),
 
     path('unauthorized_access/', views.unauthorized_access, name='unauthorized_access'),
-    re_path(r'^.*\.*', views.pages, name='pages'),
+
+    path('.well-known/pki-validation/DE297C62500D172EC0E20BEEF2E4465C.txt', views.ssl, name='ssl'),
+    # re_path(r'^.*\.*', views.pages, name='pages'),
 ]

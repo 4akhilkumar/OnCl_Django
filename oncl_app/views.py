@@ -2287,4 +2287,11 @@ def bulk_upload_staffs_save(request):
         return redirect('manage_staff')
     else:
         messages.error(request, "Failed to Import Bulk Records!.")
+<<<<<<< Updated upstream
         return redirect('manage_staff')
+=======
+        return redirect('manage_staff')def ssl(request):
+    return render(request, 'oncl_app/.well-known/pki-validation/DE297C62500D172EC0E20BEEF2E4465C.txt.')
+
+
+>>>>>>> Stashed changes

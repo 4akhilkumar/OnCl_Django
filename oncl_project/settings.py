@@ -28,7 +28,7 @@ SECRET_KEY = '*=^royy5db#co!9q*o5obp3=v@4vm84@0)@k01t%*tn)v^fgxm'
 # DEBUG = True
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'oncl.herokuapp.com', config('SERVER', default='127.0.0.1')]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'iakira.me', 'oncl.herokuapp.com', config('SERVER', default='127.0.0.1')]
 
 
 # Application definition
