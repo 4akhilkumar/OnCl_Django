@@ -10,6 +10,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- Google Recaptcha -->
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	<meta http-equiv="Content-Security-Policy" content="script-src 'strict-dynamic' 'sha256-vvt4KWwuNr51XfE5m+hzeNEGhiOfZzG97ccfqGsPwvE=' 'nonce-{{rAnd0m123}}' 'unsafe-inline' http: https:; object-src 'none'; base-uri 'none';">
 <!--===============================================================================================-->	
 	<link rel="apple-touch-icon" href="{% static 'oncl_app/OnCl Logo [Background Removed].png' %}" type="image/icon type">
 	<link rel="icon" href="{% static 'oncl_app/OnCl Logo [Background Removed].png' %}" type="image/icon type">
@@ -33,11 +34,11 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/util.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'oncl_app/login_register/css/main.css' %}">
 <!--===============================================================================================-->
-<script src="https://kit.fontawesome.com/982d9630c6.js" crossorigin="anonymous"></script>
+<script nonce="{{rAnd0m123}}" src="https://kit.fontawesome.com/982d9630c6.js" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
 <!--===============================================================================================-->
 
-<script src="{% static 'oncl_app/jquery_3.6.0.min.js' %}"></script>
+<script nonce="{{rAnd0m123}}" src="{% static 'oncl_app/jquery_3.6.0.min.js' %}"></script>
 
 <style>
 /* Styles for Navbar */
@@ -119,7 +120,7 @@
 		</a>
 	</nav>
 
-	{% include 'oncl_app/messages.html' %}
+	<!-- {% include 'oncl_app/messages.html' %} -->
 	
 	<div class="limiter">
 		<div class="container-login100">
@@ -192,32 +193,32 @@
 	</div>
 	
 <!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+	<script nonce="{{rAnd0m123}}" src="{% static 'oncl_app/login_register/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
 <!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/animsition/js/animsition.min.js' %}"></script>
+	<script nonce="{{rAnd0m123}}" src="{% static 'oncl_app/login_register/vendor/animsition/js/animsition.min.js' %}"></script>
 <!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/popper.js' %}"></script>
-	<script src="{% static 'oncl_app/login_register/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+	<script nonce="{{rAnd0m123}}" src="{% static 'oncl_app/login_register/vendor/bootstrap/js/popper.js' %}"></script>
+	<script nonce="{{rAnd0m123}}" src="{% static 'oncl_app/login_register/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 <!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/select2/select2.min.js' %}"></script>
+	<script nonce="{{rAnd0m123}}" src="{% static 'oncl_app/login_register/vendor/select2/select2.min.js' %}"></script>
 <!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/daterangepicker/moment.min.js' %}"></script>
-	<script src="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.js' %}"></script>
+	<script nonce="{{rAnd0m123}}" src="{% static 'oncl_app/login_register/vendor/daterangepicker/moment.min.js' %}"></script>
+	<script nonce="{{rAnd0m123}}" src="{% static 'oncl_app/login_register/vendor/daterangepicker/daterangepicker.js' %}"></script>
 <!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/vendor/countdowntime/countdowntime.js' %}"></script>
+	<script nonce="{{rAnd0m123}}" src="{% static 'oncl_app/login_register/vendor/countdowntime/countdowntime.js' %}"></script>
 <!--===============================================================================================-->
-	<script src="{% static 'oncl_app/login_register/js/main.js' %}"></script>
+	<script nonce="{{rAnd0m123}}" src="{% static 'oncl_app/login_register/js/main.js' %}"></script>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script nonce="{{rAnd0m123}}" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-	<script>   
+	<script nonce="{{rAnd0m123}}">   
 		$.getJSON("https://api.ipify.org?format=json",
 		function(data) {
 			document.getElementById("ip_addr").value = data.ip;
 		})
 	</script>
 
-	<script>
+	<script nonce="{{rAnd0m123}}">
 		var x = document.getElementById("demo");
 		
 		function getLocation() {

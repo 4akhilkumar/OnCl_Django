@@ -18,6 +18,8 @@ import csv, io
 import pandas as pd
 import socket
 
+import secrets
+
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.core.mail import BadHeaderError, send_mail
@@ -119,6 +121,7 @@ def register_page(request):
 
 @unauthenticated_user
 def login_page(request):
+    rAnd0m123 = secrets.token_urlsafe(16)
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -184,8 +187,10 @@ def login_page(request):
 
         else:
             messages.warning(request, 'Username or Password is Incorrect!')
-
-    return render(request, 'oncl_app/login_register/login.html')
+    context = {
+        "rAnd0m123":rAnd0m123,
+    }
+    return render(request, 'oncl_app/login_register/login.html', context)
 
 def logoutUser(request):
     logout(request)
