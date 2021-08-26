@@ -162,7 +162,8 @@ def login_page(request):
         user = authenticate(request, username=username, password=password)
 
         if username not in list_existing_user_records:
-            messages.error(request, 'No Such Account Exist!')
+            # messages.error(request, 'No Such Account Exist!')
+            return HttpResponse("No Such Account Exist!")
             return redirect('login')
         else:
             save_login_details(request, username, user_ip_address)
@@ -186,7 +187,8 @@ def login_page(request):
                 return redirect('admin_dashboard')
 
         else:
-            messages.warning(request, 'Username or Password is Incorrect!')
+            # messages.warning(request, 'Username or Password is Incorrect!')
+            return HttpResponse("Username or Password is Incorrect!")
     context = {
         "rAnd0m123":rAnd0m123,
     }
