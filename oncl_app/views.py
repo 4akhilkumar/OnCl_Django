@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
+from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseForbidden
@@ -124,7 +125,7 @@ def login_page(request):
     rAnd0m123 = secrets.token_urlsafe(16)
     if request.method == 'POST':
         username = request.POST.get('username')
-        password = request.POST.get('password')
+        password = make_password(request.POST.get('password'))
         # ip_addr = request.META['HTTP_X_FORWARDED_FOR']
         user_ip_address = request.POST.get('ip_addr')
         longitude = request.POST.get('longitude')
