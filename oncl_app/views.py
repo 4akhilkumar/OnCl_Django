@@ -126,7 +126,8 @@ def login_page(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         # ip_addr = request.META['HTTP_X_FORWARDED_FOR']
-        user_ip_address = request.POST.get('ip_addr')
+        # user_ip_address = request.POST.get('ip_addr')
+        user_ip_address = requests.get('https://api64.ipify.org/?format=text').text
         longitude = request.POST.get('longitude')
         latitude = request.POST.get('latitude')
         location = request.POST.get('location')
