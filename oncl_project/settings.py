@@ -156,6 +156,7 @@ EMAIL_HOST_USER = '4projtest@gmail.com'
 EMAIL_HOST_PASSWORD = 'ansgmitfrhboysbh'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
 
 from django.contrib.messages import constants as messages
 from django.contrib.messages import constants as message_constants
