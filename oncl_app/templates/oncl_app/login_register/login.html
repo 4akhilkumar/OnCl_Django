@@ -10,7 +10,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- Google Recaptcha -->
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-	<!-- <meta http-equiv="Content-Security-Policy" content="script-src-elem 'strict-dynamic' 'sha256-vvt4KWwuNr51XfE5m+hzeNEGhiOfZzG97ccfqGsPwvE=' 'nonce-{{rAnd0m123}}' 'unsafe-inline' http: https:; object-src 'none'; base-uri 'none';"> -->
+	<meta http-equiv="Content-Security-Policy" content="script-src-elem 'strict-dynamic' 'sha256-vvt4KWwuNr51XfE5m+hzeNEGhiOfZzG97ccfqGsPwvE=' 'nonce-{{rAnd0m123}}' 'unsafe-inline' http: https:; object-src 'none'; base-uri 'none';">
 <!--===============================================================================================-->	
 	<link rel="apple-touch-icon" href="{% static 'oncl_app/OnCl Logo [Background Removed].png' %}" type="image/icon type">
 	<link rel="icon" href="{% static 'oncl_app/OnCl Logo [Background Removed].png' %}" type="image/icon type">
@@ -145,8 +145,7 @@
 						<span class="btn-show-pass">
 							<i class="fa fa-eye"></i>
 						</span>
-						<input class="input100" oninput="myFunction()" type="password" name="password" maxlength="40" id="id_password" placeholder="Password">
-						<input type="text" name="encrypted_password" id="id_encrypted_password" hidden/>
+						<input class="input100" type="password" name="password" maxlength="40" id="id_password" placeholder="Password">
 						<span class="focus-input100"></span>
 					</div>
 
@@ -218,26 +217,6 @@
 			document.getElementById("ip_addr").value = data.ip;
 		})
 	</script>
-
-<script nonce="{{rAnd0m123}}">
-function myFunction() {
-    let username = document.getElementById("id_username").value;
-    let plain_data = document.getElementById("id_password").value;
-    let password_username = plain_data.concat(username);
-    var ASCII_Username = new Array();
-    for (let i = 0; i < username.length; i++) {
-        ASCII_Username[i]=username.charCodeAt(i);
-    }
-    var ASCII_Username_Sum = ASCII_Username.reduce(function(a, b){
-        return a + b;
-    }, 0);
-    let Encrypted_text = "";
-    for (let i = 0; i < password_username.length; i++) {
-        Encrypted_text += String.fromCharCode(password_username.charCodeAt(i) + ASCII_Username_Sum);
-    }
-    document.getElementById("id_encrypted_password").value = Encrypted_text;
-}
-</script>
 
 	<script nonce="{{rAnd0m123}}">
 		var x = document.getElementById("demo");
