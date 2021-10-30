@@ -147,28 +147,28 @@ def login_page(request):
         latitude = request.POST.get('latitude')
         location = request.POST.get('location')
 
-        # captcha_token=request.POST.get("g-recaptcha-response")
-        # cap_url="https://www.google.com/recaptcha/api/siteverify"
-        # cap_secret="6LeJoakaAAAAACuq-D-kikqlQezY0ct5bs-OG6_b"
-        # cap_data={"secret":cap_secret,"response":captcha_token}
-        # cap_server_response=requests.post(url=cap_url,data=cap_data)
-        # cap_json=json.loads(cap_server_response.text)
+        captcha_token=request.POST.get("g-recaptcha-response")
+        cap_url="https://www.google.com/recaptcha/api/siteverify"
+        cap_secret="6LeJoakaAAAAACuq-D-kikqlQezY0ct5bs-OG6_b"
+        cap_data={"secret":cap_secret,"response":captcha_token}
+        cap_server_response=requests.post(url=cap_url,data=cap_data)
+        cap_json=json.loads(cap_server_response.text)
 
-        # if cap_json['success']==False:
-        #     messages.error(request,"Invalid Captcha Try Again!")
-        #     # return render(request,"oncl_app/login_register/recaptcha_message.html")
-        #     return redirect('login')
-        # else:
-        #     # messages.success(request, "Recaptcha Verified.")
-        #     pass
+        if cap_json['success']==False:
+            messages.error(request,"Invalid Captcha Try Again!")
+            # return render(request,"oncl_app/login_register/recaptcha_message.html")
+            return redirect('login')
+        else:
+            # messages.success(request, "Recaptcha Verified.")
+            pass
         
-        # if latitude == '5' and longitude == '5':
-        #     messages.warning(request, 'You must enable your GPS inorder to login.')
-        #     return redirect('login')
+        if latitude == '5' and longitude == '5':
+            messages.warning(request, 'You must enable your GPS inorder to login.')
+            return redirect('login')
 
-        # if location == '0':
-        #     messages.warning(request, 'You must enable your GPS inorder to login.')
-        #     return redirect('login')
+        if location == '0':
+            messages.warning(request, 'You must enable your GPS inorder to login.')
+            return redirect('login')
 
         existing_user_records = User.objects.all()
         list_existing_user_records = []
@@ -178,8 +178,8 @@ def login_page(request):
         user = authenticate(request, username=username, password=password)
 
         if username not in list_existing_user_records:
-            # messages.error(request, 'No Such Account Exist!')
-            return HttpResponse("No Such Account Exist!")
+            messages.error(request, 'No Such Account Exist!')
+            # return HttpResponse("No Such Account Exist!")
             return redirect('login')
         else:
             save_login_details(request, username, user_ip_address)
