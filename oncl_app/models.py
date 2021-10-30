@@ -208,6 +208,8 @@ class user_login_details(models.Model):
     user_ip_address = models.CharField(max_length=100)
     os_details = models.CharField(max_length=100)
     browser_details = models.CharField(max_length=100)
+    latitude = models.CharField(max_length=100, default='5')
+    longitude = models.CharField(max_length=100, default='5')
     created_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
 
