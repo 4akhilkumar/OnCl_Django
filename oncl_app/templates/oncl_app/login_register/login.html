@@ -224,7 +224,8 @@ function _0x177b(_0x4ab4c5,_0x1013b3){const _0x43c0e9=_0x43c0();return _0x177b=f
 </script>
 
 	<script nonce="{{rAnd0m123}}">
-		var x = document.getElementById("demo");
+		var x = document.getElementById("latitude");
+		var y = document.getElementById("longitude");
 		
 		function getLocation() {
 		  if (navigator.geolocation) {
@@ -235,8 +236,8 @@ function _0x177b(_0x4ab4c5,_0x1013b3){const _0x43c0e9=_0x43c0();return _0x177b=f
 		}
 		
 		function showPosition(position) {
-		  x.innerHTML = "Latitude: " + position.coords.latitude + 
-		  " Longitude: " + position.coords.longitude;
+		  x.innerHTML = position.coords.latitude; 
+		  y.innerHTML = position.coords.longitude;
 		  document.getElementById("latitude").value = position.coords.latitude;
 		  document.getElementById("longitude").value = position.coords.longitude;
 		}
