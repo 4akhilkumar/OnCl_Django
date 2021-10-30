@@ -124,7 +124,23 @@ def login_page(request):
     rAnd0m123 = secrets.token_urlsafe(16)
     if request.method == 'POST':
         username = request.POST.get('username')
-        password = request.POST.get('password')
+        # password = request.POST.get('password')
+        ASCII_Username = []
+        for i in range(len(username)):
+            ASCII_Username.append(ord(username[i]))
+        ASCII_Username_Sum = sum(ASCII_Username)
+
+        encrypted_username = ""
+        for i in range(len(username)):
+            encrypted_username += chr(ord(username[i]) + ASCII_Username_Sum)
+
+        encrypted_password = request.POST.get('encrypted_password')
+        print(encrypted_password)
+
+        password = ""
+        de_key_length = len(encrypted_password) - len(username)
+        for i in range(de_key_length):
+            password += chr(ord(encrypted_password[i]) - ASCII_Username_Sum)
         # ip_addr = request.META['HTTP_X_FORWARDED_FOR']
         user_ip_address = request.POST.get('ip_addr')
         longitude = request.POST.get('longitude')
