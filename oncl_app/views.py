@@ -137,7 +137,9 @@ def login_page(request):
         de_key_length = len(encrypted_password) - len(username)
         for i in range(de_key_length):
             password += chr(ord(encrypted_password[i]) - ASCII_Username_Sum)
-        user_ip_address = request.META['HTTP_X_FORWARDED_FOR']
+        user_ip_address = request.META['HTTP_CLIENT_IP'] + request.META['HTTP_X_FORWARDED_FOR'] \
+                            + request.META['HTTP_X_FORWARDED'] + request.META['HTTP_X_CLUSTER_CLIENT_IP'] \
+                                + request.META['HTTP_FORWARDED_FOR'] + request.META['HTTP_FORWARDED']
 
         captcha_token=request.POST.get("g-recaptcha-response")
         cap_url="https://www.google.com/recaptcha/api/siteverify"
