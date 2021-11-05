@@ -150,9 +150,6 @@ def login_page(request):
             messages.error(request,"Invalid Captcha Try Again!")
             # return render(request,"oncl_app/login_register/recaptcha_message.html")
             return redirect('login')
-        else:
-            # messages.success(request, "Recaptcha Verified.")
-            pass
 
         existing_user_records = User.objects.all()
         list_existing_user_records = []
@@ -161,12 +158,12 @@ def login_page(request):
 
         user = authenticate(request, username=username, password=password)
 
-        if username not in list_existing_user_records:
-            messages.error(request, 'No Such Account Exist!')
-            # return HttpResponse("No Such Account Exist!")
-            return redirect('login')
-        else:
-            save_login_details(request, username, user_ip_address)
+        # if username not in list_existing_user_records:
+        #     messages.error(request, 'No Such Account Exist!')
+        #     # return HttpResponse("No Such Account Exist!")
+        #     return redirect('login')
+        # else:
+        #     save_login_details(request, username, user_ip_address)
 
         if user is not None:
             login(request, user)
