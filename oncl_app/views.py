@@ -33,8 +33,6 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy, reverse
 
-from django.views.decorators.csrf import csrf_exempt
-
 from django.db import transaction
 from django.views.decorators.csrf import csrf_exempt
 
@@ -124,7 +122,6 @@ def login_page(request):
     rAnd0m123 = secrets.token_urlsafe(16)
     if request.method == 'POST':
         username = request.POST.get('username')
-        # password = request.POST.get('password')
         ASCII_Username = []
         for i in range(len(username)):
             ASCII_Username.append(ord(username[i]))
@@ -135,17 +132,12 @@ def login_page(request):
             encrypted_username += chr(ord(username[i]) + ASCII_Username_Sum)
 
         encrypted_password = request.POST.get('encrypted_password')
-        print(encrypted_password)
 
         password = ""
         de_key_length = len(encrypted_password) - len(username)
         for i in range(de_key_length):
             password += chr(ord(encrypted_password[i]) - ASCII_Username_Sum)
-        # ip_addr = request.META['HTTP_X_FORWARDED_FOR']
-        user_ip_address = request.POST.get('ip_addr')
-        longitude = request.POST.get('longitude')
-        latitude = request.POST.get('latitude')
-        location = request.POST.get('location')
+        user_ip_address = request.META['HTTP_X_FORWARDED_FOR']
 
         captcha_token=request.POST.get("g-recaptcha-response")
         cap_url="https://www.google.com/recaptcha/api/siteverify"
@@ -161,14 +153,6 @@ def login_page(request):
         else:
             # messages.success(request, "Recaptcha Verified.")
             pass
-        
-        if latitude == '5' and longitude == '5':
-            messages.warning(request, 'You must enable your GPS inorder to login.')
-            return redirect('login')
-
-        if location == '0':
-            messages.warning(request, 'You must enable your GPS inorder to login.')
-            return redirect('login')
 
         existing_user_records = User.objects.all()
         list_existing_user_records = []
@@ -182,12 +166,12 @@ def login_page(request):
             # return HttpResponse("No Such Account Exist!")
             return redirect('login')
         else:
-            save_login_details(request, username, user_ip_address, latitude, longitude)
+            save_login_details(request, username, user_ip_address)
 
         if user is not None:
             login(request, user)
             messages.success(request, 'You Logged In Successfully.')
-            template = render_to_string('oncl_app/login_register/login_mail.html', {'email':request.user.email, 'ip_addr':user_ip_address, 'latitude':latitude, 'longitude':longitude})
+            template = render_to_string('oncl_app/login_register/login_mail.html', {'email':request.user.email, 'ip_addr':user_ip_address})
             # send_mail('OnCl Account Login Alert', template, settings.EMAIL_HOST_USER, [request.user.email], html_message=template)
             
             group = None
@@ -217,7 +201,7 @@ def logoutUser(request):
 
 import re
 import httpagentparser
-def save_login_details(request, user_name, user_ip_address, latitude, longitude):
+def save_login_details(request, user_name, user_ip_address):
     user_agent = request.META['HTTP_USER_AGENT']
     browser = httpagentparser.detect(user_agent)
     if not browser:
@@ -229,7 +213,7 @@ def save_login_details(request, user_name, user_ip_address, latitude, longitude)
     OS_Details = res[0][1:-1]
     uid = User.objects.get(username=user_name)
     try:
-        sld = user_login_details(user_ip_address=user_ip_address, user=uid, latitude=latitude, longitude=longitude, os_details=OS_Details, browser_details=browser)
+        sld = user_login_details(user_ip_address=user_ip_address, user=uid, os_details=OS_Details, browser_details=browser)
         sld.save()
     except Exception as e:
         return e
